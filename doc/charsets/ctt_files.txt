@@ -1,0 +1,19 @@
+Creating the CTT (Charset conversion table) files
+=================================================
+
+SRC = source encoding (remote system encoding)
+DEST = destination encoding (local Linux console encoding)
+
+There is a file "table.tab" located in the same directory as this document.
+You will need any conversion software that can convert between SRC and DEST
+charsets in both directions (e.g. Trans http://www.kostis.net/freeware/).
+
+1. Convert the file "table.tab" from SRC to DEST and store to tab1.tab
+2. Convert the file "table.tab" from DEST to SRC and store to tab2.tab
+3. cat tab1.tab tab2.tab >result.ctt
+
+The resulting file should be 512 bytes long.
+
+For installing the encoding table to LinPac just copy the file *.ctt to
+$HOME/LinPac/
+You may need to update the file $HOME/LinPac/encodings.

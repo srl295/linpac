@@ -1,0 +1,24 @@
+In LinPac 0.12 there is included some experimental code for getting the AX.25
+status via ioctl. The reason is that the currently used method of getting
+the AX.25 status via the /proc filesystem often interferes with some
+radio modem drivers (e.g. baycom modem drivers).
+
+However current kernels (at the time of writing this text the latest stable
+linux kernel release was 2.2.14) don't support getting all the important
+information via ioctl. That's why some information is not displayed when
+using this method but it's better than nothing for baycom modem users.
+
+As the code is experimental, there are no particular commands to switch
+the modes and all control is done via system requests (:sysreq command).
+
+Following requests can affect the status line behavior:
+(type the command again to cancel it)
+
+:sysreq 3        - enable the ioctl method for infolevel 1 (less detailed
+                   status line)
+
+:sysreq 4        - force the ioctl method for all infolevels
+
+:sysreq 5        - toggle the /proc/net/ax25 format between 2.0.x and 2.2.x
+                   The mode is normally automaticaly detected by LinPac, you
+                   shouldn't need to use this request.

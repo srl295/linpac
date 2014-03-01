@@ -1,0 +1,28 @@
+[Document encoding ISO-8859-2]
+
+ LinPac - horké klávesy
+ ======================
+
+Globální:
+
+ F1 - F8                    : pøepínání mezi kanály
+ F10                        : pøepnutí do monitoru
+ Alt-X                      : ukonèení LinPacu
+ 
+Vstupní okno:
+ 
+ PgUp, PgDn, ctrl-R, ctrl-V : listování po stránkách
+ ctrl-E, ctrl-X             : listování po øádcích
+ ctrl-B                     : skok na konec bufferu
+
+Editor:
+
+ Kurzorové klávesy, Home,
+ End, Backspace, Del        : editace
+ ctrl-Y                     : vymazání aktuálního øádku
+ Enter                      : odeslání aktuálního øádku
+
+Na ka¾dém kanálu mù¾e bì¾et jedna aplikace vyu¾ívající celou obrazovku
+(napø. program mail). Do této aplikace se lze pøepnout stiskem
+Alt+èíslo_kanálu (napø. Alt-5). Zpìt do terminálu se lze pøepnout stiskem
+F1 - F10.

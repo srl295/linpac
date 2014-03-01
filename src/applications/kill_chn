@@ -1,0 +1,28 @@
+#! /bin/sh
+#
+# Kill connection on actual channel (very hard disconnect)
+#
+
+LPAPI="lpapi"
+
+#Test if LinPac is running
+$LPAPI 0
+if [ ! $? -eq 0 ]; then
+  echo LinPac is not running
+  exit 1
+fi
+
+#Test if the channel is connected
+if [ `$LPAPI $LPCHN state` -eq 0 ]; then
+  echo Channel is not connected
+  exit 1
+fi
+
+#Get channel data
+CALL=`$LPAPI $LPCHN call`
+CWIT=`$LPAPI $LPCHN cwit`
+PORT=`$LPAPI $LPCHN port`
+PNAME=`$LPAPI $LPCHN pname $PORT`
+
+#Kill the connection
+axctl $PNAME $CWIT $CALL -kill

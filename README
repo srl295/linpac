@@ -1,0 +1,75 @@
+LinPac version 0.17pre3 (unstable release)
+Copyright (c) 2003 by Radek Burget
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+If you encounter any problems when compiling or using LinPac please take
+a look at http://linpac.sf.net or contact the author.
+
+73! Radek Burget OK2JBG
+Internet e-mail   : radkovo@centrum.cz
+Packet radio mail : OK2JBG@OK0PAB.#MOR.CZE.EU
+
+
+QUICK INSTALATION
+~~~~~~~~~~~~~~~~~
+If you plan to use LinPac for recieving and sending your mail then please
+install the ax25mail-utils package first. This package can be found
+at http://ax25mail.sf.net
+
+Before compilation please run
+
+              ./configure
+
+The default destination directory prefix is set to /usr/local
+If you want to change this, add --prefix switch:
+
+             ./configure --prefix=DIR
+
+where DIR is the new destination directory prefix.
+(LinPac installs into PREFIX/bin and PREFIX/share/linpac)
+
+After this just type
+    
+             make
+
+to compile the package and then type
+
+            make install
+or
+            make install-strip
+
+to install the package. The install-strip command will also strip the
+debugging information from the program (the instalation is then
+MUCH SMALLER).
+
+
+KNOWN PROBLEMS
+~~~~~~~~~~~~~~
+  
+  See http://linpac.sf.net for actual problems and their solution.
+
+
+
+SOME NOTES TO INSTALATION (for hackers)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The applicatons are linked using the shared library by default (the library
+liblinpac.so is installed in /usr/local/lib). You can link all the
+applications staticaly by running
+
+            configure --enable-LINKSTATIC
+
+For debugging LinPac it is useful to run LinPac in the place of compile 
+without installing it. For this the command 'make noinstall' can be used. 
+This will create the directory structure in the ./src directory. This is 
+only available with the staticaly linked applications.
+
+See file INSTALL for more informations about the configure tool.

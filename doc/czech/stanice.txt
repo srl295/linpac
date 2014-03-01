@@ -1,0 +1,105 @@
+[Document encoding ISO-8859-2]
+
+LinPac - Databáze stanic
+------------------------
+
+Databáze je urèena pro ukládání v¹ech informací o protistanicích. Ve¹keré
+tyto informace jsou ulo¾eny v souboru "station.data" a lze je mìnit buï
+pøímo editací tohoto souboru, nebo prostøednictvím pøíkazu Name (popsáno
+dále).
+
+1. Formát souboru station.data
+------------------------------
+Informace o ka¾dé stanici jsou uvedeny v odstavci, který zaèíná znaèkou
+stanice v hranatých závorkách a konèí buï hlavièkou popisu jiné stanice nebo
+koncem souboru. Ka¾dý øádek obsahuje jednu definici ve tvaru
+
+<jméno_polo¾ky>=<data>. 
+
+Typický záznam o stanici mù¾e tedy vypadat napøíklad takto:
+
+[OK0NMA]
+NAME=PC/Flexnet Brno
+TYPE=FLEXNET
+LOC=JN89HE
+QRG=144.8125 MHz
+SYSNUM=85964
+
+®ádná polo¾ka není povinná a u¾ivatel mù¾e do databáze pøidávat libovolné
+dal¹í polo¾ky podle toho, jaké informace potøebuje uchovávat. Nicménì pro
+zachování urèitého standardu se pro standardní informace doporuèuje pou¾ívat
+tìchto jmen:
+
+NAME - textové informace o stanici nebo jméno operátora. Pokud je tato
+       polo¾ka uvedena v databázi, LinPac zobrazí její obsah pøi spojení
+       s danou stanicí.
+LOC  - QRA lokátor stanice. LinPac se opìt pokusí zobrazit tuto informaci
+       pøi návázání spojení s protistanicí.
+TYPE - Typ protistanice. Pro obvykle pou¾ívané typy se doporuèuje:
+       FLEXNET, THENET, FBB, BAYBOX, DIEBOX, TNOS, JNOS, DXC
+       a pro u¾ivatelské terminály TERM. Takto udaný typ je ov¹em vyu¾íván
+       pouze u¾ivatelem, lze proto pou¾ít libovolné oznaèení typu stanice.
+LANG - Jazyk kterým se má komunikovat s protistanicí. Pokud je definován,
+       LinPac se pøi spu¹tìní makra hledat soubor s definicí makra nejprve
+       v podadresáøi s tímto jménem (macro/<LANG>).
+NICKNAME - pøezdívka operátora, v èe¹tinì lze vyu¾ít pro ulo¾ení pátého
+       pádu jména.
+
+Standardní konfigurace LinPacu vyu¾ívá navíc je¹tì tyto polo¾ky:
+
+TERM - jaký druh terminálu se má pou¾ít. Pokud je nastaveno 'ansi',
+       LinPac se po spojení s touto stanicí pøepne do re¾imu zobrazování
+       barev, co¾ lze vyu¾ít napøíklad u TNOS BBS. Stejný efekt má
+       i pøíkaz TErm (viz prikazy.txt)
+ENC  - pou¾ité pøekódování vstupu a výstupu. Pøi spojení se pøepne na
+       kódovací tabulku s tímto jménem. To umo¾òuje komunikovat s ka¾dou
+       protistanicí v jiném kódování èe¹tiny. Stejný efekt má pøíkaz
+       TRanslate.
+RCMD - seznam povolených vzdálených pøíkazù.
+QRG  - frekvence u¾ivatelského vstupu dané stanice, pou¾ije se v záznamech
+       do stanièního deníku.
+
+
+2. Pou¾ití pøíkazu Name
+-----------------------
+  Pøíkaz name lze pou¾ít ke zmìnám v databázi stanic bez nutnosti pøímé
+editace souboru. Samotný pøíkaz bez parametrù zpùsobí vypsání zadaného
+jména právì pøipojené protistanice. Zadáním dal¹ích parametrù se provede
+zmìna údajù o právì pøipojené stanici. Pou¾itelné parametry:
+
+<jméno>         - zmìna polo¾ky NAME
+-l <lokátor>    - zmìna polo¾ky LOC
+-t <typ>        -               TYPE
+-L <jazyk>      -               LANG
+-n <pøezdívka>  -               NICKNAME
+-s <polo¾ka>=<hodnota> - zmìna jiné polo¾ky.
+
+Pøíkaz Name -i vypí¹e v¹echny zadané informace o stanici.
+Pokud chceme mìnit informace o jiné ne¾ právì pøipojené stanici,
+pøidáme parametr -c <znaèka>.
+Pøíklad:
+ :NAME -c OK2JBG -n Radku -l JN89HF Radek
+
+
+3. Vyu¾ití údajù v databázi
+---------------------------
+Jak ji¾ bylo popsáno, LinPac pro vnitøní potøebu vyu¾ívá pouze polo¾ky se
+jmény NAME, LOC a LANG. Vyu¾ití ostatních polo¾ek závisí na u¾ivateli. Pøi
+ka¾dém spojení se stanicí, která má záznam v databázi stanice se vytvoøí
+promìnné se jmény STN_<jméno_polo¾ky>, které lze vyhodnotit v makrech.
+
+Pøíklad pou¾ití: chci aby se ka¾dá pøipojená stanice oslovila pøezdívkou
+operátora a pokud pøezdívka není zadána, aby se oslovila jménem operátora.
+Pøi ka¾dém pøipojení protistanice se spou¹tí makro 'ctext.mac' ulo¾ené
+v adresáøi macro. Obsah tohoto souboru v na¹em pøípadì mù¾e vypadat
+napøíklad takto:
+
+:if %(exist STN_NICKNAME) == 1            ;;pokud existuje STN_NICKNAME
+Ahoj %STN_NICKNAME !                      ;;pozdrav pøezdívkou
+:else                                     ;;jinak (pokud neexistuje)
+Ahoj %N !                                 ;;pozdrav jménem
+:endif                                    ;;(dal¹í pøíkazy se provedou v¾dy)
+Pøipojil ses k %Y v %T.                   ;;Sdìl svoji znaèku a èas.
+
+Teï ji¾ staèí jen pøidat øádek NICKNAME=pøezdívka k záznamu ka¾dé stanice,
+kterou chci oslovovat pøezdívkou.

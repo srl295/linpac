@@ -1,0 +1,315 @@
+[Document encoding ISO-8859-2]
+
+Linpac - seznam pøíkazù
+=======================
+
+U pøíkazù jsou povinná pouze velká písmena. Ka¾dý pøíkaz lze provést i na
+jiném ne¾ aktuálním kanálu zadáním pøíkaz@kanál (napø. "connect@2 cz6jbg").
+V¹echny pøíkazy musí zaèínat dvojteèkou, jinak jde o text k odeslání.
+
+
+1) Vestavìné pøíkazy
+
+ a) 'akèní' pøíkazy
+
+  ABort [adresa]
+    Zru¹ení akce. Nìkteré programy reagují i bez udání parametru (autobin). 
+  Adresy jednotlivých pøíkazù:
+                   
+                       èinnost         parametr_pro_abort
+                     ------------------------------------- 
+		       autobin RX/TX       autobin (nebo nic)
+                       yapp RX/TX          yapp (nebo nic)
+                       7plus autosave      7plus (nebo nic)
+                       read/RBin           read (nebo nic)
+                       write/WBin          write (nebo nic)
+                       forward             forward
+
+                     ostatní bez parametru.
+
+  Connect [port:]znaèka [digi [digi...]]
+    Zaène navazovat spojení s danou stanicí na aktuálním kanále.
+
+  Disconnect
+    Rozpojení.
+
+  Echo <text>
+    Vypí¹e (vy¹le) daný text.
+
+  FLUSH
+    Zpùsobí výslání dosud nevyslaných rámcù (uplatní se spí¹e ve skriptech
+    napø. tìsnì pøed pøíkazem Disconnect nebo pøed èekáním na vstup)
+
+  SYstem
+    Ukonèení programu LinPacu, zru¹í v¹echna spojení.
+
+  UNproto <text>
+    Vyslání neèíslovaného rámce s daným textem.
+
+  VERsion
+    Výpis verze programu.
+
+
+ b) pøíkazy pro práci s promìnnými
+  
+  SET <promìnná> <hodnota>
+    Pøíøadí hodnotu dané promìnné. Pokud promìnná neexistuje, tak ji
+    vytvoøí.
+
+  UNSET <promìnná>
+    Zru¹í danou promìnnou.
+
+  GET <promìnná>
+    Vrací hodnotu promìnné, obvykle lze úèinìji nahradit pomocí %promìnná.
+    (viz soubor macros.txt)
+
+  EXISTs <promìnná>
+    Vrací 1 kdy¾ promìnná existuje, 0 kdy¾ neexistuje.
+
+
+ c) informaèní pøíkazy
+
+  ENVINFO
+    Vypí¹e aktuální stav prostoru pro promìnné.
+
+  PCALL
+    Vrací volací znak první pøipojené protistanice na aktuálním kanálu
+  pøi právì probíhajícím spojení.
+
+  UTCTime
+    Vrací aktuální èas UTC (hodnota z os).
+
+
+ d) pøíkazy pro zmìnu nastavení
+  
+  CBell [on|off]
+    Zapne/vypne zvukový signál pøi navázání nebo ukonèení spojení.
+
+  FIXPath [on|off]
+    Pøi FIXPath=ON se ignorují zadané cesty k souborùm u externích pøíkazù
+  oznaèených pøíznakem P. Je tedy mo¾né pou¾ívat pouze cestu USER_PATH pro
+  ètení souborù a SAVE_PATH pro zápis souborù.
+
+  INFOLEvel [0|1|2]
+    Nastaví zobrazování informaèního øádku:
+      0 - vypnuto (¾ádné informace o stavu spojení)
+      1 - zobrazení dùle¾itých informací
+      2 - zobrazení v¹ech informací
+
+  Language [jazyk]
+    Nastaví aktuální jazyk. Zatím podporováno pouze pro skripty (skript se
+    hledá nejdøíve v adresáøi s pøíslu¹ným jménem)
+
+  MYcall <znaèka>
+    Zmìna volací znaèky pro daný kanál.
+
+  REMote [on|off]
+    Zapnutí/vypnutí dálkového ovládání.
+
+  Port <jméno_portu>
+    Nastaví port, který se pou¾ije pøi pøíkazu Connect, pokud není
+    explicitnì zadán.
+
+  TIMEZone [zóna]
+    Nastavení èasové zóny. Pouze se ukládá, nemá vliv na èas.
+
+  UNSrc [znaèka]
+    Nastaví znaèku odesilatele pro neèíslované rámce.
+
+  UNDest [znaèka]
+    Nastaví cílovou adresu pro neèíslované rámce.
+
+  WAtch <port | 0> <øetìzec> <pøíkaz>
+    Zapne sledování daného portu (0 - v¹echny porty). Pokud od protistanice
+    pøijde zadaný øetìzec, vykoná se pøíkaz (pøíkaz musí zaèínat dvojteèkou,
+    jinak jde o text k vypsání)
+
+  
+ e) pøíkazy pro ovládání obrazovky
+
+  STATLINE <n>
+    Umístí hlavní stavový øádek na n-tý øádek obrazovky.
+
+  CHNLINE <n>
+    Umístí øádek pro pøepínání kanálù na n-tý øádek obrazovky.
+
+  SWAPEDit
+    Zamìní okno editoru s oknem spojení.
+
+  INFOLine <èíslo> <text>
+    Zmìní stavový øádek oznaèený èíslem na zadaný text. Pokud takový øádek
+    neexistuje, je vytvoøen.
+
+  REMOVEINFO <èíslo>
+    Odstraní stavový øádek oznaèený daným èíslem.
+
+  TRanslate <tabulka>
+    Zapne pøekódování vstupu a výstupu podle zadané tabulky. Tabulky jsou
+    ulo¾eny v souborech *.ctt
+
+  TErm <typ>
+    Nastavý typ terminálu. Pokud se zadá typ 'ansi', pøepne se terminál do
+    re¾imu ansi barev.
+
+  SCRLimit <low-limit> <high-limit>
+    Kdy¾ velikost bufferu s pøijímanými daty pøesáhne hodnotu high-limit,
+  potom je buffer zkrácen na low-limit. Hodnoty se udávájí v bajtech.
+  Implicitní hodnoty jsou 384 kB a 512 kB.
+ 
+ f) systémové pøíkazy
+
+  RESULT <text>
+    Vrátí zadaný text jako výsledek skriptu.
+
+ g) pøíkazy pro práci s øetìzci
+
+  STRMid <start> <length> <øetìzec>
+    Vrací podøetìzec zadaného øetìzce zaèínající na pozici <start>
+    délky maximálnì <length> znakù
+
+  STRLeft <length> <øetìzec>
+    Vrací prvních <length> znakù øetìzce
+
+  STRRight <length> <øetìzec>
+    Vrací posledních <length> znakù øetìzce
+
+  STRLen <øetìzec>
+    Vrací délku øetìzce
+
+  STRPos <podøetìzec> <øetìzec>
+    Hledá v øetìzci podøetìzec, vrací pozici zaèátku nebo -1 kdy¾ nebyl
+    nalezen
+
+  UPCASE <øetìzec>
+    Pøevede øetezec na velká písmena
+
+
+2) Externí pøíkazy
+
+  RPrg <soubor>
+    Vy¹le soubor protokolem autobin.
+
+  Bell
+    Zvukový signál pro pøivolání operátora.
+
+  Compose <p|b> <znaèka>
+    Vytvoøení privátní zprávy/bulettinu pro danou znaèku.
+
+  FORWARD
+    Odeslání dosud neodeslaných zpráv do domácí BBS.
+
+  MHeard
+    Vypsání sly¹ených stanic.
+
+  MAIL
+    Vyvolá nástroj pro ètení a psaní po¹ty
+
+  Name
+    Ulo¾ení jména a editace databáze stanic (viz. Name -h)
+
+  RTt
+    Mìøení èasu pøenosu mezi stanicemi.
+
+  YPUT <soubor>
+    Vyslání souboru protokolem YAPP.
+
+  Write <soubor>
+    Zaèátek ukládání pøíchozího textu do souboru. Ukonèí se :Write off.
+
+  Read <soubor>
+    Vyslání zadaného textového souboru.
+
+  WBin / RBin
+    Jako Write / Read, ale pro binární soubory.
+
+  GETMsg <èíslo>
+    Získání zprávy z domácí BBS.
+
+3) Makra
+
+  Activity
+    Výpis èasu od poslední akce operátora.
+
+  Conv
+    Vstup do konference
+
+  Info
+    Informace o stanici.
+
+  Help
+    Struèná nápovìda k pøíkazùm
+
+  Quit
+    Vyslání ukonèovacího textu a ukonèení spojení.
+
+  Users / CStatus
+    Seznam pøipojených u¾ivatelù   
+
+
+Pøíkazy pro vytváøení skriptù
+=============================
+
+  MACRO [název]
+    Uvozuje definici pøíkazového skriptu (viz ní¾e)
+
+  LABEL <jméno_návì¹tí>
+    Definuje návì¹tí daného jména. U pøíkazových skriptù lze nahradit
+    zápisem :<jméno_návì¹tí>.
+
+  GOTO <jméno_návì¹tí>
+    Skok na dané návì¹tí.
+
+  IF ~ ELSE ~ ENDIF
+    Podmínkové pøíkazy. Existují dva zpùsoby zápisu podmínky:
+
+    - normální zápis (pro více pøíkazù):
+      IF <podmínka>
+       .
+       .
+       (pøíkazy, které se mají vykonat pøi splnìní podmínky)
+       .
+       .
+      ELSE
+       .
+       .
+       (pøíkazy, které se mají vykonat pøi nesplnìní podmínky)
+       .
+       .
+      ENDIF
+      Èást ELSE lze vynechat a pou¾ít pouze IF ~ ENDIF.
+ 
+    - zkrácený zápis (pro jeden pøíkaz)
+      IF (<podmínka>) pøíkaz
+      (podmínka je uvedena v závorkách, pøíkaz se provede pøi jejím splnìní)
+
+    Pro zápis podmínek lze vyu¾ít operátory = (nebo ==), <, >, <= (nebo =<),
+    >= (nebo =>), != (nebo <>). Pokud oba operátory jsou èísla, porovnají se
+    jako èísla, jinak se porovnají jako øetìzce.
+
+
+Vytváøení skriptù
+=================
+  Skript lze definovat vytvoøením souboru macro/<pøíkaz>.mac. Pokud mù¾e být
+pøíkaz zkrácen, je tøeba jej uvést v souboru "commands" ve stejném adresáøi.
+Existují dva zpùsoby zápisu skriptu:
+
+a) Textové skripty
+  Tento zpùsob definice je vhodný pro pøíkazy, jejich¾ hlavním úkolem je
+vypsat nìjaký text (napøíklad informace o stanici). Po spu¹tìní takto
+definovaného pøíkazu je ka¾dý øádek souboru, který nezaèíná dvojteèkou
+zobrazen na obrazovku (odeslán protistanici). Pøíkazy musí zaèínat
+dvojteèkou, je mo¾no pou¾ít v¹echny pøíkazy LinPacu i ostatní u¾ivatelem
+definované pøíkazy a navíc speciální pøíkazy pro skripty. Tímto zpùsobem lze
+do textu vlo¾it napøíklad informaci o probíhajících spojeních (pøíkazem
+:Users) nebo modifikovat text pomocí pøíkazu :IF,:ELSE a :ENDIF.
+
+b) Pøíkazové skripty
+  Pøedchozí zpùsob definice umo¾òuje snadné vypisování textu, av¹ak pøi
+pou¾ití vìt¹ího mno¾ství pøíkazù se definice stává velmi nepøehlednou.
+Definice ve formì pøíkazù je oproti tomu vhodná k zápisu vìt¹ího mno¾ství
+pøíkazù s men¹ím mno¾stvím vypisovaného textu.
+  První øádek takové definice musí tvoøit pøíkaz :MACRO (na zaèátku øádku)
+za kterým mù¾e následovat jakýkoliv text (napø. jméno makra atd.). Za tímto
+øádkem lze psát pøíkazy, pøed které se u¾ nepí¹e dvojteèka. Tyto pøíkazy
+nemusí zaèínat na zaèátku øádku (mohou být libovolnì odsazeny), prázdné
+øádky se pøeskakují. Text se vypisuje pomocí pøíkazu Echo.

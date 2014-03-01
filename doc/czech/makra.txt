@@ -1,0 +1,50 @@
+[Document encoding ISO-8859-2]
+
+LinPac - textová makra
+======================
+  Textová makra slou¾í ke vkládání zvlá¹tních údajù do vypisovaného textu.
+Ka¾dé makro (uvozené znakem '%') je pøi vypisování textu nahrazeno
+pøíslu¹nou aktuální informací.
+
+Pøíklad: v textu "Dnes je %D a va¹e znaèka je %C" se makro %D nahradí
+aktuálním datem a %C se nahradí volací znaèkou u¾ivatele.
+
+  Obsah nìkterých maker závisí na aktuálním kanálu. Pøi pou¾ití makra ve
+skriptu se za aktuální pova¾uje kanál, na kterém skript probíhá, pøi zadání
+pøímo v editoru pøíkazù se za aktuální pova¾uje právì zobrazený kanál. Èíslo
+kanálu lze explicitnì zadat pomocí zápisu %x@nn (napø. %C@2 se nahradí
+znaèkou protistanice pøipojené na kanál 2).
+
+Seznam pou¾itelných maker
+=========================
+
+ %V		- Verze programu (napø. 0.01)
+ %C		- Znaèka spojené protistanice
+ %N		- Jméno spojené protistanice pokud je zadáno, jinak se
+                  nahradí obsahem makra %U
+ %Y		- Znaèka kanálu (u¾ivatele terminálu)
+ %K		- Èíslo aktuálního kanálu
+ %T		- Aktuální èas
+ %D		- Aktuální datum
+ %B		- Znak pro zvukový signál (BEL)
+ %Z		- Aktuální èasová zóna
+ %U		- Èím se nahrazuje jméno kdy¾ není zadáno (mù¾e obsahovat
+                  dal¹í makra, typicky %C)
+ %P		- Èíslo portu na kterém probíhá spojení
+ %M		- Celkový poèet pøipojených u¾ivatelù
+ %A		- Èas v sekundách od posledí akce operátora
+ %_		- Konec øádku (CR)
+ %<		- Obsah posledního pøijatého øádku, pøeètením se vyma¾e
+ %#èíslo	- Nahradí se znakem s hodnotou èíslo
+                  (napø. %#27 se nahradí znakem ESC)
+ %(pøíkaz)	- Pøíkaz se provede a makro se nahradí jeho výsledkem
+ %[výraz]	- Nahradí se výsledkem matematického výrazu který se mù¾e
+                  skládat z celých èísel, závorek a operátorù +, -, *, \
+                  s obvyklými prioritami
+ %promìnná	- Nahradí se obsahem dané promìnné
+
+Makra pro pou¾ití pouze ve skriptech:
+ 
+ %R             - poèet parametrù pøedaných skriptu
+ %0		- jméno provádìného skriptu
+ %1 a¾ %9	- parametry pøedané skriptu

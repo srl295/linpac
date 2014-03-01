@@ -1,0 +1,74 @@
+:macro INIT
+;; Linpac init script
+;; This script is called when LinPac is started
+
+;; Default port
+port #PORT#
+
+;; Log errors
+errorlog error.log
+
+;; Color scheme - uncomment one to select
+;;color_default
+;;color_blue
+;;color_tnt
+
+;; Screen setup
+;; Normal mode - editor under QSO window
+statline 15
+chnline 20
+;; Uncomment this for editor above QSO window (Baycom-like)
+;; (and comment out lines for normal mode)
+;;swapedit
+;;statline 4
+;;chnline 20
+redraw
+
+;; Callsign setup
+mycall@1 #CALL#
+mycall@2 #CALL#
+mycall@3 #CALL#
+mycall@4 #CALL#
+mycall@5 #CALL#
+mycall@6 #CALL#
+mycall@7 #CALL#
+mycall@8 #CALL#
+;; Unproto calls
+unsrc LINPAC
+undest INFO
+
+;; Other settings
+cbell on
+knax on
+remote on
+infolevel 1
+
+;; Default QRG
+set QRG@0 "144.8125 MHz"
+
+;; Default encoding translation (for all channels)
+set DEF_ENC@0 iso1
+translate %DEF_ENC@0
+
+;; Default set of enabled remote commands
+set DEF_RCMD@0 "AB D E VER L RP B MH N RT YPUT W R WB RB A CONV I H Q U CS"
+
+;; Paths
+set SAVE_PATH "./save"
+set MAIL_PATH "./mail"
+set USER_PATH "./user"
+set LOG_PATH "./log"
+
+;; Path to home BBS - the port name is REQUIRED - i.e. radio:OK0PAB OK0NMA
+set HOME_BBS "#BBS#"
+set HOME_ADDR "#ADDR#"
+
+;; ======================================================
+;; System settings - do not modify this if you don't know
+;; what you are doing
+;; ======================================================
+
+;; Automatic start of external protocols
+watch 0 "\r#BIN#" ":autobin"
+watch 0 "\x5\x1" ":yapp"
+watch 0 "\r go_" ":bsave"

@@ -1,0 +1,151 @@
+#! /bin/bash
+###########################################################################
+# sendfile - LinPac utility for sending 7plus files                       #
+# (c) 2001 by Radek Burget OK2JBG                                         #
+#                                                                         #
+# Usage:                                                                  #
+#   Create messages from file:  sendfile p <file> <addr> [<num_msgs>]     #
+#   Create bulletins from file: sendfile b <file> <addr> [<num_msgs>]     #
+#   Report number of blocks  :  sendfile r <file> [<num_msgs>]            #
+#                                                                         #
+# Used variables:                                                         #
+#   BLOCK7P@0 - max. size of block (when num_msgs is not specified)       #
+###########################################################################
+
+# 7plus command
+COMMAND="7plus"
+
+###########################################################################
+LPAPI="lpapi"
+TMPDIR=/tmp/sendfile.$$
+MSGLIST=$HOME/LinPac/mail/messages.local
+
+#Test if LinPac is running
+$LPAPI 0
+if [ ! $? -eq 0 ]; then
+  echo LinPac is not running
+  exit 1
+fi
+
+# Parse arguments
+if [ $# -gt 1 ]; then
+   if [ $1 = 'p' ]; then
+      if [ $# -eq 3 ]; then
+         CMD=$1
+         FNAME=$2
+         ADDR=$3
+         MTYPE=p
+         SIZE=`$LPAPI 0 get BLOCK7P`
+         BLOCKS=0
+         if [ x$SIZE = x ]; then
+           SIZE=5120
+         fi
+      elif [ $# -eq 4 ]; then
+         CMD=$1
+         FNAME=$2
+         ADDR=$3
+         SIZE=0
+         BLOCKS=$4
+      else
+         echo 'Usage: sendfile p <file> <address> [<num_msgs>]'
+         exit 1
+      fi
+   elif [ $1 = 'b' ]; then
+      if [ $# -eq 3 ]; then
+         CMD=$1
+         FNAME=$2
+         ADDR=$3
+         MTYPE=b
+         SIZE=`$LPAPI 0 get BLOCK7P`
+         BLOCKS=0
+         if [ x$SIZE = x ]; then
+           SIZE=5120
+         fi
+      elif [ $# -eq 4 ]; then
+         CMD=$1
+         FNAME=$2
+         ADDR=$3
+         SIZE=0
+         BLOCKS=$4
+      else
+         echo 'Usage: sendfile b <file> <address> [<num_msgs>]'
+         exit 1
+      fi
+   elif [ $1 = 'r' ]; then
+      if [ $# -eq 2 ]; then
+         CMD=$1
+         FNAME=$2
+         SIZE=`$LPAPI 0 get BLOCK7P`
+         BLOCKS=0
+         if [ x$SIZE = x ]; then
+           SIZE=5120
+         fi
+      elif [ $# -eq 3 ]; then
+         CMD=$1
+         FNAME=$2
+         SIZE=0
+         BLOCKS=$3
+      else
+         echo 'Usage: sendfile r <file> [<num_msgs>]'
+         exit 1
+      fi
+   else
+      echo 'Usage: sendfile p|b|r <file> ...'
+      exit 1
+   fi
+else
+   echo 'Usage: sendfile p|b|r <file> ...'
+   exit 1
+fi
+
+if [ ! -r $FNAME ]; then
+   echo "File $FNAME not found !"
+   exit 1
+fi
+
+rm -rf $TMPDIR
+mkdir $TMPDIR
+cp $FNAME $TMPDIR
+
+OLDDIR=`pwd`
+cd $TMPDIR
+LNAME=`ls`
+
+if [ $SIZE -eq 0 ]; then
+   eval $COMMAND -sp $BLOCKS $LNAME >/dev/null 2>/dev/null
+else
+   eval $COMMAND -sb $SIZE $LNAME >/dev/null 2>/dev/null
+fi
+
+rm $LNAME
+PARTS=`ls -l | wc -l`
+PARTS=$(($PARTS-1))
+
+if [ $PARTS -eq 0 ]; then
+   echo "Error: unable to split the file with $COMMAND"
+   echo "Make sure the command \"$COMMAND\" is in PATH and is executable!"
+   echo "Sending aborted."
+   exit 1
+fi
+
+if [ $CMD = 'r' ]; then
+   echo "Attached file $LNAME: will be split to $PARTS parts"
+   cd $OLDDIR
+   rm -rf $TMPDIR
+fi
+
+if [ $CMD = 'p' -o $CMD = 'b' ]; then
+   echo "Attached file $LNAME: will be split to $PARTS parts"
+
+   CNT=1
+   for I in *; do
+      SUBJ="$LNAME part $CNT/$PARTS (7pl)"
+      CNT=$(($CNT+1))
+      echo Creating message from $I
+      eval $LPAPI $LPCHN do "compose $MTYPE $ADDR '$SUBJ' $TMPDIR/$I"
+   done
+
+   cd $OLDDIR
+   rm -rf $TMPDIR
+   echo "Sending done."
+fi
