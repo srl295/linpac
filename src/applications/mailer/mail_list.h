@@ -9,7 +9,7 @@
 
   mail_list.h - message list viewer and text viewer
 */
-#include <vector.h>
+#include <vector>
 #include "mail_screen.h"
 #include "mail_filt.h"
 #include "mail_input.h"
@@ -39,7 +39,7 @@ class TheFile : public screen_obj
     screen_obj *old_focused;
 
   public:
-    vector <char *> line;
+    std::vector <char *> line;
 
     TheFile(Message *themsg);
     virtual ~TheFile();
@@ -73,8 +73,8 @@ class Messages : public screen_obj
       int folder;        //displayed folder
 
       MessageIndex *ndx; //message index
-      vector <Msg> msg;  //filtered message list
-      vector <Board> boards; //list of boards
+      std::vector <Msg> msg;  //filtered message list
+      std::vector <Board> boards; //list of boards
 
       //saved old screen status
       void *old_focus_window;
@@ -101,7 +101,7 @@ class Messages : public screen_obj
       bool readable(int index);        //is this message readable ?
       bool check_filter(int index);    //is this message visible through filter ?
       int selected();                  //index of selected message
-      void del_msg(vector <Msg>::iterator it); //delete message
+      void del_msg(std::vector <Msg>::iterator it); //delete message
       void draw_line(int i);           //draw a single screen line
 
       virtual void handle_event(Event *);

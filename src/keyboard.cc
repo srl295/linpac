@@ -19,6 +19,9 @@
 #include "data.h"
 #include "keyboard.h"
 
+#include <string.h>
+#include <iostream>
+
 //--------------------------------------------------------------------------
 // Class Keyscan
 //--------------------------------------------------------------------------
@@ -44,7 +47,7 @@ void Keyscan::handle_event(const Event &ev)
   {
     int ch = wgetch(reinterpret_cast<WINDOW *>(keywin));
     //int ch = getch();
-    cout.flush();
+    std::cout.flush();
     if (ch != ERR)
     {
       Event re;

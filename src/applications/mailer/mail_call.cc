@@ -77,7 +77,7 @@ char *addr_call(const char *addr)
 char *addr_bbs(const char *addr)
 {
    static char ret[64];
-   char *p = strchr(addr, '@');
+   const char *p = strchr(addr, '@');
    if (p)
    {
       strncpy(ret, p+1, 63); ret[63] = '\0';

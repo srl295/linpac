@@ -15,6 +15,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
+#include <cstdlib>
 #include <axmail.h>
 
 #include "lpapp.h"
