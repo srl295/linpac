@@ -19,6 +19,7 @@
 #include "infoline.h"
 #include <ncurses.h>
 #include <sys/time.h>
+#include <ctime>
 #include "screen.h"
 #include "constants.h"
 
@@ -212,7 +213,7 @@ class StatLines : public Screen_obj
 {
   private:
     WINDOW *win;
-    vector <info_line> lines;
+    std::vector <info_line> lines;
     int nlines;
     int mychn;
     bool act;

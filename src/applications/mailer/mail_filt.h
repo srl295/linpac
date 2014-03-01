@@ -9,7 +9,7 @@
 
   mail_filter.h - select message destinations
 */
-#include <vector.h>
+#include <vector>
 #include <axmail.h>
 #include "mail_screen.h"
 #include "mail_input.h"
@@ -24,8 +24,8 @@ class tbname
 };
 
 //Vector of selected boards
-extern vector <tbname> bfilter;
-extern vector <tbname>::iterator bfit;
+extern std::vector <tbname> bfilter;
+extern std::vector <tbname>::iterator bfit;
 
 //Message info
 struct Msg
@@ -50,7 +50,7 @@ class Board
 class BGroup : public Board
 {
   public:
-    vector <tbname> content;
+    std::vector <tbname> content;
 
     bool contains(const char *name);
     BGroup &operator = (const BGroup &);
@@ -75,11 +75,11 @@ class BoardList : public screen_obj
     screen_obj *old_focused;
 
   public:
-    vector <Board> boards;
-    vector <BGroup> groups;
+    std::vector <Board> boards;
+    std::vector <BGroup> groups;
     
-    BoardList(MessageIndex *ndx, vector <Msg> &, char *mycall);
-    BoardList(vector <Board> &);
+    BoardList(MessageIndex *ndx, std::vector <Msg> &, char *mycall);
+    BoardList(std::vector <Board> &);
     void init_screen(void *pwin, int height, int width, int wy, int wx);
 
     void save_groups();
@@ -95,6 +95,6 @@ class BoardList : public screen_obj
 };
 
 //Create the sorted list of boards from message list
-void create_list(MessageIndex *ndx, vector <Msg> &, vector <Board> &,
+void create_list(MessageIndex *ndx, std::vector <Msg> &, std::vector <Board> &,
                  char *mycall);
 

@@ -16,7 +16,8 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include <vector.h>
+#include <stddef.h>
+#include <vector>
 #include "constants.h"
 #include "version.h"
 #include "event.h"
@@ -145,7 +146,7 @@ class RCommand
     operator char*();
 };
 
-extern vector <RCommand> aclist[MAX_CHN+1];
+extern std::vector <RCommand> aclist[MAX_CHN+1];
 
 //------------------------------------------------------------------------
 // Miscelancelous data
@@ -227,7 +228,7 @@ struct cook_task
 class Cooker : public Object
 {
   private:
-    vector <cook_task *> tasks;
+    std::vector <cook_task *> tasks;
     int newhandle;
     char expr[256];
     char lastline[MAX_CHN+1][256]; //last line received (for %< macro)

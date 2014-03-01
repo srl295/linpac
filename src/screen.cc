@@ -39,7 +39,7 @@ void Screen::insert(Screen_obj *obj)
 
 void Screen::redraw()
 {
-  vector <Screen_obj *>::iterator it;
+  std::vector <Screen_obj *>::iterator it;
   for (it=children.begin(); it<children.end(); it++)
     (*it)->draw();
 }

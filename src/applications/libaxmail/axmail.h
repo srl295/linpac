@@ -6,7 +6,7 @@
 #ifndef AXMAIL_H
 #define AXMAIL_H
 
-#include <vector.h>
+#include <vector>
 
 //Library initialization with default paths
 void axmail_init();
@@ -134,7 +134,7 @@ class MessageIndex
       char *call;                   //BBS callsign w/o ssid
       char *path;                   //index path
       int lastnum;                  //highest known message number
-      vector <Message *> messages;  //list of messages
+      std::vector <Message *> messages;  //list of messages
 
       void updateList();            //remove deleted messages
       void clearList();             //clear the list of messages

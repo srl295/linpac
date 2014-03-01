@@ -17,8 +17,10 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
+#include <cstdlib>
 #include <errno.h>
 #include <sys/time.h>
+#include <ctime>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
@@ -311,7 +313,7 @@ RCommand::operator char*()
   return name;
 }
 
-vector <RCommand> aclist[MAX_CHN+1];
+std::vector <RCommand> aclist[MAX_CHN+1];
 
 
 //Misc
@@ -763,7 +765,7 @@ void Cooker::handle_event(const Event &ev)
   }
   if (ev.type == EV_CMD_RESULT)
   {
-    vector <cook_task *>::iterator it;
+    std::vector <cook_task *>::iterator it;
     for (it = tasks.begin(); it < tasks.end(); it++)
       if ((*it)->handle == ev.x) break;
     if (it < tasks.end())
@@ -795,7 +797,7 @@ void Cooker::handle_event(const Event &ev)
 
 Cooker::~Cooker()
 {
-  vector <cook_task *>::iterator it;
+  std::vector <cook_task *>::iterator it;
   for (it = tasks.begin(); it < tasks.end(); it++)
   {
     delete (*it)->args;
