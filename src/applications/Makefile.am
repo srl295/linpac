@@ -25,9 +25,7 @@ s_tnpwd = tnpwd.cc
 s_catch = catch.cc
 s_join = join.c
 
-CXXFLAGS = -g -Wall -funsigned-char
 LDADD = ./liblinpac/liblinpac.la
-LDFLAGS = @LINPACLINK@
 
 bin_PROGRAMS = autobin bell compose forward getmsg logbook lpbck \
                name rawio rtt save7pl testapp yapp flexpwd md2pwd \

@@ -5,9 +5,7 @@ s_mail = mail.cc mail_call.cc mail_comp.cc mail_data.cc \
          mail_help.cc mail_input.cc mail_list.cc mail_route.cc \
          mail_screen.cc
 
-CXXFLAGS = -g -Wall -funsigned-char
 LDADD = ../liblinpac/liblinpac.la ../libaxmail/libaxmail.la
-LDFLAGS = @LINPACLINK@
 
 bin_PROGRAMS = mail
 
