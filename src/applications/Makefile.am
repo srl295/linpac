@@ -55,6 +55,6 @@ datadir = @prefix@/share/linpac/bin
 bindir = @prefix@/share/linpac/bin
 
 data_DATA = commands
-data_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
+bin_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
 
-EXTRA_DIST = $(data_DATA) $(data_SCRIPTS) *.h
+EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) *.h

@@ -15,6 +15,6 @@ datadir = @prefix@/share/linpac/bin
 bindir = @prefix@/share/linpac/bin
 
 data_DATA =
-data_SCRIPTS =
+bin_SCRIPTS =
 
-EXTRA_DIST = $(data_DATA) $(data_SCRIPTS) *.h
+EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) *.h
