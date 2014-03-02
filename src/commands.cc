@@ -644,8 +644,11 @@ void Commander::do_command(int chn, char *cmds)
   if (com_ok(chn, echn, cmd, "UNDest")) {
                                if (is_next())
                                {
+                                 //changes by dranch to support 7 digis in path
+                                 //More in the path is a limitation of the linux kernel
+                                 strcpy(result, "ki6zhd digi patch enabled");
                                  nextp(gps);
-                                 normalize_call(gps);
+                                 //---- normalize_call(gps);
                                  emit(chn, EV_UNPROTO_DEST, 0, gps);
                                }
                                else strcopy(result, sconfig(0, "cwit"), 256);

@@ -55,9 +55,10 @@ int main(int argc, char **argv)
 
   active = lp_start_appl();
   lp_event_handling_off();
-  if (active) lp_appl_result("Ringing...");
+  if (active) lp_appl_result("Ringing (PC speaker only)...");
 
-  dsp = open("/dev/dsp", O_RDWR);
+  /*ki6zhd / dranch: disabled soundcard and using PC speaker only*/
+  /* dsp = open("/dev/dsp", O_RDWR);
   if (dsp != -1) //soundcard present
   {
     i = AFMT_U8;
@@ -70,6 +71,7 @@ int main(int argc, char **argv)
   else //soundcard not present - use speaker
   {
     int i;
+  */
     console = open("/dev/console", O_RDWR);
     if (console == -1) printf("\a"); //nothing usable, try BEL char.
     for (i=0; i < 10; i++)
@@ -78,7 +80,7 @@ int main(int argc, char **argv)
       sound(800); wait(20000);
     }
     nosound();
-  }
+  /* } //disabling of the soundcard */
   if (active) lp_end_appl();
   return 0;
 }
