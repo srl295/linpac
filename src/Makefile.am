@@ -8,8 +8,6 @@ s_libs = data.cc calls.cc sources.cc commands.cc event.cc names.cc screen.cc \
          hash.c
 s_linpac = linpac.cc	 
 
-CXXFLAGS = -g -Wall -funsigned-char
-
 rootdir = @prefix@/share/linpac
 root_PROGRAMS = linpac
 linpac_SOURCES = $(s_libs) $(s_linpac)		 

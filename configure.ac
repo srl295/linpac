@@ -1,7 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(src/linpac.cc)
-AM_INIT_AUTOMAKE(LinPac, 0.17pre3)
+AC_INIT(LinPac, 0.20)
+AC_CONFIG_SRCDIR(src/linpac.cc)
+AM_INIT_AUTOMAKE
+
 AM_CONFIG_HEADER(config.h)
 AC_DEFINE(VERINFO, "Development snapshot 030813")
 AC_PREFIX_DEFAULT(/usr/local)

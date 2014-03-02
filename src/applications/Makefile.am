@@ -25,9 +25,7 @@ s_tnpwd = tnpwd.cc
 s_catch = catch.cc
 s_join = join.c
 
-CXXFLAGS = -g -Wall -funsigned-char
 LDADD = ./liblinpac/liblinpac.la
-LDFLAGS = @LINPACLINK@
 
 bin_PROGRAMS = autobin bell compose forward getmsg logbook lpbck \
                name rawio rtt save7pl testapp yapp flexpwd md2pwd \
@@ -57,6 +55,6 @@ datadir = @prefix@/share/linpac/bin
 bindir = @prefix@/share/linpac/bin
 
 data_DATA = commands
-data_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
+bin_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
 
-EXTRA_DIST = $(data_DATA) $(data_SCRIPTS) *.h
+EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) *.h
