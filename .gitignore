@@ -5,6 +5,10 @@
 Makefile
 /config.status
 /config.log
+/config.sub
+/config.guess
+/install-sh
+/ltmain.sh
 /config.h
 /aclocal.m4
 Makefile.in
