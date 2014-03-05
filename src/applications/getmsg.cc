@@ -273,7 +273,7 @@ void stop_it()
 
 void send_request(int num)
 {
-  printf("r %i\r", num);
+  printf("F< %i\r", num);
 }
 
 void delete_message(int num)
