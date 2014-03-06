@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = gnu
 SUBDIRS = ctt data doc macro mail src inst plugins
 datadir = @prefix@/share/linpac
 data_DATA = README NEWS
@@ -8,7 +8,7 @@ EXTRA_DIST = linpac.lsm COPYING
 
 .PHONY: postinstall noinstall
 
-install: postinstall
+#install: postinstall
 
 postinstall: 
 	(cd $(DESTDIR)@prefix@/share/linpac/bin && rm -f autotx >/dev/null 2>/dev/null)
