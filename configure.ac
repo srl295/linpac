@@ -8,6 +8,8 @@ AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([NO_SOCKLEN_T], [Socket length type])
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([VERINFO], [Version string])
+
+AM_CONFIG_HEADER(config.h)
 AC_DEFINE(VERINFO, "Development snapshot 030813")
 AC_PREFIX_DEFAULT(/usr/local)
 AC_PROG_CXX
