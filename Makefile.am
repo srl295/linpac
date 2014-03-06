@@ -1,6 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = gnu
+## See https://bugzilla.redhat.com/show_bug.cgi?id=901333 for more
+## information about ACLOCAL_AMFLAGS
+## The work-around for this bug is to commit the m4/ directory.
+ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = ctt data doc macro mail src inst plugins
 datadir = @prefix@/share/linpac
 data_DATA = README NEWS
