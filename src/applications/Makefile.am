@@ -58,4 +58,5 @@ bindir = @prefix@/share/linpac/bin
 data_DATA = commands
 bin_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
 
-EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) *.h
+EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) crc.h doorbl.h dostime.h hash.h\
+             lpapp.h lpcalls.h lpwin.h lzhuf.h md2.h md5.h tevent.h version.h

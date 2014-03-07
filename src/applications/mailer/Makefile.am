@@ -18,4 +18,7 @@ bindir = @prefix@/share/linpac/bin
 data_DATA =
 bin_SCRIPTS =
 
-EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) *.h
+EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) axmail.h lpapp.h mail_call.h \
+	    mail_comp.h mail_data.h mail_edit.h mail_files.h mail_filt.h \
+	    mail_help.h mail_input.h mail_list.h mail_route.h mail_screen.h \
+	    tevent.h version.h
