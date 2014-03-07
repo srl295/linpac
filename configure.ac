@@ -62,9 +62,10 @@ AC_DEFINE([VERINFO], ["Development snapshot 030813"])
 # Package Options
 # TODO: make sure this is the up-to-date method and that it works right
 #       with modern libtools
+# 2014/03/06 jdunmire - build fails if --enable-LINKSTATIC used
 LINPACLINK=""
 AC_ARG_ENABLE(LINKSTATIC, Use --enable-LINKSTATIC for static linking,
-              LINPACLINK="-static")
+              LINPACLINK="-all-static")
 
 
 # Output files
