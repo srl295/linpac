@@ -26,6 +26,7 @@ s_catch = catch.cc
 s_join = join.c
 
 LDADD = ./liblinpac/liblinpac.la
+AM_LDFLAGS = @LINPACLINK@
 
 bin_PROGRAMS = autobin bell compose forward getmsg logbook lpbck \
                name rawio rtt save7pl testapp yapp flexpwd md2pwd \

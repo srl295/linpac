@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 LDADD = ../liblinpac/liblinpac.la
+AM_LDFLAGS = @LINPACLINK@
 
 bin_PROGRAMS = lpapi
 

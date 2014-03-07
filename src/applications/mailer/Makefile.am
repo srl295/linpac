@@ -6,6 +6,7 @@ s_mail = mail.cc mail_call.cc mail_comp.cc mail_data.cc \
          mail_screen.cc
 
 LDADD = ../liblinpac/liblinpac.la ../libaxmail/libaxmail.la
+AM_LDFLAGS = @LINPACLINK@
 
 bin_PROGRAMS = mail
 
