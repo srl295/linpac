@@ -9,8 +9,8 @@ AUTOMAKE_OPTIONS = gnu -Wall -Werror -Wportability
 ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = ctt data doc macro mail src inst plugins
-datadir = @prefix@/share/linpac
-data_DATA = README NEWS
+
+pkgdata_DATA = README NEWS
 EXTRA_DIST = linpac.lsm COPYING
 
 .PHONY: postinstall noinstall
