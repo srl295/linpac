@@ -1,8 +1,5 @@
 ## process this file with automake to produce Makefile.in
 
-includedir=@includedir@/linpac
-#libdir=/usr/local/lib
-LIBS=
 include_HEADERS = lpapp.h tevent.h
 lib_LTLIBRARIES = liblinpac.la
 liblinpac_la_SOURCES = lpapp.c hash.c

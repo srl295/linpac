@@ -2,6 +2,5 @@
 
 SUBDIRS = czech charsets
 
-datadir = @prefix@/share/doc/linpac
-dist_data_DATA = manual.txt manual.html applguide.txt applguide.html events.txt \
+dist_doc_DATA = manual.txt manual.html applguide.txt applguide.html events.txt \
             objects.txt ioctl.txt

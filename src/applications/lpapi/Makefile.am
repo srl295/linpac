@@ -3,8 +3,7 @@
 LDADD = ../liblinpac/liblinpac.la
 AM_LDFLAGS = @LINPACLINK@
 
-toolsdir = $(pkgdatadir)/tools
-tools_PROGRAMS = lpapi
+pkglibexec_PROGRAMS = lpapi
 
 lpapi_SOURCES = lpapi.cc
 

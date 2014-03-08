@@ -8,8 +8,7 @@ s_mail = mail.cc mail_call.cc mail_comp.cc mail_data.cc \
 LDADD = ../liblinpac/liblinpac.la ../libaxmail/libaxmail.la
 AM_LDFLAGS = @LINPACLINK@
 
-pkgbindir = $(pkgdatadir)/bin
-pkgbin_PROGRAMS = mail
+pkglibexec_PROGRAMS = mail
 
 mail_SOURCES = $(s_mail) 
 
