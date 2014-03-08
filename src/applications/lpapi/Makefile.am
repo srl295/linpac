@@ -8,5 +8,4 @@ tools_PROGRAMS = lpapi
 
 lpapi_SOURCES = lpapi.cc
 
-
 EXTRA_DIST = lpapp.h tevent.h

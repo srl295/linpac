@@ -10,7 +10,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 LT_PREREQ([2.4.2])
 LT_INIT
-AM_INIT_AUTOMAKE([gnu -Wall -Werror -Wportability 1.11.3])
+AM_INIT_AUTOMAKE([gnu -Wall -Werror 1.11.3])
 
 # Checks for programs
 AC_LANG([C++])

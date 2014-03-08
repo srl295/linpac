@@ -2,6 +2,6 @@
 
 datadir = @prefix@/share/linpac/mail
 bindir = @prefix@/share/linpac/mail
-data_DATA = messages.local mail.head mail.tail 
+dist_data_DATA = messages.local mail.head mail.tail 
 bin_SCRIPTS = archive_mail delmsg.pl pack.pl
-EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) 
+EXTRA_DIST = archive_mail

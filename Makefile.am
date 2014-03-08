@@ -10,7 +10,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = ctt data doc macro mail src inst plugins
 
-pkgdata_DATA = README NEWS
+dist_pkgdata_DATA = README NEWS
 EXTRA_DIST = linpac.lsm COPYING
 
 .PHONY: postinstall noinstall
