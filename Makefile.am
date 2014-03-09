@@ -13,17 +13,7 @@ SUBDIRS = ctt data doc macro mail src inst plugins
 dist_pkgdata_DATA = README NEWS
 EXTRA_DIST = linpac.lsm COPYING
 
-.PHONY: postinstall noinstall
-
-#install: postinstall
-
-postinstall: 
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && rm -f autotx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && @LN_S@ autobin autotx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && rm -f rawtx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && @LN_S@ rawio rawtx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && rm -f yapptx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && @LN_S@ yapp yapptx >/dev/null 2>/dev/null)
+.PHONY: noinstall
 
 noinstall:
 	@if [ -x ./src/linpac ]; then \

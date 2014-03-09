@@ -32,6 +32,17 @@ pkglibexec_PROGRAMS = autobin bell compose forward getmsg logbook lpbck \
                name rawio rtt save7pl testapp yapp flexpwd md2pwd \
                tnpwd md5pwd catch join
 
+install-exec-hook: 
+	cd $(DESTDIR)$(pkglibexecdir) && \
+	    rm -f autotx && \
+	    $(LN_S) autobin autotx
+	cd $(DESTDIR)$(pkglibexecdir) && \
+	    rm -f rawtx && \
+	    $(LN_S) rawio rawtx
+	cd $(DESTDIR)$(pkglibexecdir) && \
+	    rm -f yapptx && \
+	    $(LN_S) yapp yapptx
+
 autobin_SOURCES = $(s_crc) $(s_autobin)
 bell_SOURCES = $(s_bell)
 compose_SOURCES = $(s_compose)
