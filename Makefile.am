@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 ## Automake options should match the init call in configure.ac
-AUTOMAKE_OPTIONS = gnu -Wall -Werror -Wportability
+AUTOMAKE_OPTIONS = gnu -Wall -Werror
 
 ## See https://bugzilla.redhat.com/show_bug.cgi?id=901333 for more
 ## information about ACLOCAL_AMFLAGS
