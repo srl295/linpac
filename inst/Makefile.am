@@ -1,6 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
 bin_SCRIPTS = linpac
+EXTRA_DIST = linpac.in
+CLEANFILES = linpac
 
 ## replace autoconf variables in scripts with Makefile variables that will
 ## be resolved at build/install time.

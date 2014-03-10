@@ -11,7 +11,10 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = ctt data doc macro mail src inst plugins
 
 dist_pkgdata_DATA = README NEWS
-EXTRA_DIST = linpac.lsm COPYING
+EXTRA_DIST = linpac.lsm COPYING generate-ChangeLog.sh
+
+dist-hook:
+	sh $(top_srcdir)/generate-ChangeLog.sh $(top_srcdir) $(distdir)
 
 .PHONY: noinstall
 
