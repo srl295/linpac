@@ -1,4 +1,4 @@
-040306:
+20140306:
 - The autoconfig (configure.ac specifically) functionality is now back
   to my best guess of the way it worked with old autotools.
 - Makefile.am files still need reworked. A lot of install and build
