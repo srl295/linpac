@@ -8,11 +8,17 @@ if [ -z $HOME ]; then
   exit 1
 fi
 
-DIRNAME=LinPac
-PREFIX=@prefix@
+#PREFIX=@prefix@
 VERSION=@VERSION@
+DIRNAME=LinPac
 HOMEDIR=$HOME/$DIRNAME
-SHAREDIR=$PREFIX/share/linpac
+#SHAREDIR=$PREFIX/share/linpac
+SHAREDIR="DO NOT USE SHAREDIR"
+
+PKG_MAILDIR=@pkgdatadir@/mail
+PKG_BINDIR=@pkglibexecdir@
+PKG_MACRODIR=@pkgdatadir@/macro
+PKG_SHAREDIR=@pkgdatadir@
 
 if [ ! -d $HOMEDIR ]; then
   echo
@@ -73,7 +79,8 @@ if [ ! -d $HOMEDIR ]; then
   fi
 
   #copy 'mail'
-  cd $SHAREDIR/mail
+  #cd $SHAREDIR/mail
+  cd $PKG_MAILDIR
   for FILE in *; do
     if [ ! -x $FILE ]; then
       cp $FILE $HOMEDIR/mail/$FILE
@@ -81,7 +88,8 @@ if [ ! -d $HOMEDIR ]; then
   done
 
   #copy 'bin'
-  cd $SHAREDIR/bin
+  #cd $SHAREDIR/bin
+  cd $PKG_BINDIR
   for FILE in *; do
     if [ $FILE = commands ]; then
       cp $FILE $HOMEDIR/bin/$FILE
@@ -91,11 +99,14 @@ if [ ! -d $HOMEDIR ]; then
   done
 
   #copy 'macro'
-  cp -r $SHAREDIR/macro/* $HOMEDIR/macro/
-  sed "s/#CALL#/$CALL/; s/#BBS#/$BBSADDR/; s/#ADDR#/$HADDR/; s/#PORT#/$BBSPORT/" < $SHAREDIR/macro/init.mac > $HOMEDIR/macro/init.mac
+  #cp -r $SHAREDIR/macro/* $HOMEDIR/macro/
+  cp -r $PKG_MACRODIR/* $HOMEDIR/macro/
+  #sed "s/#CALL#/$CALL/; s/#BBS#/$BBSADDR/; s/#ADDR#/$HADDR/; s/#PORT#/$BBSPORT/" < $SHAREDIR/macro/init.mac > $HOMEDIR/macro/init.mac
+  sed "s/#CALL#/$CALL/; s/#BBS#/$BBSADDR/; s/#ADDR#/$HADDR/; s/#PORT#/$BBSPORT/" < $PKG_MACRODIR/init.mac > $HOMEDIR/macro/init.mac
 
   #copy root
-  cd $SHAREDIR
+  #cd $SHAREDIR
+  cd $PKG_SHAREDIR
   cp station.data $HOMEDIR
   cp *.ctt $HOMEDIR
   

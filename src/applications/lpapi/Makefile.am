@@ -3,11 +3,8 @@
 LDADD = ../liblinpac/liblinpac.la
 AM_LDFLAGS = @LINPACLINK@
 
-bin_PROGRAMS = lpapi
+pkglibexec_PROGRAMS = lpapi
 
 lpapi_SOURCES = lpapi.cc
 
-datadir = @prefix@/share/linpac/tools
-bindir = @prefix@/share/linpac/tools
-
-EXTRA_DIST = *.h
+EXTRA_DIST = lpapp.h tevent.h

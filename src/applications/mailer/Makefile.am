@@ -8,14 +8,11 @@ s_mail = mail.cc mail_call.cc mail_comp.cc mail_data.cc \
 LDADD = ../liblinpac/liblinpac.la ../libaxmail/libaxmail.la
 AM_LDFLAGS = @LINPACLINK@
 
-bin_PROGRAMS = mail
+pkglibexec_PROGRAMS = mail
 
 mail_SOURCES = $(s_mail) 
 
-datadir = @prefix@/share/linpac/bin
-bindir = @prefix@/share/linpac/bin
-
-data_DATA =
-bin_SCRIPTS =
-
-EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) *.h
+EXTRA_DIST = axmail.h lpapp.h mail_call.h \
+	    mail_comp.h mail_data.h mail_edit.h mail_files.h mail_filt.h \
+	    mail_help.h mail_input.h mail_list.h mail_route.h mail_screen.h \
+	    tevent.h version.h

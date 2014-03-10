@@ -28,9 +28,20 @@ s_join = join.c
 LDADD = ./liblinpac/liblinpac.la
 AM_LDFLAGS = @LINPACLINK@
 
-bin_PROGRAMS = autobin bell compose forward getmsg logbook lpbck \
+pkglibexec_PROGRAMS = autobin bell compose forward getmsg logbook lpbck \
                name rawio rtt save7pl testapp yapp flexpwd md2pwd \
                tnpwd md5pwd catch join
+
+install-exec-hook: 
+	cd $(DESTDIR)$(pkglibexecdir) && \
+	    rm -f autotx && \
+	    $(LN_S) autobin autotx
+	cd $(DESTDIR)$(pkglibexecdir) && \
+	    rm -f rawtx && \
+	    $(LN_S) rawio rawtx
+	cd $(DESTDIR)$(pkglibexecdir) && \
+	    rm -f yapptx && \
+	    $(LN_S) yapp yapptx
 
 autobin_SOURCES = $(s_crc) $(s_autobin)
 bell_SOURCES = $(s_bell)
@@ -52,10 +63,8 @@ tnpwd_SOURCES = $(s_tnpwd)
 catch_SOURCES = $(s_catch)
 join_SOURCES = $(s_join)
 
-datadir = @prefix@/share/linpac/bin
-bindir = @prefix@/share/linpac/bin
+dist_pkgdata_DATA = commands
+dist_pkgdata_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
 
-data_DATA = commands
-bin_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
-
-EXTRA_DIST = $(data_DATA) $(bin_SCRIPTS) *.h
+EXTRA_DIST = crc.h doorbl.h dostime.h hash.h\
+             lpapp.h lpcalls.h lpwin.h lzhuf.h md2.h md5.h tevent.h version.h
