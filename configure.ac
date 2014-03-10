@@ -97,6 +97,5 @@ AC_CONFIG_FILES([Makefile \
 	  src/applications/mailer/Makefile \
           src/applications/Makefile \
           inst/Makefile \
-          inst/linpac \
 	  plugins/Makefile])
 AC_OUTPUT
