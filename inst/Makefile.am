@@ -7,6 +7,7 @@ CLEANFILES = linpac
 ## replace autoconf variables in scripts with Makefile variables that will
 ## be resolved at build/install time.
 edit = sed \
+	-e 's|@VERSION[@]|$(VERSION)|g' \
 	-e 's|@bindir[@]|$(bindir)|g' \
 	-e 's|@pkgdatadir[@]|$(pkgdatadir)|g' \
 	-e 's|@pkglibexecdir[@]|$(pkglibexecdir)|g' \

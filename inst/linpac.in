@@ -94,7 +94,7 @@ if [ ! -d $HOMEDIR ]; then
     if [ $FILE = commands ]; then
       cp $FILE $HOMEDIR/bin/$FILE
     else
-      ln -s $SHAREDIR/bin/$FILE $HOMEDIR/bin/$FILE
+      ln -s $PKG_BINDIR/$FILE $HOMEDIR/bin/$FILE
     fi
   done
 
@@ -134,11 +134,11 @@ else ############ LinPac already installed, check the version ##############
       cd $HOMEDIR
       [ -d macro.old ] && rm -rf macro.old
       cp -r macro macro.old
-      cp -r $SHAREDIR/macro/* macro
+      cp -r $PKG_MACRODIR/* macro
       cp -f macro.old/init.mac macro
       cp -f macro.old/info.mac macro
       cp -f macro.old/home.mac macro
-      cp $SHAREDIR/*.ctt .
+      cp $PKG_SHAREDIR/*.ctt .
     fi
   echo $VERSION > $HOMEDIR/plugins/version
   fi
@@ -148,32 +148,34 @@ fi
 if [ ! -d $HOMEDIR/plugins ]; then
   mkdir $HOMEDIR/plugins
 fi
-cd $SHAREDIR/plugins
+cd $PKG_SHAREDIR/plugins
 for PLUGIN in *; do
   if [ -x $PLUGIN ]; then
     if [ ! -f $HOMEDIR/plugins/$PLUGIN ]; then
       echo 'New LinPac plugin found !'
       echo -n Plugin $PLUGIN
-      . $SHAREDIR/plugins/$PLUGIN
+      . $PKG_SHAREDIR/plugins/$PLUGIN
       echo ... Installation done.
       echo
-      cd $SHAREDIR/plugins
+      cd $PKG_SHAREDIR/plugins
       date +%y%m%d > $HOMEDIR/plugins/$PLUGIN
     fi
   fi
 done
 
 #PATCH011216# Check the links in bin directory
-cd $SHAREDIR/bin
+cd $PKG_BINDIR
 for FILE in *; do
   if [ $FILE != commands ]; then
     if [ ! -f $HOMEDIR/bin/$FILE ]; then
-      ln -s $SHAREDIR/bin/$FILE $HOMEDIR/bin/$FILE
+      rm -f $HOMEDIR/bin/$FILE
+      ln -s $PKG_BINDIR/$FILE $HOMEDIR/bin/$FILE
     fi
   fi
 done
 
 cd $HOMEDIR
-export PATH=$PATH:$SHAREDIR/mail:$SHAREDIR/tools
-$SHAREDIR/linpac $*
+#export PATH=$PATH:$SHAREDIR/mail:$SHAREDIR/tools
+export PATH=$PATH:$PKG_BINDIR/mail
+$PKG_BINDIR/linpac $*
 exit $?
