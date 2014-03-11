@@ -26,6 +26,13 @@ then
   set PERL="/usr/bin/perl"
 fi
 
+AC_PATH_PROGS([LISTEN], [listen axlisten], ["none"])
+if test $LISTEN = "none"
+then
+    AC_MSG_ERROR([cannot find an AX.25 listen program])
+fi
+AH_TEMPLATE([LISTEN], [AX.25 listen application])
+
 # Checks for libraries
 
 # Checks for header files

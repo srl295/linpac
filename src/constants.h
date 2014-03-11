@@ -48,7 +48,9 @@
 #define TAB_SIZE 8
 
 //Program for listen
+#ifndef LISTEN
 #define LISTEN "listen"
+#endif
 
 //axports file
 #define AXPORTS "/etc/ax25/axports"
