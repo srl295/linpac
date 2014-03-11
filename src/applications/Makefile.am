@@ -64,7 +64,7 @@ catch_SOURCES = $(s_catch)
 join_SOURCES = $(s_join)
 
 dist_pkgdata_DATA = commands
-dist_pkgdata_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
+dist_pkglibexec_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
 
 EXTRA_DIST = crc.h doorbl.h dostime.h hash.h\
              lpapp.h lpcalls.h lpwin.h lzhuf.h md2.h md5.h tevent.h version.h

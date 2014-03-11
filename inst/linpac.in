@@ -91,12 +91,9 @@ if [ ! -d $HOMEDIR ]; then
   #cd $SHAREDIR/bin
   cd $PKG_BINDIR
   for FILE in *; do
-    if [ $FILE = commands ]; then
-      cp $FILE $HOMEDIR/bin/$FILE
-    else
-      ln -s $PKG_BINDIR/$FILE $HOMEDIR/bin/$FILE
-    fi
+    ln -s $PKG_BINDIR/$FILE $HOMEDIR/bin/$FILE
   done
+  cp $PKG_SHAREDIR/commands $HOMEDIR/bin
 
   #copy 'macro'
   #cp -r $SHAREDIR/macro/* $HOMEDIR/macro/
@@ -176,6 +173,8 @@ done
 
 cd $HOMEDIR
 #export PATH=$PATH:$SHAREDIR/mail:$SHAREDIR/tools
-export PATH=$PATH:$PKG_BINDIR/mail
+# Starting with v0.20 the lbapi program has been moved from the tools
+# directory to the $PKG_BINDIR
+export PATH=$PATH:$PKG_BINDIR/mail:$PKG_BINDIR
 $PKG_BINDIR/linpac $*
 exit $?
