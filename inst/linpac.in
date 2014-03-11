@@ -106,6 +106,7 @@ if [ ! -d $HOMEDIR ]; then
   cd $PKG_SHAREDIR
   cp station.data $HOMEDIR
   cp *.ctt $HOMEDIR
+  cp encodings $HOMEDIR
   
   echo $VERSION > $HOMEDIR/plugins/version
 
@@ -136,6 +137,7 @@ else ############ LinPac already installed, check the version ##############
       cp -f macro.old/info.mac macro
       cp -f macro.old/home.mac macro
       cp $PKG_SHAREDIR/*.ctt .
+      cp $PKG_SHAREDIR/encodings .
     fi
   echo $VERSION > $HOMEDIR/plugins/version
   fi
