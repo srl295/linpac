@@ -30,8 +30,10 @@ AC_PATH_PROGS([LISTEN], [listen axlisten], ["none"])
 if test $LISTEN = "none"
 then
     AC_MSG_ERROR([cannot find an AX.25 listen program])
+else
+    AC_DEFINE_UNQUOTED([LISTEN], ["${LISTEN}"],
+            [Full path to AX.25 listen application])
 fi
-AH_TEMPLATE([LISTEN], [AX.25 listen application])
 
 # Checks for libraries
 
