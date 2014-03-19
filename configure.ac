@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Prelude
-AC_INIT([LinPac], [0.20], [bugs@linpac] , [LinPac], [http://linpac.sourceforge.net/])
+AC_INIT([LinPac], [0.20], [linpac@trinnet.net] , [LinPac], [http://linpac.sourceforge.net/])
 AC_PREREQ([2.68])
 AC_CONFIG_SRCDIR([src/linpac.cc])
 AC_CONFIG_AUX_DIR([build-aux])
