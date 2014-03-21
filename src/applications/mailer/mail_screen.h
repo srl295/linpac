@@ -56,7 +56,7 @@ extern char *mailpath;      //local mail path
 
 void init_main_screen();
 void redraw();
-void help(char *s);
+void help(char const *s);
 
 void load_table(int n);
 int safe_wrefresh(void *win);

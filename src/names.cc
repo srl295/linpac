@@ -18,7 +18,7 @@
 #include <string.h>
 #include "names.h"
 
-StnDB::StnDB(char *dbname)
+StnDB::StnDB(char const *dbname)
 {
   strcpy(class_name, "StnDB");
   f = fopen(dbname, "r");
@@ -75,8 +75,10 @@ bool StnDB::find_data(char *stn)
   while (!feof(f))
   {
     strcpy(s, "");
-    fgets(s, 19, f);
-    if (strcasecmp(s, srch) == 0) break;
+    if (fgets(s, 19, f) != NULL)
+    {
+      if (strcasecmp(s, srch) == 0) break;
+    }
   }
   return !feof(f);
 }
@@ -88,23 +90,25 @@ void StnDB::read_data(int chn)
   do
   {
     strcpy(s, "");
-    fgets(s, 256, f);
-    char *q = s + (strlen(s) - 1);
-    while (q > s && (isspace(*q) || *q == '\n')) {*q = '\0'; q--;}
-    //if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
-    char *p = strchr(s, '=');
-    if (p != NULL)
+    if (fgets(s, 256, f) != NULL)
     {
-      strcpy(par, p+1);
-      *p = '\0';
-      strcpy(cmd, s);
-    } else break;
-    if (strlen(cmd) > 0)
-    {
-      sprintf(s, "STN_%s", cmd);
-      set_var(chn, s, par);
+      char *q = s + (strlen(s) - 1);
+      while (q > s && (isspace(*q) || *q == '\n')) {*q = '\0'; q--;}
+      //if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
+      char *p = strchr(s, '=');
+      if (p != NULL)
+      {
+        strcpy(par, p+1);
+        *p = '\0';
+        strcpy(cmd, s);
+      } else break;
+      if (strlen(cmd) > 0)
+      {
+        sprintf(s, "STN_%s", cmd);
+        set_var(chn, s, par);
+      }
+      else break;
     }
-    else break;
   } while (!feof(f));
 }
 

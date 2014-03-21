@@ -89,9 +89,9 @@ class Commander : public Object
     void whole_quot(char *s, bool fixpath = false); //return whole command line with quoted args
     bool nextp(char *s, int n = 256); //return next cmdline parameter
     bool is_next() {return (pos < strlen(cmdline));} //does next param.exist ?
-    bool com_is(char *s1, char *s2); //compare commands
-    bool com_ok(int chn, int echn, char *s1, char *s2); //compare commands and check security
-    bool is_secure(int chn, int echn, char *cmd); //check command security
+    bool com_is(char *s1, char const *s2); //compare commands
+    bool com_ok(int chn, int echn, char *s1, char const *s2); //compare commands and check security
+    bool is_secure(int chn, int echn, char const *cmd); //check command security
     void do_command(int chn, char *cmd); //execute command
     void exec_bin(int chn, char *name, char *flags); //execute binary extcmd
     bool exec_mac(int chn, char *name, char *flags, char *lang = NULL); //execute macro extcmd

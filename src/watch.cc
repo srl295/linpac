@@ -160,7 +160,7 @@ bool Watch::key_found(int chn, char *key)
   return false;
 }
 
-int Watch::com_is(char *s1, char *s2)
+int Watch::com_is(char *s1, char const *s2)
 {
   unsigned i,j,k;
 

@@ -111,11 +111,12 @@ MsgDate::MsgDate(bool isShort, const char *src)
    {
       if (strlen(src) != 11 && strlen(src) != 12) return; //Z is not necessarry
       char buf[3]; buf[2] = '\0';
+      char buf2[5]; buf2[4] = '\0';
       strncpy(buf, src,   2); year = atoi(buf);
       strncpy(buf, src+2, 2); month = atoi(buf);
-      strncpy(buf, src+4, 4); day = atoi(buf);
+      strncpy(buf2, src+4, 4); day = atoi(buf2);
       strncpy(buf, src+7, 2); hour = atoi(buf);
-      strncpy(buf, src+9, 4); min = atoi(buf);
+      strncpy(buf2, src+9, 4); min = atoi(buf2);
    }   
 }
 
@@ -364,7 +365,10 @@ char *Message::getBody(bool reload)
          if (outgoing)          //outgoing message: read the subject
          {
             char buf[256];
-            fgets(buf, 255, f);
+            if (fgets(buf, 255, f) == NULL)
+            {
+                buf[0] = 0;
+            }
          }
          long pos = ftell(f);
          fseek(f, 0, SEEK_END);
@@ -546,11 +550,17 @@ void IncommingIndex::reload()
      {
         char line[1024];
         strcpy(line, "");
-        fgets(line, 1023, list);
-        //remove trailing \n and spaces
-        if (strlen(line) > 0 && line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';
-        while (strlen(line) > 0 && line[strlen(line)-1] == ' ') line[strlen(line)-1] = '\0';
-        if (strlen(line) == 0) continue;
+        if (fgets(line, 1023, list) != NULL)
+        {
+            //remove trailing \n and spaces
+            if (strlen(line) > 0 && line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';
+            while (strlen(line) > 0 && line[strlen(line)-1] == ' ') line[strlen(line)-1] = '\0';
+            if (strlen(line) == 0) continue;
+        }
+        else
+        {
+            continue;
+        }
 
         char *p, *q;
         //number
@@ -692,11 +702,17 @@ void OutgoingIndex::reload()
       {
          char line[1024];
          strcpy(line, "");
-         fgets(line, 1023, list);
-         //remove trailing \n and spaces
-         if (strlen(line) > 0 && line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';
-         while (strlen(line) > 0 && line[strlen(line)-1] == ' ') line[strlen(line)-1] = '\0';
-         if (strlen(line) == 0) continue;
+         if (fgets(line, 1023, list) != NULL)
+         {
+            //remove trailing \n and spaces
+            if (strlen(line) > 0 && line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';
+            while (strlen(line) > 0 && line[strlen(line)-1] == ' ') line[strlen(line)-1] = '\0';
+            if (strlen(line) == 0) continue;
+         }
+         else
+         {
+             continue;
+         }
  
          char *p, *q;
          //number

@@ -269,17 +269,25 @@ void check_lock()
     int lpid, lmax, key;
     struct stat st;
     
-    fscanf(lock, "%i %i %x", &lpid, &lmax, &key);
-    fclose(lock);
-    sprintf(keyfile, "/proc/%i", lpid);
-    int r = stat(keyfile, &st);
-
-    if (r != -1)
+    if (fscanf(lock, "%i %i %x", &lpid, &lmax, &key) == 3)
     {
-      printf("LinPac seems to be already running with PID %i.\n", lpid);
-      printf("LinPac can't run twice for one user - sorry.\n");
+      sprintf(keyfile, "/proc/%i", lpid);
+      int r = stat(keyfile, &st);
+
+      if (r != -1)
+      {
+        printf("LinPac seems to be already running with PID %i.\n", lpid);
+        printf("LinPac can't run twice for one user - sorry.\n");
+        exit(1);
+      }
+    }
+    else
+    {
+      printf("The LinPac lock file, %s, has incompete information.\n", keyfile);
+      printf("LinPac may be running. Exiting.\n");
       exit(1);
     }
+    fclose(lock);
   }
 }
 

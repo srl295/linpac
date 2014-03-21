@@ -240,15 +240,17 @@ void mark_record(int msgnum)
   while (!done && !feof(indexf))
   {
     last_line = ftell(indexf);
-    fgets(s, 255, indexf);
-    sscanf(s, "%i %s", &num, flags);
-    p = strchr(flags, 'O');
-    if (num == msgnum && p != NULL)
+    if (fgets(s, 255, indexf) != NULL)
     {
-      *p = 'F';
-      fseek(indexf, last_line, SEEK_SET);
-      fprintf(indexf, "%i\t%s", num, flags);
-      break;
+      sscanf(s, "%i %s", &num, flags);
+      p = strchr(flags, 'O');
+      if (num == msgnum && p != NULL)
+      {
+        *p = 'F';
+        fseek(indexf, last_line, SEEK_SET);
+        fprintf(indexf, "%i\t%s", num, flags);
+        break;
+      }
     }
   }
   fseek(indexf, poz, SEEK_SET);
@@ -273,7 +275,7 @@ void send_block()
   
   /* send proposals */
   for (i=0; i<5; i++)
-    if (record[i].ok) printf(record[i].proposal);
+    if (record[i].ok) fputs(record[i].proposal, stdout);
   printf("F>\r");
   fgets_cr(s, 255, stdin);
 
@@ -330,8 +332,12 @@ int forward_message(int num, char type, char *mid, char *from, char *to)
     return 0;
   }
 
-  fgets(title, 255, msg); /* read title */
-  long beg = ftell(msg);  /* compute size of body */
+  long beg = 0;
+  if (fgets(title, 255, msg) != NULL)
+  {
+    beg = ftell(msg); /* Don't include title in body size */
+  }
+  /* compute size of body */
   size = fseek(msg, 0, SEEK_END);
   size = ftell(msg) - beg;
   fseek(msg, beg, SEEK_SET);
@@ -341,14 +347,16 @@ int forward_message(int num, char type, char *mid, char *from, char *to)
   int i = 0;
   while (!feof(msg))
   {
-    fread(&body[i], 1, 1, msg);
-    i++;
-    if (body[i-1] == '\n')
+    if (fread(&body[i], 1, 1, msg) != 0)
     {
-      body[i-1] = '\r';
-      body[i] = '\n';
       i++;
-      size++;
+      if (body[i-1] == '\n')
+      {
+        body[i-1] = '\r';
+        body[i] = '\n';
+        i++;
+        size++;
+      }
     }
   }
   //fread(body, 1, size, msg);
@@ -407,11 +415,13 @@ void start_forward()
     int n;
     n = fscanf(indexf, "%i %s %s %s %s %s", &num, flags, mid, from, to, date);
     msgnum = num;
-    fgets(s, 255, indexf);
-    if (n == 6)
+    if (fgets(s, 255, indexf) != NULL)
     {
-      if (strchr(flags, 'O') != NULL)
-        forward_message(num, flags[0], mid, from, to);
+        if (n == 6)
+        {
+        if (strchr(flags, 'O') != NULL)
+            forward_message(num, flags[0], mid, from, to);
+        }
     }
   }
   send_block();

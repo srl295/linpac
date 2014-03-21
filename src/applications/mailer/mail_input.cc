@@ -24,7 +24,7 @@ WINDOW *win;
 // Class InputLine
 //--------------------------------------------------------------------------
 InputLine::InputLine(void *parent, int wx, int wy, int flen, unsigned textlen,
-                    char *prompt, char *buffer, int mode)
+                    char const *prompt, char *buffer, int mode)
 {
   sprintf(class_name, "InputLine");
   x = wx; y = wy; fieldln = flen; textln = textlen;

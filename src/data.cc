@@ -351,49 +351,51 @@ bool get_axstat(const char *src, const char *dest, int form)
     {
       strcpy(source_addr, "");
       strcpy(buffer, "");
-      fgets(buffer, 256, f);
-      chstat.sendq = chstat.recvq = 0;
-      if (form == 0) //2.0.x kernels
+      if (fgets(buffer, 256, f) != NULL)
       {
-        len=sscanf(buffer, "%s %s %s %d %d %d %d %d/%d %d/%d %d/%d %d/%d %d/%d %d %d %d %s %d %d",
-          dest_addr, source_addr,
-          chstat.devname,
-          &chstat.state,
-          &chstat.vs, &chstat.vr, &chstat.va,
-          &chstat.t1, &chstat.t1max,
-          &chstat.t2, &chstat.t2max,
-          &chstat.t3, &chstat.t3max,
-          &chstat.idle, &chstat.idlemax,
-          &chstat.n2, &chstat.n2max,
-          &chstat.rtt,
-          &chstat.window,
-          &chstat.paclen,
-          dama,
-          &chstat.sendq, &chstat.recvq);
-          chstat.dama = !strcmp(dama, "slave");
+        chstat.sendq = chstat.recvq = 0;
+        if (form == 0) //2.0.x kernels
+        {
+          len=sscanf(buffer, "%s %s %s %d %d %d %d %d/%d %d/%d %d/%d %d/%d %d/%d %d %d %d %s %d %d",
+            dest_addr, source_addr,
+            chstat.devname,
+            &chstat.state,
+            &chstat.vs, &chstat.vr, &chstat.va,
+            &chstat.t1, &chstat.t1max,
+            &chstat.t2, &chstat.t2max,
+            &chstat.t3, &chstat.t3max,
+            &chstat.idle, &chstat.idlemax,
+            &chstat.n2, &chstat.n2max,
+            &chstat.rtt,
+            &chstat.window,
+            &chstat.paclen,
+            dama,
+            &chstat.sendq, &chstat.recvq);
+            chstat.dama = !strcmp(dama, "slave");
+        }
+        if (form == 1) //2.2.x kernels
+        {
+          len=sscanf(buffer, "%s %s %s %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+            dummy,
+            chstat.devname,
+            source_addr, dest_addr,
+            &chstat.state,
+            &chstat.vs, &chstat.vr, &chstat.va,
+            &chstat.t1, &chstat.t1max,
+            &chstat.t2, &chstat.t2max,
+            &chstat.t3, &chstat.t3max,
+            &chstat.idle, &chstat.idlemax,
+            &chstat.n2, &chstat.n2max,
+            &chstat.rtt,
+            &chstat.window,
+            &chstat.paclen,
+            &chstat.sendq, &chstat.recvq);
+          //remove digis from dest_addr
+          char *p = strchr(dest_addr, ','); if (p) *p = '\0';
+        }
+        if (call_match(dest_addr, dest) &&
+            call_match(source_addr, src)) break;
       }
-      if (form == 1) //2.2.x kernels
-      {
-        len=sscanf(buffer, "%s %s %s %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
-          dummy,
-          chstat.devname,
-          source_addr, dest_addr,
-          &chstat.state,
-          &chstat.vs, &chstat.vr, &chstat.va,
-          &chstat.t1, &chstat.t1max,
-          &chstat.t2, &chstat.t2max,
-          &chstat.t3, &chstat.t3max,
-          &chstat.idle, &chstat.idlemax,
-          &chstat.n2, &chstat.n2max,
-          &chstat.rtt,
-          &chstat.window,
-          &chstat.paclen,
-          &chstat.sendq, &chstat.recvq);
-        //remove digis from dest_addr
-        char *p = strchr(dest_addr, ','); if (p) *p = '\0';
-      }
-      if (call_match(dest_addr, dest) &&
-          call_match(source_addr, src)) break;
     }
     fclose(f);
     return (call_match(dest_addr, dest) && call_match(source_addr, src));

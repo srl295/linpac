@@ -152,13 +152,15 @@ Commander::Commander()
     {
       char p[1024];
       strcpy(p, "");
-      fgets(p, 1023, f);
-      striplf(p);
-      char *pp = strchr(p, '#');
-      if (pp != NULL) *pp='\0';
-      strcpy(comm.flags, "");
-      int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
-      if (n != -1) bin.push_back(comm);
+      if (fgets(p, 1023, f) != NULL)
+      {
+        striplf(p);
+        char *pp = strchr(p, '#');
+        if (pp != NULL) *pp='\0';
+        strcpy(comm.flags, "");
+        int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
+        if (n != -1) bin.push_back(comm);
+      }
     }
     fclose(f);
   } else Error(errno, "cannot open \".bin/commands\"");
@@ -171,13 +173,15 @@ Commander::Commander()
     {
       char p[1024];
       strcpy(p, "");
-      fgets(p, 1023, f);
-      striplf(p);
-      char *pp = strchr(p, '#');
-      if (pp != NULL) *pp='\0';
-      strcpy(comm.flags, "");
-      int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
-      if (n != -1) mac.push_back(comm);
+      if (fgets(p, 1023, f) != NULL)
+      {
+        striplf(p);
+        char *pp = strchr(p, '#');
+        if (pp != NULL) *pp='\0';
+        strcpy(comm.flags, "");
+        int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
+        if (n != -1) mac.push_back(comm);
+      }
     }
     fclose(f);
   }
@@ -198,13 +202,15 @@ bool Commander::load_language(const char *lang)
     {
       char p[1024];
       strcpy(p, "");
-      fgets(p, 1023, f);
-      striplf(p);
-      char *pp = strchr(p, '#');
-      if (pp != NULL) *pp='\0';
-      strcpy(comm.flags, "");
-      int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
-      if (n != -1) lmac.push_back(comm);
+      if (fgets(p, 1023, f) != NULL)
+      {
+        striplf(p);
+        char *pp = strchr(p, '#');
+        if (pp != NULL) *pp='\0';
+        strcpy(comm.flags, "");
+        int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
+        if (n != -1) lmac.push_back(comm);
+      }
     }
     fclose(f);
     return true;
@@ -320,7 +326,7 @@ void Commander::handle_event(const Event &ev)
      remote_disabled[ev.chn] = false;
 }
 
-bool Commander::com_is(char *s1, char *s2)
+bool Commander::com_is(char *s1, char const *s2)
 {
   unsigned i,j;
   bool res;
@@ -336,12 +342,12 @@ bool Commander::com_is(char *s1, char *s2)
   return res;
 }
 
-bool Commander::com_ok(int chn, int echn, char *s1, char *s2)
+bool Commander::com_ok(int chn, int echn, char *s1, char const *s2)
 {
   return (com_is(s1, s2) && is_secure(chn, echn, s2));
 }
 
-bool Commander::is_secure(int chn, int echn, char *cmd)
+bool Commander::is_secure(int chn, int echn, char const *cmd)
 {
   if (secure) return true;
   bool sec = false;
@@ -995,7 +1001,7 @@ void Commander::do_command(int chn, char *cmds)
         if (com_ok(chn, echn, cmd, (*it).cmd)) {ok = exec_mac(chn, (*it).name, (*it).flags, lang); break;}
       if (!ok) //not in database, try "<command>.mac"
       {
-        ok = exec_mac(chn, cmd, "", lang);
+        ok = exec_mac(chn, cmd, NULL, lang);
         if (ok) send_res = false;
       }
     }
@@ -1006,7 +1012,7 @@ void Commander::do_command(int chn, char *cmds)
         if (com_ok(chn, echn, cmd, (*it).cmd)) {ok = exec_mac(chn, (*it).name, (*it).flags); break;}
       if (!ok)
       {
-        ok = exec_mac(chn, cmd, "");
+        ok = exec_mac(chn, cmd, NULL);
         if (ok) send_res = false;
       }
     }
@@ -1228,21 +1234,23 @@ Macro::Macro(int chnum, char *fname, int m_argc, char **m_argv)
   {
     char pline[1024];
     strcpy(pline, "");
-    fgets(pline, 1023, f);
-    striplf(pline);
-
-    char s[1024];
-    strcopy(s, pline, 1024);
-    
-    if (macro) convert_line(s);
-    if (strcasecmp(s, ":MACRO") == 0 || strncasecmp(s, ":MACRO ", 7) == 0)
-      macro = true;
-    if (strlen(s) != 0 || (!feof(f) && !macro))
+    if (fgets(pline, 1023, f) != NULL)
     {
-      char *ins = new char[strlen(s)+1];
-      strcpy(ins, s);
-      prg.push_back(ins);
-      max++;
+      striplf(pline);
+
+      char s[1024];
+      strcopy(s, pline, 1024);
+      
+      if (macro) convert_line(s);
+      if (strcasecmp(s, ":MACRO") == 0 || strncasecmp(s, ":MACRO ", 7) == 0)
+        macro = true;
+      if (strlen(s) != 0 || (!feof(f) && !macro))
+      {
+        char *ins = new char[strlen(s)+1];
+        strcpy(ins, s);
+        prg.push_back(ins);
+        max++;
+      }
     }
   }
   fclose(f);

@@ -196,27 +196,29 @@ void BoardList::load_groups()
       while (!feof(f))
       {
          strcpy(s, "");
-         fgets(s, 255, f);
-         if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
-         if (strlen(s) == 0) continue;
+         if (fgets(s, 255, f) != NULL)
+         {
+            if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
+            if (strlen(s) == 0) continue;
 
-         if (s[0] == '[')
-         {
-            //store previous group
-            if (creating) groups.push_back(newgroup);
-            //create new group
-            memmove(s, s+1, strlen(s));
-            s[strlen(s)-1] = '\0'; //remove ]
-            strcpy(newgroup.name, s);
-            newgroup.content.erase(newgroup.content.begin(),
-                                   newgroup.content.end());
-            newgroup.sel = false;
-            creating = true;
-         }
-         else
-         {
-            strcpy(newname.name, s);
-            newgroup.content.push_back(newname);
+            if (s[0] == '[')
+            {
+                //store previous group
+                if (creating) groups.push_back(newgroup);
+                //create new group
+                memmove(s, s+1, strlen(s));
+                s[strlen(s)-1] = '\0'; //remove ]
+                strcpy(newgroup.name, s);
+                newgroup.content.erase(newgroup.content.begin(),
+                                    newgroup.content.end());
+                newgroup.sel = false;
+                creating = true;
+            }
+            else
+            {
+                strcpy(newname.name, s);
+                newgroup.content.push_back(newname);
+            }
          }
       }
       if (creating) groups.push_back(newgroup);

@@ -69,7 +69,7 @@ class LineStack
     long lomark, himark;          //min and max file size
     long truncb;                  //number of lines truncated after last write
   public:
-    LineStack(char *fname, size_t bsize);
+    LineStack(char const *fname, size_t bsize);
     void init_buffer();           //initialize the buffer from the file
     void get(TLine &);            //get onle line
     void store(TLine &);          //store the line to the back
@@ -116,6 +116,7 @@ class Window : public Screen_obj
     void draw_line(long n);     //redraw specified line
     void outch(char ch, int typ);
     void outstr(char *s, int typ);
+    void outstr(char const *s, int typ);
     void handle_ansi(char endchar);
     void line_b();              //scroll one line back
     void line_f();              //scroll one line forward
@@ -156,7 +157,7 @@ class MonWindow : public Window
     bool bin;             //binary data detected
     bool dontshow;        //don't show actual frame
   public:
-    MonWindow(int wx1, int wy1, int wx2, int wy2, int alt_y, char *fname);
+    MonWindow(int wx1, int wy1, int wx2, int wy2, int alt_y, char const *fname);
     void handle_event(const Event &);
     void next_mon_line();
     int detect_format(char *line); //detect monitor format from 1st line

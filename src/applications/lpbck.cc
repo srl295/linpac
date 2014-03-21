@@ -11,7 +11,11 @@ int main()
   setbuf(stdout, NULL);
   do
   {
-    fgets(inpline, 256, stdin);
+    if (fgets(inpline, 256, stdin) == NULL)
+    {
+      fprintf(stderr, "Could not read input\n");
+      break;
+    }
     fprintf(stdout, "(%i) Read: %s", n++, inpline);
   } while (strcmp(inpline, "/ex\n") != 0);
   fprintf(stdout, "Finished\n");

@@ -180,7 +180,7 @@ class EventGate : public Object
     void data_arrived();
     void child_finished(EventGate *child);
     void change_child(EventGate *from, EventGate *to);
-    void end_work(char *reason = NULL);
+    void end_work(char const *reason = NULL);
 };
 
 #endif

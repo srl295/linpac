@@ -170,14 +170,16 @@ int Ax25io::get_port_data()
   while (!feof(f))
   {
     strcpy(buf, "");
-    fgets(buf, 255, f);
-    if (strlen(buf) != 0 && buf[0] != '#')
+    if (fgets(buf, 255, f) != NULL)
     {
-      pname[i] = new char[16];
-      bcall[i] = new char[10];
-      int n = sscanf(buf, "%s %s %i %i %i", pname[i], bcall[i], &speed[i],
-                                      &paclen[i], &win[i]);
-      if (n == 5) i++;
+      if (strlen(buf) != 0 && buf[0] != '#')
+      {
+        pname[i] = new char[16];
+        bcall[i] = new char[10];
+        int n = sscanf(buf, "%s %s %i %i %i", pname[i], bcall[i], &speed[i],
+                                        &paclen[i], &win[i]);
+        if (n == 5) i++;
+      }
     }
   }
   num_ports = i;
@@ -302,7 +304,10 @@ void Ax25io::handle_event(const Event &ev)
      }
 
      if (sock[ev.chn] != -1)
-        write(sock[ev.chn], buf, len);
+       if (write(sock[ev.chn], buf, len) < 0)
+       {
+         fprintf(stderr, "sources.cc: could not write to socket, ev.chn\n");
+       }
 
      delete[] buf;
   }
@@ -393,7 +398,10 @@ void Ax25io::handle_event(const Event &ev)
      {
        if (out_cnt[ev.chn] > 0) //flush output buffer
        {
-         write(sock[ev.chn], obuffer[ev.chn], out_cnt[ev.chn]);
+         if (write(sock[ev.chn], obuffer[ev.chn], out_cnt[ev.chn]) < 0)
+         {
+            fprintf(stderr, "sources.cc: could not write to socket\n");
+         }
          out_cnt[ev.chn] = 0;
        }
        close(sock[ev.chn]);
@@ -557,7 +565,10 @@ bool Ax25io::CheckRequests()
                               "There are no free channels for the callsign %s.\r"
                               "Please try to connect later.\r",
                               PACKAGE, VERSION, sconfig(chn, "call"));
-                 write(newsock, str, strlen(str));
+                 if (write(newsock, str, strlen(str)) < 0)
+                 {
+                     fprintf(stderr, "sources.cc: could not write to socket, newsock\n");
+                 }
                  norm_call(s, &addr.fsa_ax25.sax25_call);
                  emit(chn, EV_CONN_REQ, 0, s);
                  close(newsock);
@@ -1635,7 +1646,7 @@ void EventGate::change_child(EventGate *from, EventGate *to)
    if (to->get_sock() > maxdesc) maxdesc = to->get_sock();
 }
 
-void EventGate::end_work(char *reason)
+void EventGate::end_work(char const *reason)
 {
   emit(0, EV_REMOVE_OBJ, oid, this);
   close(sock);

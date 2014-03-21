@@ -75,16 +75,18 @@ void load_routes()
     route_addr newaddr;
 
     strcpy(line, "");
-    fgets(line, 255, f);
-    int n = sscanf(line, "%s %s %i %i %li", call, route, &count, &pcount, &ttime);
-    if (n == 5)
+    if (fgets(line, 255, f) != NULL)
     {
-      strncpy(newaddr.call, call, 10);
-      strncpy(newaddr.route, route, 35);
-      newaddr.count = count;
-      newaddr.ttime = ttime;
-      newaddr.pcount = pcount;
-      routes.push_back(newaddr);
+        int n = sscanf(line, "%s %s %i %i %li", call, route, &count, &pcount, &ttime);
+        if (n == 5)
+        {
+        strncpy(newaddr.call, call, 10);
+        strncpy(newaddr.route, route, 35);
+        newaddr.count = count;
+        newaddr.ttime = ttime;
+        newaddr.pcount = pcount;
+        routes.push_back(newaddr);
+        }
     }
   }
   return;

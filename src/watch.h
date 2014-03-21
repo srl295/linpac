@@ -43,7 +43,7 @@ class Watch : public Object
     char lastcall[15];        //previous connected callsign
 
     bool key_found(int chn, char *key);
-    int com_is(char *s1, char *s2);
+    int com_is(char *s1, char const *s2);
     void extract_call(const char *from, char *to, int len);
 
   public:

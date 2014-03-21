@@ -42,7 +42,7 @@ class InputLine : public screen_obj
     int crx;            //cusror position
 
     InputLine(void *parent, int wx, int wy, int flen, unsigned textlen,
-              char *prompt, char *buffer, int mode = INPUT_ALL);
+              char const *prompt, char *buffer, int mode = INPUT_ALL);
     void handle_event(Event *ev);
     void draw(bool all = false);
     virtual ~InputLine() {};

@@ -98,8 +98,10 @@ int find_data(char *stn)
   while (!feof(f))
   {
     strcpy(s, "");
-    fgets(s, 19, f);
-    if (strcasecmp(s, srch) == 0) break;
+    if (fgets(s, 19, f) != NULL)
+    {
+      if (strcasecmp(s, srch) == 0) break;
+    }
   }
   return !feof(f);
 }
@@ -122,23 +124,25 @@ void read_data()
   do
   {
     char *p;
-    fgets(s, 256, f);
-    if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
-    p = strchr(s, '=');
-    if (p != NULL)
+    if (fgets(s, 256, f) != NULL)
     {
-      strcpy(par, p+1);
-      *p = '\0';
-      strcpy(cmd, s);
-      if (strcasecmp(cmd, "NAME") == 0) strcpy(data.name, par);
-      else if (strcasecmp(cmd, "NICKNAME") == 0) strcpy(data.nick, par);
-      else if (strcasecmp(cmd, "TYPE") == 0) strcpy(data.type, par);
-      else if (strcasecmp(cmd, "LOC") == 0) strcpy(data.loc, par);
-      else if (strcasecmp(cmd, "LANG") == 0) strcpy(data.lang, par);
-      else {strcpy(equ[noequ].name, cmd);
-            strcpy(equ[noequ].content, par);
-            if (noequ<64) noequ++;}
-    } else break;
+      if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
+      p = strchr(s, '=');
+      if (p != NULL)
+      {
+        strcpy(par, p+1);
+        *p = '\0';
+        strcpy(cmd, s);
+        if (strcasecmp(cmd, "NAME") == 0) strcpy(data.name, par);
+        else if (strcasecmp(cmd, "NICKNAME") == 0) strcpy(data.nick, par);
+        else if (strcasecmp(cmd, "TYPE") == 0) strcpy(data.type, par);
+        else if (strcasecmp(cmd, "LOC") == 0) strcpy(data.loc, par);
+        else if (strcasecmp(cmd, "LANG") == 0) strcpy(data.lang, par);
+        else {strcpy(equ[noequ].name, cmd);
+              strcpy(equ[noequ].content, par);
+              if (noequ<64) noequ++;}
+      } else break;
+    }
   } while (!feof(f));
 }
 
@@ -163,10 +167,12 @@ void remove_call(char *stn)
   rewind(f);
   while (!feof(f))
   {
-    fgets(s, 255, f);
-    if (strcasecmp(s, srch) == 0) ok = 0;
-    else if (s[0] == '[') ok = 1;
-    if (ok) fputs(s, dest);
+    if (fgets(s, 255, f) != NULL)
+    {
+      if (strcasecmp(s, srch) == 0) ok = 0;
+      else if (s[0] == '[') ok = 1;
+      if (ok) fputs(s, dest);
+    }
   }
   fclose(f);
   fclose(dest);
@@ -229,9 +235,11 @@ void show_info()
 
   do
   {
-    fgets(s, 255, f);
-    p = strchr(s, '=');
-    if (p != NULL && !feof(f)) printf(s);
+    if (fgets(s, 255, f) != NULL)
+    {
+      p = strchr(s, '=');
+      if (p != NULL && !feof(f)) fputs(s, stdout);
+    }
   } while (p != NULL && !feof(f));
   printf("\n");
 }
