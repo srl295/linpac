@@ -2,15 +2,15 @@ dnl Process this file with autoconf to produce a configure script.
 
 # Prelude
 AC_INIT([LinPac], [0.20], [linpac@trinnet.net] , [LinPac], [http://linpac.sourceforge.net/])
-AC_PREREQ([2.68])
+AC_PREREQ([2.63])
 AC_CONFIG_SRCDIR([src/linpac.cc])
 AC_CONFIG_AUX_DIR([build-aux])
 ## See https://bugzilla.redhat.com/show_bug.cgi?id=901333 for more
 ## information about the AC_CONFIG_MACRO_DIR
 AC_CONFIG_MACRO_DIR([m4])
-LT_PREREQ([2.4.2])
+LT_PREREQ([2.2.6])
 LT_INIT
-AM_INIT_AUTOMAKE([gnu -Wall -Werror 1.11.3])
+AM_INIT_AUTOMAKE([gnu -Wall -Werror 1.11.1])
 
 # Checks for programs
 AC_LANG([C++])
