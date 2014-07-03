@@ -1,0 +1,37 @@
+#! /bin/sh
+###########################################################################
+# LinPac - packet radio terminal for Linux
+# (c) 1999 Radek Burget <xburge01@stud.fee.vutbr.cz>
+#
+# This script provides the user interface for delmsg.pl
+#
+# Usage: delmsg <message_number> [<message_number> ...]
+###########################################################################
+
+#lpapi should be in PATH when LinPac is running
+LPAPI="lpapi"
+
+#Check parametres
+if [ ! $# -gt 0 ]; then
+  echo 'Usage: delmsg <message_number> [<message_number> ...]'
+  exit 1
+fi
+
+#Test if LinPac is running
+$LPAPI 0
+if [ ! $? -eq 0 ]; then
+  echo LinPac is not running
+  exit 1
+fi
+
+#Get the home BBS address
+HOMEADDR=`$LPAPI 0 get HOME_ADDR`
+
+#Get the callsign
+TTT=`echo $HOMEADDR | tr "." ","`
+CALL=`echo $TTT | sed s/,.*//`
+
+#Call delmsg.pl with all the message numbers
+for I; do
+  delmsg.pl $CALL $I
+done

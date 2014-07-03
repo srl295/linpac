@@ -1,0 +1,150 @@
+#!/bin/bash
+#
+# LinPac mail archivation tool
+# (c) 1999 by Radek Burget OK2JBG
+#
+# This script archives messages older than specified number of days
+# and deletes them
+#
+LIST_PATH="/var/ax25/ulistd"
+MAIL_PATH="/var/ax25/mail"
+
+###########################################################################
+# Print a list of messages ################################################
+message_list()
+{
+  awk '
+       {
+         printf "%s ", $1
+       }
+      ' ${LIST_PATH}/$BBS_CALL
+}
+
+###########################################################################
+# List new messages #######################################################
+list_new()
+{
+  awk -v "LIMIT=$1" '
+       {
+         if (LIMIT <= $1) print $0
+       }
+      ' ${LIST_PATH}/$BBS_CALL
+}
+
+###########################################################################
+# List old messages #######################################################
+list_old()
+{
+  awk -v "LIMIT=$1" '
+       {
+         if (LIMIT > $1) print $0
+       }
+      ' ${LIST_PATH}/$BBS_CALL
+}
+
+###########################################################################
+# Print a list of messages older than $1 and files exist
+###########################################################################
+older_messages()
+{
+  for NUM in `message_list`; do
+    if [ $1 -gt $NUM ]; then
+      if [ -e ${MAIL_PATH}/$BBS_CALL/$NUM ]; then
+        echo $NUM
+      fi
+    else
+      exit 0
+    fi
+  done
+}
+
+###########################################################################
+# Print a date of this message ############################################
+message_date()
+{
+  awk '
+       BEGIN {
+         FS = "[:/]"
+       }
+
+       /^R:/ {
+         if (FNR == 1) print $2
+       }
+      ' ${MAIL_PATH}/$BBS_CALL/$1
+}
+
+###########################################################################
+# Print the first message number where the date of the message ############
+# is newer than specified number of days. #################################
+first_message()
+{
+  # date of last message
+  LASTDATE="0"
+
+  # scan all messages
+  for NUM in `message_list`
+  do
+    if [ -r ${MAIL_PATH}/${BBS_CALL}/$NUM ]; then
+      LASTDATE=`message_date $NUM`
+      if [ ! $MDATE -gt $LASTDATE ]; then
+        echo $NUM
+        exit 0
+      fi
+    fi
+  done
+
+  # nothing has been found - return last+1
+  echo $(($NUM+1))
+  exit 0
+}
+
+###########################################################################
+###########################################################################
+
+if [ ! $# -eq 2 ]; then
+  echo 'Usage: archive_mail <bbs_callsign> <days>'
+  echo archives messages older than specified number of days and deletes them
+  exit 1
+fi
+
+BBS_CALL=`echo $1 | awk '{ print toupper($0) }'`
+MDATE=`date --date "$2 days ago" '+%y%m%d'`
+
+if [ ! -r ${LIST_PATH}/$BBS_CALL ]; then
+  echo List for $BBS_CALL doesn\'t exist
+  exit 2
+fi
+
+if [ ! -d ${MAIL_PATH}/$BBS_CALL ]; then
+  echo Mail directory for $BBS_CALL doesn\'t exist
+  exit 3
+fi
+
+echo Checking message dates
+FIRSTNUM=`first_message`
+echo Archiving messages up to number $FIRSTNUM
+ARCNAME=${MAIL_PATH}/${BBS_CALL}/archive_`date +%y%m%d`.tar.gz
+echo Archiving to "\"$ARCNAME\""
+
+if [ -e $ARCNAME ]; then
+  echo Todays archive already exists - exiting
+  exit 1
+fi
+
+cd ${MAIL_PATH}/${BBS_CALL}
+tar --remove-files -cvz -f $ARCNAME `older_messages $FIRSTNUM` >/dev/null
+cd $OLDPWD
+
+echo Updating mail index ${LIST_PATH}/${BBS_CALL}
+
+if [ -e ${LIST_PATH}/${BBS_CALL}.old.gz ]; then
+  gzip -d ${LIST_PATH}/${BBS_CALL}.old.gz
+fi
+
+list_old $FIRSTNUM >>${LIST_PATH}/${BBS_CALL}.old
+list_new $FIRSTNUM >>${LIST_PATH}/${BBS_CALL}.new
+mv ${LIST_PATH}/${BBS_CALL}.new ${LIST_PATH}/${BBS_CALL}
+
+gzip ${LIST_PATH}/${BBS_CALL}.old
+
+echo Done.

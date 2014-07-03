@@ -1,0 +1,157 @@
+030813: 0.17pre3
+
+- Some compilation related bugs fixed
+
+------------------------------------------------------------------------
+030811: 0.17pre2
+
+- Bugfix: command quoting (broken password generation)
+
+------------------------------------------------------------------------
+030808: 0.17pre1
+
+- German macros (thanks to Daniel Parthey)
+- Fixed some compile errors with newer gcc versions
+- Bugfix: data loss during connection setup
+- Bugfix: mailer incomming index is not read
+
+------------------------------------------------------------------------
+020729: 0.16
+
+- New command :sendfile for creating messages from binary files (7plus)
+- New command :JOIN
+- Mailer now supports Incomming/Outgoing mail folders
+- Mailer can handle 7plus files in messages
+- Slovak language macros (thanks to OM4AA)
+- French language macros (thanks to Thierry F1TVE)
+- New charsets added (cp437, cp850)
+- Completely rewritten API and application communication
+- Installation scripts revised (thanks to F1TVE)
+- Connection status problems solved (ioctl errors)
+- Reconnect detection fixed
+- Command processing fixed (segmentation faults)
+- Command line processing fixed
+- Mailer fixes
+- Forward fixes
+- Rawio fixed
+
+------------------------------------------------------------------------
+010118: 0.15
+
+- KILLPERS@0 can now contain the command to be used to kill the personal
+  messages (replace the message number with '#')
+- New AX.25 implementation support
+- Mail editor improvements
+- :rcmd can now specify if the command can be executed on other channels
+  (e.g. ":rcmd CONNECT GET@ QUIT" - user can specify :get@0)
+- Application interface library revision
+- some fixes in application execution (autobin should work again)
+- :getmsg and :forward support gradual connects
+- Huffman compression support (new command :comp, compatibile with TNT)
+- :connect command is now an editable macro (this allows gradual connects)
+- new macro commands (:waitfor, :sleep)
+- new command :mbin allows to enable/disable monitoring binary data
+
+------------------------------------------------------------------------
+000328: 0.14
+
+- Mailer fixes
+- Finaly runs on libc6 distributions
+
+------------------------------------------------------------------------
+000223: 0.13
+
+- Automatic monitor format detection
+- ax25spyd support as an alternative to listen
+- Some optimizations for speed
+- Communication with applications fixed
+- Monitor supports character conversion
+
+------------------------------------------------------------------------
+000214: 0.12
+
+- Login password processing was rewritten and new systems were added
+- Authorization command :pw is more flexible
+- Modules for communication with applications were rewrtitten
+- New utility :catch for scanning data streams for patterns
+- New command :listen for enabling or disabling incomming connections
+
+------------------------------------------------------------------------
+000119: 0.11
+
+- New command :monitor for disabling the monitor
+- Monitor can be disabled from command line too (-m switch)
+- Little changes in user interface
+
+------------------------------------------------------------------------
+000108: 0.10
+
+- Color definition changes (more colors)
+- Source fixes for new compilers
+
+------------------------------------------------------------------------
+991221: 0.09
+
+- Shared memory allocation fix (no more needed to run as root)
+- Text editors fixed
+
+------------------------------------------------------------------------
+991212: 0.08
+
+- Memory allocation fixed
+- YAPP revision
+- additions to application interface
+
+------------------------------------------------------------------------
+991117: 0.07
+
+- MD5 passwords supported
+- Mail editor fixed
+- Mail forwarding fix (problem with non-alphanumeric chars in dest.)
+
+------------------------------------------------------------------------
+991031: 0.06
+
+- Different sound signals on the linux console
+- Many bugfixes
+
+------------------------------------------------------------------------
+991024: 0.05
+
+- Automatic login password handling added
+- Experimental code for reading AX.25 status via ioctl (see doc/ioctl.txt)
+
+------------------------------------------------------------------------
+990908: 0.04
+
+- Mailer supports user bulletin groups
+- New commands ':delmsg' and ':pack' for deleting messages
+
+------------------------------------------------------------------------
+990619: 0.03
+
+- The LINPACDIR variable is no more used
+- LinPac can be used with multiple users
+- Automatic sysop authorization supported
+- First version of user manual finished
+- All application converted to C++ (some of them were in C)
+- Shared application library
+
+------------------------------------------------------------------------
+990516: 0.02
+
+- Version numbering started
+- Mailer allows including the original message in reply
+
+------------------------------------------------------------------------
+990427:
+
+- Automatic mail address completing in collaboration with the
+  ax25mail-utils package
+- The mailer shows new messages immediately after downloading each message
+- The screen buffer files have limited size
+
+------------------------------------------------------------------------
+990321:
+
+- First public release

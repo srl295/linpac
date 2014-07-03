@@ -1,0 +1,24 @@
+#! /bin/bash
+# Add BLOCK7P setting to the init script
+
+FILE=$HOMEDIR/macro/init.mac
+TEMP=/tmp/update.$$
+
+awk '
+   {
+      print
+   }
+
+/HOME_ADDR/ {
+      if ($1 == "set") {
+         print ""
+         print ";; Preferred size of 7plus blocks"
+         print "set BLOCK7P 5120"
+      }
+}' <$FILE >$TEMP
+
+cp -f $FILE $FILE.old
+cp -f $TEMP $FILE
+rm -f $TEMP
+rm -f $FILE.old
+

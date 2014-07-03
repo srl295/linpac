@@ -1,0 +1,51 @@
+LinPac internal objects
+-----------------------
+
+This is a list of LinPac internal objects. Each object is identified by its 
+name (up to 10 characters).
+
+ Object name    | Description
+----------------+-----------------------------------------------------------
+  SCREEN	| Screen manager.
+		|
+  Keyscan	| Reads the keyboard, generates appropriate events when a
+		| key is pressed (EV_KEY_PRESS)
+		|
+  Command	| Interpret commands represented by EV_DO_COMMANDS,
+                | EV_TEXT_COOKED (starting with :) or EV_LINE_RECV
+		| (remote commands)
+		|
+  Ax25io	| Ax25 i/o interface. Sends/receives packets, generates
+                | EV_DATA_INPUT, EV_DATA_OUTPUT, EV_LOCAL_MSG, creates
+                | packets from EV_TEXT_COOKED and sends them.
+		|
+  Cooker	| Converts EV_TEXT_RAW to EV_TEXT_COOKED (macro
+                | replacement).
+		|
+  ChnInfo	| Channel information line (shows callsigns depending on the
+		| connection/reconnection events)
+		|
+  InfoLine	| Connection status line.
+		|
+  MonWin	| Monitor window.
+		|
+  QSOWin1 -	| QSO windows for each channel. Displays the data contained
+    QSOWin8 	| in EV_DATA_INPUT, EV_DATA_OUTPUT and EV_LOCAL_MSG events.
+		|
+  Editor0 -	| Editor windows each channel (0 = unproto mode). Reads the 
+    Editor8	| EV_KEY_PRESSED events and produces EV_TEXT_RAW events.
+		|
+  Statln1 -	| Managers of additional status lines (one for each
+    Statln8	| channel).
+		|
+  StnDB		| Station database. Reacts to (re)connection events and
+		| produces information messages, sets the variables, etc.
+		|
+  Watch		| Input data watcher. Looks for patterns in input data,
+		| produces command events when some pattern is found.
+		|
+  Sound		| Produces various sounds when some particular event occurs.
+		|
+  Status	| Registers connection status, generates status events.
+		|
+----------------+------------------------------------------------------------
