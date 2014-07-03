@@ -13,7 +13,7 @@
 
    Last update 24.6.2002
   =========================================================================*/
-#include <vector.h>
+#include <vector>
 #include "event.h"
 #include "sources.h"
 #include "data.h"
@@ -38,7 +38,7 @@ class Macro : public Object
     int chn;
     int pos;                //line position
     int max;                //number of lines
-    vector <char *> prg;    //lines
+    std::vector <char *> prg;    //lines
     char s[256];
     Arguments args;         //for sending arguments of macro
     bool macro;             //translating from 'macro' notation
@@ -56,7 +56,7 @@ class Macro : public Object
     void index_conds();            //index conditions
     int compare(const char *s1, const char *s2); //compare strings or numbers
     bool true_condition(char *s);  //return true, when condition is true
-    void clear_prg(vector <char *> &); //clear prg structure
+    void clear_prg(std::vector <char *> &); //clear prg structure
     virtual ~Macro();
 };
 
@@ -72,10 +72,10 @@ class Commander : public Object
     bool secure;   //command from secure source - do not check permissions
     bool send_res; //result must be sent back
     bool remote_disabled[MAX_CHN+1]; //remote commands are disabled due to binary transfer
-    vector <Command> reg; //registered commands handled by ext. application
-    vector <Command> bin; //commands found in ./bin
-    vector <Command> mac; //commands found in ./macro (default language)
-    vector <Command> lmac; //macro commands for selected language
+    std::vector <Command> reg; //registered commands handled by ext. application
+    std::vector <Command> bin; //commands found in ./bin
+    std::vector <Command> mac; //commands found in ./macro (default language)
+    std::vector <Command> lmac; //macro commands for selected language
     ExternCmd *ext;
     Macro *mcm;
     int res_hnd; //result handle (when send_res == true)

@@ -78,7 +78,7 @@ void redraw()
    }*/
 }
 
-void help(char *s)
+void help(const char *s)
 {
   WINDOW *win = reinterpret_cast<WINDOW *>(main_window);
   int ct = CENTER(strlen(s))-1;

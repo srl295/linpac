@@ -128,7 +128,7 @@ char *user(const char *src)
 char *bbs(const char *src)
 {
   static char addr[30];
-  char *p;
+  const char *p;
 
   p = strchr(src, '@');
   if (p == NULL) strcpy(addr, "");

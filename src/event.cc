@@ -98,7 +98,7 @@ Obj_man::Obj_man()
 
 void Obj_man::find_oid()
 {
-  vector <Object *>::iterator it;
+  std::vector <Object *>::iterator it;
   unsigned old_value = next_oid;
   bool ok;
   do
@@ -122,7 +122,7 @@ void Obj_man::insert(Object *obj)
 
 void Obj_man::remove(Object *obj)
 {
-  vector <Object *>::iterator it;
+  std::vector <Object *>::iterator it;
   //Remove from object list
   for (it=children.begin(); it < children.end(); it++) if (*it==obj) break;
   if (it != children.end())
@@ -141,7 +141,7 @@ void Obj_man::remove(Object *obj)
 
 void Obj_man::remove(unsigned aoid)
 {
-  vector <Object *>::iterator it;
+  std::vector <Object *>::iterator it;
   //Remove from object list
   for (it=children.begin(); it < children.end(); it++)
     if ((*it)->oid == aoid) break;
@@ -294,7 +294,7 @@ void Obj_man::do_step()
 
 void Obj_man::stop()
 {
-  vector <Object *>::iterator it;
+  std::vector <Object *>::iterator it;
   for (it=children.begin(); it < children.end(); it++)
      delete *it;
   children.erase(children.begin(), children.end());
@@ -313,7 +313,7 @@ void Obj_man::list_objects()
   #endif
   #endif
   fprintf(stderr, " oid   class_name\n");
-  vector <Object *>::iterator it;
+  std::vector <Object *>::iterator it;
   for (it=children.begin(); it < children.end(); it++)
   {
     fprintf(stderr, "%5i  %s\n", (*it)->oid, (*it)->class_name);
@@ -323,7 +323,7 @@ void Obj_man::list_objects()
 
 void Obj_man::deactivate(char *obj_name)
 {
-   vector <Object *>::iterator it;
+   std::vector <Object *>::iterator it;
    //Remove from active objects
    for (it=active.begin(); it < active.end(); it++)
       if (strcmp((*it)->class_name, obj_name) == 0) break;
@@ -336,7 +336,7 @@ void Obj_man::deactivate(char *obj_name)
 
 void Obj_man::activate(char *obj_name)
 {
-   vector <Object *>::iterator objs, act;
+   std::vector <Object *>::iterator objs, act;
    //Find the right position for an object in active objects
    act = active.begin();
    for (objs = children.begin();

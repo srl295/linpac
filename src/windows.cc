@@ -20,7 +20,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
+#include <stdlib.h>
 #include <sys/stat.h>
+#include <time.h>
 
 #include "tools.h"
 #include "data.h"
@@ -1349,7 +1351,7 @@ void StatLines::update(int wx1, int wy1, int wx2, int wy2)
 
 void StatLines::handle_event(const Event &ev)
 {
-  vector <info_line>::iterator it;
+  std::vector <info_line>::iterator it;
 
   switch(ev.type)
   {

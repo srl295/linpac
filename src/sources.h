@@ -126,8 +126,8 @@ class EventGate : public Object
     int sock;
     char data[MAX_EVENT_DATA];
     int pid;          //what PID is this gate for ? (0 = base gate)
-    vector <tapp> *pids;
-    vector <EventGate *> children; //sockets of child gates
+    std::vector <tapp> *pids;
+    std::vector <EventGate *> children; //sockets of child gates
     fd_set rfds;      //child descriptors
     int maxdesc;      //maximal descriptor value
     EventGate *parent_gate; //parent gate
@@ -165,7 +165,7 @@ class EventGate : public Object
     bool parse_event_cmd();
 
   public:
-    EventGate(int socknum, EventGate *parent = NULL, vector <tapp> *ppids = NULL);
+    EventGate(int socknum, EventGate *parent = NULL, std::vector <tapp> *ppids = NULL);
     virtual ~EventGate();
     virtual void handle_event(const Event &);
 

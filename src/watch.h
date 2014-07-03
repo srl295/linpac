@@ -18,7 +18,7 @@
 
 #define WATCH_BUFFER_SIZE 1024
 
-#include <vector.h>
+#include <vector>
 #include "event.h"
 #include "constants.h"
 
@@ -32,7 +32,7 @@ struct autorun_entry
 class Watch : public Object
 {
   private:
-    vector <autorun_entry> watch;             //list of autorun entries
+    std::vector <autorun_entry> watch;             //list of autorun entries
     char buf[MAX_CHN+1][WATCH_BUFFER_SIZE];
     int buflen[MAX_CHN+1];
     bool disabled[MAX_CHN+1]; //watching is disabled (binary transfer)

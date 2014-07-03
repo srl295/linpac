@@ -224,7 +224,7 @@ void Commander::handle_event(const Event &ev)
      while (strlen(comm.cmd) < 15 && isalpha(*p))
         { strncat(comm.cmd, p, 1); p++; }
      
-     vector <Command>::iterator it;
+     std::vector <Command>::iterator it;
      bool exists = false;
      for (it = reg.begin(); it < reg.end(); it++)
         if (strcmp(it->cmd, comm.cmd) == 0) {exists = true; break;}
@@ -242,7 +242,7 @@ void Commander::handle_event(const Event &ev)
      while (strlen(comm.cmd) < 15 && isalpha(*p))
         { strncat(comm.cmd, p, 1); p++; }
      
-     vector <Command>::iterator it;
+     std::vector <Command>::iterator it;
      for (it = reg.begin(); it < reg.end(); it++)
         if (strcmp(it->cmd, comm.cmd) == 0)
         {
@@ -345,7 +345,7 @@ bool Commander::is_secure(int chn, int echn, char *cmd)
 {
   if (secure) return true;
   bool sec = false;
-  vector <RCommand>::iterator it;
+  std::vector <RCommand>::iterator it;
   for (it = aclist[echn].begin(); it < aclist[echn].end() && !sec; it++)
   {
     char *p = strdup(*it);
@@ -920,7 +920,7 @@ void Commander::do_command(int chn, char *cmds)
                                   }
                                   else
                                   {
-                                    vector <RCommand>::iterator it;
+                                    std::vector <RCommand>::iterator it;
                                     for (it = aclist[chn].begin();
                                          it < aclist[chn].end();
                                          it++)
@@ -963,7 +963,7 @@ void Commander::do_command(int chn, char *cmds)
   //Try to find unknown cmd in registered commands
   if (!ok)
   {
-    vector <Command>::iterator it;
+    std::vector <Command>::iterator it;
     for (it = reg.begin(); it < reg.end(); it++)
       if (com_ok(chn, echn, cmd, it->cmd))
       {
@@ -982,7 +982,7 @@ void Commander::do_command(int chn, char *cmds)
   //Try to find unknown cmd in "./macro"
   if (!ok)
   {
-    vector <Command>::iterator it;
+    std::vector <Command>::iterator it;
     char *lang = get_var(chn, "STN_LANG");
     if (lang != NULL) //try to find in specified language
     {
@@ -1012,7 +1012,7 @@ void Commander::do_command(int chn, char *cmds)
   //Try to found unknown cmd in "./bin"
   if (!ok)
   {
-    vector <Command>::iterator it;
+    std::vector <Command>::iterator it;
     for (it = bin.begin(); it < bin.end(); it++)
       if (com_ok(chn, echn, cmd, (*it).cmd))
         if (!remote || strchr((*it).flags, 'L') == NULL) //isn't it only local cmd ?
@@ -1248,7 +1248,7 @@ Macro::Macro(int chnum, char *fname, int m_argc, char **m_argv)
   if (argc > 1 && argv[1][0] == '@')
   {
     char s[256];
-    vector <char *>::iterator it;
+    std::vector <char *>::iterator it;
     it = prg.begin();
     if (macro) it++;
     snprintf(s, 255, ":GOTO %s", &(argv[1][1]));
@@ -1372,7 +1372,7 @@ void Macro::handle_event(const Event &ev)
 
 int Macro::label_line(char *label)
 {
-  vector <char *>::iterator it;
+  std::vector <char *>::iterator it;
   int line = 0;
   for (it = prg.begin(); it < prg.end(); it++, line++)
     if (strncasecmp(*it, ":LABEL ", 7) == 0)
@@ -1479,8 +1479,8 @@ void Macro::index_conds()
          ... commands ...
   */
   Stack <int> stk;
-  vector <char *>::iterator it;
-  vector <char *> newprg;
+  std::vector <char *>::iterator it;
+  std::vector <char *> newprg;
   int line = 0;
   int destline = 0;
   char s[256];
@@ -1641,9 +1641,9 @@ bool Macro::true_condition(char *s)
   return b;
 }
 
-void Macro::clear_prg(vector <char *> &prg)
+void Macro::clear_prg(std::vector <char *> &prg)
 {
-  vector <char *>::iterator it;
+  std::vector <char *>::iterator it;
   for (it = prg.begin(); it < prg.end(); it++)
     delete[] *it;
   prg.erase(prg.begin(), prg.end());

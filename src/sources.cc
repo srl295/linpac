@@ -922,7 +922,7 @@ void ExternCmd::send_stream_data(const Event &ev)
 //--------------------------------------------------------------------------
 // Class EventGate
 //--------------------------------------------------------------------------
-EventGate::EventGate(int socknum, EventGate *parent, vector <tapp> *ppids)
+EventGate::EventGate(int socknum, EventGate *parent, std::vector <tapp> *ppids)
 {
   sprintf(class_name, "EventGt?");
   rbuff = NULL;
@@ -944,7 +944,7 @@ EventGate::EventGate(int socknum, EventGate *parent, vector <tapp> *ppids)
   if (socknum == 0)
   {
      pid = 0; //we are the base gate
-     pids = new vector<tapp>;
+     pids = new std::vector<tapp>;
      
      sock = socket(AF_INET, SOCK_STREAM, 0);
      if (sock == -1) Error(errno, "EventGate: cannot create socket");
@@ -1291,7 +1291,7 @@ bool EventGate::own_handle_event(const Event &ev)
 
       bool fnd = false;
       bool cont = true;
-      vector <tapp>::iterator it;
+      std::vector <tapp>::iterator it;
       for (it = pids->begin(); it < pids->end(); it++)
          if (it->pid == ev.x)
          {
@@ -1420,7 +1420,7 @@ void EventGate::handle_event(const Event &ev)
        if (rc>0)
        {
           if (FD_ISSET(sock, &rdset)) data_arrived();
-          vector <EventGate *>::iterator it;
+          std::vector <EventGate *>::iterator it;
           for (it = children.begin(); it < children.end(); it++)
              if (FD_ISSET((*it)->get_sock(), &rdset))
                 (*it)->data_arrived();
@@ -1474,7 +1474,7 @@ void EventGate::handle_event(const Event &ev)
     }
     
     //check waiting gates
-    vector <tapp>::iterator it;
+    std::vector <tapp>::iterator it;
     for (it = pids->begin(); it < pids->end(); it++)
        if (it->gate && time(NULL) > it->started + MAX_GATE_WAIT)
        { //waiting too long - application probably won't start
@@ -1497,7 +1497,7 @@ void EventGate::handle_event(const Event &ev)
   if (ev.type == EV_PROCESS_FINISHED && pid == 0)
   {
     //remove the application entry from PID list
-    vector <tapp>::iterator it;
+    std::vector <tapp>::iterator it;
     for (it = pids->begin(); it < pids->end(); it++)
        if (it->pid == ev.x) {pids->erase(it); break;}
   }
@@ -1604,7 +1604,7 @@ void EventGate::interpret_command(int cmd, int data)
 
 void EventGate::child_finished(EventGate *child)
 {
-   vector <EventGate *>::iterator it;
+   std::vector <EventGate *>::iterator it;
    maxdesc = 0;
    for (it = children.begin(); it < children.end(); it++)
       if (*it == child)
@@ -1618,7 +1618,7 @@ void EventGate::child_finished(EventGate *child)
 
 void EventGate::change_child(EventGate *from, EventGate *to)
 {
-   vector <EventGate *>::iterator it;
+   std::vector <EventGate *>::iterator it;
    maxdesc = 0;
    for (it = children.begin(); it < children.end(); it++)
       if (*it == from)

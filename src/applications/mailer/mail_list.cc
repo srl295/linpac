@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> // for mkstemp
 #include <unistd.h>
 #include <sys/types.h>
 #include "mail_list.h"
@@ -116,7 +117,7 @@ void Messages::reload(bool all)
 
 long Messages::max()
 {
-   vector <Msg>::iterator it;
+   std::vector <Msg>::iterator it;
    int mx = 0;
    for (it = msg.begin(); it < msg.end(); it++)
    {
@@ -128,7 +129,7 @@ long Messages::max()
 
 long Messages::min()
 {
-   vector <Msg>::iterator it;
+   std::vector <Msg>::iterator it;
    int mx = -1;
    for (it = msg.begin(); it < msg.end(); it++)
    {
@@ -140,7 +141,7 @@ long Messages::min()
 
 long Messages::last_read()
 {
-   vector <Msg>::iterator it;
+   std::vector <Msg>::iterator it;
    int m = 0;
    int i;
    for (i = 0, it = msg.begin(); it < msg.end(); it++,i++)
@@ -183,7 +184,7 @@ bool Messages::check_filter(int index)
    return false;
 }
 
-void Messages::del_msg(vector <Msg>::iterator where) //delete message
+void Messages::del_msg(std::vector <Msg>::iterator where) //delete message
 {
    msg.erase(where);
 }
@@ -207,14 +208,14 @@ TheFile::TheFile(Message *themsg)
 
 TheFile::~TheFile()
 {
-   vector <char *>::iterator it;
+   std::vector <char *>::iterator it;
    for (it = line.begin(); it < line.end(); it++)
       if (*it != NULL) delete [] (*it);
 }
 
 void TheFile::destroy_message()
 {
-   vector <char *>::iterator it;
+   std::vector <char *>::iterator it;
    for (it = line.begin(); it < line.end(); it++)
       if (*it != NULL) delete[] (*it);
    line.erase(line.begin(), line.end());
@@ -429,7 +430,7 @@ void TheFile::extract_attach(int num)
 unsigned TheFile::max_len()
 {
   unsigned r = 0;
-  vector <char *>::iterator it;
+  std::vector <char *>::iterator it;
   for (it = line.begin(); it < line.end(); it++)
     if (strlen(*it) > r) r = strlen(*it);
   return r;
@@ -437,7 +438,7 @@ unsigned TheFile::max_len()
 
 bool TheFile::return_addr(char *result)
 {
-  vector <char *>::iterator it;
+  std::vector <char *>::iterator it;
 
   //try to find "Reply-To:" line
   for (it = line.begin(); it < line.end(); it++)
@@ -711,7 +712,7 @@ void Messages::handle_event(Event *ev)
   
       if (toupper(ev->x) == 'D' && state == STATE_NORM) //Delete messages
       {
-         vector <Msg>::iterator it;
+         std::vector <Msg>::iterator it;
 
          //Count marked messages
          int sel = 0;
@@ -752,7 +753,7 @@ void Messages::handle_event(Event *ev)
   
       if (ev->x == CTRLX) //Ctrl-X : delete messages
       {
-         vector <Msg>::iterator it;
+         std::vector <Msg>::iterator it;
 
          //Count marked messages
          int sel = 0;

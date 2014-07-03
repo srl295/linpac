@@ -18,7 +18,7 @@
 
 #define OWN_DATA
 
-#include <vector.h>
+#include <vector>
 #include "tevent.h"
 
 //-------------------------------------------------------------------------
@@ -30,6 +30,7 @@ class Object
     unsigned oid;
     char class_name[16];
     virtual void handle_event(const Event &) = 0;
+    virtual ~Object(){}
 };
 
 //-------------------------------------------------------------------------
@@ -39,8 +40,8 @@ class Obj_man
 {
   private:
     unsigned next_oid;           //next free object id
-    vector <Object *> children;  //list of inserted objects
-    vector <Object *> active;    //active objects (receive events)
+    std::vector <Object *> children;  //list of inserted objects
+    std::vector <Object *> active;    //active objects (receive events)
 
   public:
     bool quit;

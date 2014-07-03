@@ -13,7 +13,7 @@
 
    Last update 19.9.1998
   =========================================================================*/
-#include <vector.h>
+#include <vector>
 
 class info_line
 {
@@ -27,4 +27,4 @@ class info_line
 
 //This fixes the stupid ncurses 'erase' macro that overrides all
 //vector::erase() functions
-void info_line_erase(vector <info_line> &v, vector <info_line>::iterator it);
+void info_line_erase(std::vector <info_line> &v, std::vector <info_line>::iterator it);

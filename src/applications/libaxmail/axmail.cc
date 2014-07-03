@@ -392,7 +392,7 @@ void Message::setBody(const char *body)
 
 void MessageIndex::updateList()
 {
-   vector <Message *>::iterator it;
+  std::vector <Message *>::iterator it;
    for (it = messages.begin(); it < messages.end(); it++)
    {
       if ((*it)->isDel())
@@ -406,7 +406,7 @@ void MessageIndex::updateList()
 
 void MessageIndex::clearList()
 {
-   vector <Message *>::iterator it;
+  std::vector <Message *>::iterator it;
    for (it = messages.begin(); it < messages.end(); it++)
       delete *it;
    messages.erase(messages.begin(), messages.end());
@@ -520,7 +520,7 @@ IncommingIndex::IncommingIndex(const char *bbs_call)
 
 IncommingIndex::~IncommingIndex()
 {
-   vector <Message *>::iterator it;
+   std::vector <Message *>::iterator it;
    for (it = messages.begin(); it < messages.end(); it++)
       delete *it;
 }
@@ -617,7 +617,7 @@ void IncommingIndex::writeIndex()
       if (!messages.empty())
       {
          int actnum = messages[0]->getNum();
-         vector <Message *>::iterator it;
+         std::vector <Message *>::iterator it;
          for (it = messages.begin(); it < messages.end(); it++)
          {
             if ((*it)->getNum() > actnum+1)
@@ -667,7 +667,7 @@ OutgoingIndex::OutgoingIndex(const char *bbs_call)
 
 OutgoingIndex::~OutgoingIndex()
 {
-   vector <Message *>::iterator it;
+   std::vector <Message *>::iterator it;
    for (it = messages.begin(); it < messages.end(); it++)
       delete *it;
 }
@@ -751,7 +751,7 @@ void OutgoingIndex::writeIndex()
       if (!messages.empty())
       {
          int actnum = messages[0]->getNum();
-         vector <Message *>::iterator it;
+         std::vector <Message *>::iterator it;
          for (it = messages.begin(); it < messages.end(); it++)
          {
             if ((*it)->getNum() > actnum+1)

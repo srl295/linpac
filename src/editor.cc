@@ -13,7 +13,7 @@
 
    Last update 29.1.2001
   =========================================================================*/
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 
 #include "constants.h"

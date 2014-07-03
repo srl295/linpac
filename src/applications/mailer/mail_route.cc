@@ -10,10 +10,11 @@
   mail_route.h - mail routes database
 */
 #include <algorithm>
-#include <vector.h>
+#include <vector>
 #include <stdio.h>
 #include <ctype.h>
 #include <sys/time.h>
+#include <string.h>
 
 #define OUT_FILE "/var/ax25/mail_routes"
 
@@ -55,7 +56,7 @@ route_addr::route_addr()
 }
 
 
-vector <route_addr> routes;
+std::vector <route_addr> routes;
     
 //-----------------------------------------------------------------------
 
@@ -92,8 +93,8 @@ void load_routes()
 
 bool find_route(char *call, char *result)
 {
-  vector <route_addr> cands;
-  vector <route_addr>::iterator it, home;
+  std::vector <route_addr> cands;
+  std::vector <route_addr>::iterator it, home;
   bool found = false;
 
   //select candidates
