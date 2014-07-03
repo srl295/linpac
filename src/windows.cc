@@ -1204,7 +1204,8 @@ void InfoLine::redraw(bool update)
   wmove(win, 0, 0);
   if (achn != 0)
   {
-    wprintw(win, "My:%10s %c", sconfig(achn, "call"), ACS_VLINE);
+    wprintw(win, "My:%10s", sconfig(achn, "call"));
+    waddch(win, ACS_VLINE);
 
     int strategy = procform;
     if ((iconfig("info_level") == 1 && enable_ioctl) || force_ioctl) strategy = 2; //use ioctl
@@ -1214,14 +1215,21 @@ void InfoLine::redraw(bool update)
       //Channel status
       if (iconfig(achn, "state") != ST_DISC)
         if (get_axstat(sconfig(achn, "call"), sconfig(achn, "cphy"), strategy))
-          if (iconfig("info_level") == 1)
-            wprintw(win, "Ack:%2d/%2d%cUnack:%2d%cTries:%2d/%2d%cRtt:%2d%c%16.16s",
-                   chstat.t1, chstat.t1max,  ACS_VLINE,
-                   chstat.vs - chstat.va,    ACS_VLINE,
-                   chstat.n2, chstat.n2max,  ACS_VLINE,
-                   chstat.rtt,               ACS_VLINE,
-                   state_str(chstat.state));
-          else
+          if (iconfig("info_level") == 1) {
+            wprintw(win, "Ack:%2d/%2d", chstat.t1, chstat.t1max);
+            waddch(win, ACS_VLINE);
+            wprintw(win, "Unack:%2d",
+                    chstat.vs - chstat.va);
+            waddch(win, ACS_VLINE);
+            wprintw(win, "Tries:%2d/%2d",
+                    chstat.n2, chstat.n2max);
+            waddch(win, ACS_VLINE);
+            wprintw(win, "Rtt:%2d",
+                    chstat.rtt);
+            waddch(win, ACS_VLINE);
+            wprintw(win, "%16.16s",
+                    state_str(chstat.state));
+          } else {
             wprintw(win, " %s %d %d %d %d %d/%d %d/%d %3d/%3d %d/%d %d/%d %d %d %d %s %d %d   ",
                    chstat.devname,
                    chstat.state,
@@ -1236,6 +1244,7 @@ void InfoLine::redraw(bool update)
                    chstat.paclen,
                    "",
                    chstat.sendq, chstat.recvq);
+          }
         else
           wprintw(win, "%54s", "Disconnected");
       else
@@ -1247,7 +1256,8 @@ void InfoLine::redraw(bool update)
   struct tm *cas;
   time_t secs = time(NULL);
   cas = localtime(&secs);
-  wprintw(win, "%c %2i:%02i:%02i", ACS_VLINE, cas->tm_hour, cas->tm_min, cas->tm_sec);
+  waddch(win, ACS_VLINE);
+  wprintw(win, "%2i:%02i:%02i", cas->tm_hour, cas->tm_min, cas->tm_sec);
 
   if (update && act) wrefresh(win);
 }
