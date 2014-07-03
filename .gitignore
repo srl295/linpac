@@ -1,0 +1,12 @@
+*.o
+Makefile
+config.h
+config.log
+config.status
+libtool
+stamp-h
+inst/linpac
+mail/pack.pl
+mail/delmsg.pl
+src/linpac
+.libs
