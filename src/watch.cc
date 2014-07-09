@@ -55,7 +55,7 @@ void Watch::handle_event(const Event &ev)
       buflen[ev.chn]++;
     }
     //try to find all keys in bufer
-    vector <autorun_entry>::iterator it;
+    std::vector <autorun_entry>::iterator it;
     for (it = watch.begin(); it < watch.end(); it++)
     {
       if ((it->chn == ev.chn || it->chn == 0) && key_found(ev.chn, it->key))
@@ -160,7 +160,7 @@ bool Watch::key_found(int chn, char *key)
   return false;
 }
 
-int Watch::com_is(char *s1, char *s2)
+int Watch::com_is(char *s1, char const *s2)
 {
   unsigned i,j,k;
 

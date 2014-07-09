@@ -114,7 +114,7 @@ void read_message(int msgnum)
   {
     safe_fgets(s, 255, stdin);
     if (s[0] == 26 || strncasecmp(s, "/ex", 3) == 0) stp = 1;
-    else fprintf(f, s);
+    else fputs(s,f);
   } while (!stp);
   size = ftell(f);
   fclose(f);

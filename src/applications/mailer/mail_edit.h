@@ -82,7 +82,7 @@ class Editor : public screen_obj
     void active(bool b) {act = b;};
     void convert_charset(char *s);
     void load_texts();
-    void errormsg(char *msg);
+    void errormsg(char const *msg);
     void clear_error();
     virtual ~Editor();
 };

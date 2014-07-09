@@ -15,7 +15,7 @@
   =========================================================================*/
 #include "infoline.h"
 
-void info_line_erase(vector <info_line> &v, vector <info_line>::iterator it)
+void info_line_erase(std::vector <info_line> &v, std::vector <info_line>::iterator it)
 {
   v.erase(it);
 }

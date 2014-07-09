@@ -1,3 +1,17 @@
+20140309:
+- Installation locations are now GNU Stardard compliant.
+   - Differs slightly from FHS 2.3 because due to use of libexec
+- linpac.in template is now expanded at build time rather than during
+  configure so that installation paths are properly expanded.
+- Many cleanups to the .am files
+- ChangeLog is now auto-generated when dist package is built
+------------------------------------------------------------------------
+20140306:
+- The autoconfig (configure.ac specifically) functionality is now back
+  to my best guess of the way it worked with old autotools.
+- Makefile.am files still need reworked. A lot of install and build
+  functionality does not work.
+------------------------------------------------------------------------
 030813: 0.17pre3
 
 - Some compilation related bugs fixed

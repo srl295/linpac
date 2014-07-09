@@ -24,7 +24,7 @@ class StnDB : public Object
     FILE *f;                      //station database file
 
   public:
-    StnDB(char *dbname);
+    StnDB(char const *dbname);
     virtual ~StnDB();
     virtual void handle_event(const Event &);
     bool find_data(char *stn);    //find the data record for stn

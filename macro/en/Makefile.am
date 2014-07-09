@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-datadir = @prefix@/share/linpac/macro/en
-data_DATA = *.mac commands
-EXTRA_DIST = $(data_DATA)
+macroendir = $(pkgdatadir)/macro/en
+dist_macroen_DATA = activity.mac conv.mac help.mac quit.mac ctext.mac \
+	       users.mac commands

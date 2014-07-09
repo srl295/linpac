@@ -1044,15 +1044,17 @@ char *get_port_name(int n)
       while (!feof(f))
       {
          strcpy(buf, "");
-         fgets(buf, 255, f);
-         while (isspace(*buf)) memmove(buf, buf+1, strlen(buf));
-         if (buf[0] == '#' || strlen(buf) == 0) continue;
-         if (i == n)
+         if (fgets(buf, 255, f) != NULL)
          {
-            sscanf(buf, "%s", name);
-            break;
+            while (isspace(*buf)) memmove(buf, buf+1, strlen(buf));
+            if (buf[0] == '#' || strlen(buf) == 0) continue;
+            if (i == n)
+            {
+                sscanf(buf, "%s", name);
+                break;
+            }
+            i++;
          }
-         i++;
       }
    return name;
 }

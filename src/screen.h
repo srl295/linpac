@@ -17,7 +17,7 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include <vector.h>
+#include <vector>
 #include <ncurses.h>
 #include "event.h"
 #include "constants.h"
@@ -41,7 +41,7 @@ class Screen : public Object
 {
   private:
     WINDOW *mainwin;
-    vector <Screen_obj *> children;  //list of inserted objects
+    std::vector <Screen_obj *> children;  //list of inserted objects
 
   public:
     Screen();

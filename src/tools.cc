@@ -242,16 +242,18 @@ bool get_enc_alias(const char *alias, char *name, char *table)
     {
       char s[1024];
       strcpy(s, "");
-      fgets(s, 1023, f);
-      striplf(s);
-      char *p = strchr(s, '#');
-      if (p != NULL) *p = '\0';
-      int n = sscanf(s, "%s %s %s", al, nm, tb);
-      if ((n == 2 || n == 3) && compare_aliases(alias, al))
+      if (fgets(s, 1023, f) != NULL)
       {
-        strcpy(name, nm);
-        if (n == 3) strcpy(table, tb); else strcpy(table, "");
-        return true;
+        striplf(s);
+        char *p = strchr(s, '#');
+        if (p != NULL) *p = '\0';
+        int n = sscanf(s, "%s %s %s", al, nm, tb);
+        if ((n == 2 || n == 3) && compare_aliases(alias, al))
+        {
+          strcpy(name, nm);
+          if (n == 3) strcpy(table, tb); else strcpy(table, "");
+          return true;
+        }
       }
     }
     fclose(f);
@@ -260,7 +262,7 @@ bool get_enc_alias(const char *alias, char *name, char *table)
 }
 
 
-bool redirect_errorlog(char *path)
+bool redirect_errorlog(char const *path)
 {
   fflush(stderr);
   if (errlog != NULL) fclose(errlog);

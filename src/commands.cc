@@ -152,13 +152,15 @@ Commander::Commander()
     {
       char p[1024];
       strcpy(p, "");
-      fgets(p, 1023, f);
-      striplf(p);
-      char *pp = strchr(p, '#');
-      if (pp != NULL) *pp='\0';
-      strcpy(comm.flags, "");
-      int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
-      if (n != -1) bin.push_back(comm);
+      if (fgets(p, 1023, f) != NULL)
+      {
+        striplf(p);
+        char *pp = strchr(p, '#');
+        if (pp != NULL) *pp='\0';
+        strcpy(comm.flags, "");
+        int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
+        if (n != -1) bin.push_back(comm);
+      }
     }
     fclose(f);
   } else Error(errno, "cannot open \".bin/commands\"");
@@ -171,13 +173,15 @@ Commander::Commander()
     {
       char p[1024];
       strcpy(p, "");
-      fgets(p, 1023, f);
-      striplf(p);
-      char *pp = strchr(p, '#');
-      if (pp != NULL) *pp='\0';
-      strcpy(comm.flags, "");
-      int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
-      if (n != -1) mac.push_back(comm);
+      if (fgets(p, 1023, f) != NULL)
+      {
+        striplf(p);
+        char *pp = strchr(p, '#');
+        if (pp != NULL) *pp='\0';
+        strcpy(comm.flags, "");
+        int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
+        if (n != -1) mac.push_back(comm);
+      }
     }
     fclose(f);
   }
@@ -198,13 +202,15 @@ bool Commander::load_language(const char *lang)
     {
       char p[1024];
       strcpy(p, "");
-      fgets(p, 1023, f);
-      striplf(p);
-      char *pp = strchr(p, '#');
-      if (pp != NULL) *pp='\0';
-      strcpy(comm.flags, "");
-      int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
-      if (n != -1) lmac.push_back(comm);
+      if (fgets(p, 1023, f) != NULL)
+      {
+        striplf(p);
+        char *pp = strchr(p, '#');
+        if (pp != NULL) *pp='\0';
+        strcpy(comm.flags, "");
+        int n = sscanf(p, "%s %s %s", comm.name, comm.cmd, comm.flags);
+        if (n != -1) lmac.push_back(comm);
+      }
     }
     fclose(f);
     return true;
@@ -224,7 +230,7 @@ void Commander::handle_event(const Event &ev)
      while (strlen(comm.cmd) < 15 && isalpha(*p))
         { strncat(comm.cmd, p, 1); p++; }
      
-     vector <Command>::iterator it;
+     std::vector <Command>::iterator it;
      bool exists = false;
      for (it = reg.begin(); it < reg.end(); it++)
         if (strcmp(it->cmd, comm.cmd) == 0) {exists = true; break;}
@@ -242,7 +248,7 @@ void Commander::handle_event(const Event &ev)
      while (strlen(comm.cmd) < 15 && isalpha(*p))
         { strncat(comm.cmd, p, 1); p++; }
      
-     vector <Command>::iterator it;
+     std::vector <Command>::iterator it;
      for (it = reg.begin(); it < reg.end(); it++)
         if (strcmp(it->cmd, comm.cmd) == 0)
         {
@@ -320,7 +326,7 @@ void Commander::handle_event(const Event &ev)
      remote_disabled[ev.chn] = false;
 }
 
-bool Commander::com_is(char *s1, char *s2)
+bool Commander::com_is(char *s1, char const *s2)
 {
   unsigned i,j;
   bool res;
@@ -336,16 +342,16 @@ bool Commander::com_is(char *s1, char *s2)
   return res;
 }
 
-bool Commander::com_ok(int chn, int echn, char *s1, char *s2)
+bool Commander::com_ok(int chn, int echn, char *s1, char const *s2)
 {
   return (com_is(s1, s2) && is_secure(chn, echn, s2));
 }
 
-bool Commander::is_secure(int chn, int echn, char *cmd)
+bool Commander::is_secure(int chn, int echn, char const *cmd)
 {
   if (secure) return true;
   bool sec = false;
-  vector <RCommand>::iterator it;
+  std::vector <RCommand>::iterator it;
   for (it = aclist[echn].begin(); it < aclist[echn].end() && !sec; it++)
   {
     char *p = strdup(*it);
@@ -644,8 +650,11 @@ void Commander::do_command(int chn, char *cmds)
   if (com_ok(chn, echn, cmd, "UNDest")) {
                                if (is_next())
                                {
+                                 //changes by dranch to support 7 digis in path
+                                 //More in the path is a limitation of the linux kernel
+                                 strcpy(result, "ki6zhd digi patch enabled");
                                  nextp(gps);
-                                 normalize_call(gps);
+                                 //---- normalize_call(gps);
                                  emit(chn, EV_UNPROTO_DEST, 0, gps);
                                }
                                else strcopy(result, sconfig(0, "cwit"), 256);
@@ -920,7 +929,7 @@ void Commander::do_command(int chn, char *cmds)
                                   }
                                   else
                                   {
-                                    vector <RCommand>::iterator it;
+                                    std::vector <RCommand>::iterator it;
                                     for (it = aclist[chn].begin();
                                          it < aclist[chn].end();
                                          it++)
@@ -963,7 +972,7 @@ void Commander::do_command(int chn, char *cmds)
   //Try to find unknown cmd in registered commands
   if (!ok)
   {
-    vector <Command>::iterator it;
+    std::vector <Command>::iterator it;
     for (it = reg.begin(); it < reg.end(); it++)
       if (com_ok(chn, echn, cmd, it->cmd))
       {
@@ -982,7 +991,7 @@ void Commander::do_command(int chn, char *cmds)
   //Try to find unknown cmd in "./macro"
   if (!ok)
   {
-    vector <Command>::iterator it;
+    std::vector <Command>::iterator it;
     char *lang = get_var(chn, "STN_LANG");
     if (lang != NULL) //try to find in specified language
     {
@@ -992,7 +1001,7 @@ void Commander::do_command(int chn, char *cmds)
         if (com_ok(chn, echn, cmd, (*it).cmd)) {ok = exec_mac(chn, (*it).name, (*it).flags, lang); break;}
       if (!ok) //not in database, try "<command>.mac"
       {
-        ok = exec_mac(chn, cmd, "", lang);
+        ok = exec_mac(chn, cmd, NULL, lang);
         if (ok) send_res = false;
       }
     }
@@ -1003,7 +1012,7 @@ void Commander::do_command(int chn, char *cmds)
         if (com_ok(chn, echn, cmd, (*it).cmd)) {ok = exec_mac(chn, (*it).name, (*it).flags); break;}
       if (!ok)
       {
-        ok = exec_mac(chn, cmd, "");
+        ok = exec_mac(chn, cmd, NULL);
         if (ok) send_res = false;
       }
     }
@@ -1012,7 +1021,7 @@ void Commander::do_command(int chn, char *cmds)
   //Try to found unknown cmd in "./bin"
   if (!ok)
   {
-    vector <Command>::iterator it;
+    std::vector <Command>::iterator it;
     for (it = bin.begin(); it < bin.end(); it++)
       if (com_ok(chn, echn, cmd, (*it).cmd))
         if (!remote || strchr((*it).flags, 'L') == NULL) //isn't it only local cmd ?
@@ -1225,21 +1234,23 @@ Macro::Macro(int chnum, char *fname, int m_argc, char **m_argv)
   {
     char pline[1024];
     strcpy(pline, "");
-    fgets(pline, 1023, f);
-    striplf(pline);
-
-    char s[1024];
-    strcopy(s, pline, 1024);
-    
-    if (macro) convert_line(s);
-    if (strcasecmp(s, ":MACRO") == 0 || strncasecmp(s, ":MACRO ", 7) == 0)
-      macro = true;
-    if (strlen(s) != 0 || (!feof(f) && !macro))
+    if (fgets(pline, 1023, f) != NULL)
     {
-      char *ins = new char[strlen(s)+1];
-      strcpy(ins, s);
-      prg.push_back(ins);
-      max++;
+      striplf(pline);
+
+      char s[1024];
+      strcopy(s, pline, 1024);
+      
+      if (macro) convert_line(s);
+      if (strcasecmp(s, ":MACRO") == 0 || strncasecmp(s, ":MACRO ", 7) == 0)
+        macro = true;
+      if (strlen(s) != 0 || (!feof(f) && !macro))
+      {
+        char *ins = new char[strlen(s)+1];
+        strcpy(ins, s);
+        prg.push_back(ins);
+        max++;
+      }
     }
   }
   fclose(f);
@@ -1248,7 +1259,7 @@ Macro::Macro(int chnum, char *fname, int m_argc, char **m_argv)
   if (argc > 1 && argv[1][0] == '@')
   {
     char s[256];
-    vector <char *>::iterator it;
+    std::vector <char *>::iterator it;
     it = prg.begin();
     if (macro) it++;
     snprintf(s, 255, ":GOTO %s", &(argv[1][1]));
@@ -1372,7 +1383,7 @@ void Macro::handle_event(const Event &ev)
 
 int Macro::label_line(char *label)
 {
-  vector <char *>::iterator it;
+  std::vector <char *>::iterator it;
   int line = 0;
   for (it = prg.begin(); it < prg.end(); it++, line++)
     if (strncasecmp(*it, ":LABEL ", 7) == 0)
@@ -1479,8 +1490,8 @@ void Macro::index_conds()
          ... commands ...
   */
   Stack <int> stk;
-  vector <char *>::iterator it;
-  vector <char *> newprg;
+  std::vector <char *>::iterator it;
+  std::vector <char *> newprg;
   int line = 0;
   int destline = 0;
   char s[256];
@@ -1641,9 +1652,9 @@ bool Macro::true_condition(char *s)
   return b;
 }
 
-void Macro::clear_prg(vector <char *> &prg)
+void Macro::clear_prg(std::vector <char *> &prg)
 {
-  vector <char *>::iterator it;
+  std::vector <char *>::iterator it;
   for (it = prg.begin(); it < prg.end(); it++)
     delete[] *it;
   prg.erase(prg.begin(), prg.end());

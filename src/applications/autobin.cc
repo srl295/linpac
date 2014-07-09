@@ -66,7 +66,7 @@ void message(const char *fmt, ...)
   vsprintf(msg, fmt, argptr);
   va_end(argptr);
 
-  if (send_msgs) printf(msg);
+  if (send_msgs) fputs(msg, stdout);
   else lp_emit_event(lp_channel(), EV_LOCAL_MSG, strlen(msg), msg);
 }
 

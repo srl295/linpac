@@ -61,12 +61,18 @@ void stop_record(char *logname, char *dest, char *qrg)
     return;
   }
 
-  tmpnam(tname);
-  t = fopen(tname, "w");
-  if (t == NULL)
+  if (tmpnam(tname) == NULL)
   {
-    fprintf(stderr, "logbook: cannot temp file\n");
-    return;
+    fprintf(stderr, "logbook: cannot generate temp filename\n");
+  }
+  else
+  {
+    t = fopen(tname, "w");
+    if (t == NULL)
+    {
+      fprintf(stderr, "logbook: cannot open temp file %s\n", tname);
+      return;
+    }
   }
 
   while (!feof(f))
@@ -75,20 +81,21 @@ void stop_record(char *logname, char *dest, char *qrg)
     char *new_str;
 
     strcpy(s, "");
-    fgets(s, 255, f);
-    if (strlen(s) == 0) continue;
-    if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
-
-    //match qrg and dest. call
-    sprintf(old_str, "UTC  %15s  %s", qrg, dest);
-    new_str = strstr(s, "UTC");
-    if (new_str != NULL && strcmp(new_str, old_str) == 0)
+    if (fgets(s, 255, f) != NULL)
     {
-      char *beg = strchr(s, '*');
-      if (beg != NULL)
-        sprintf(beg, "%s UTC  %15s  %s", time_stamp(1), qrg, dest);
+      if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
+
+      //match qrg and dest. call
+      sprintf(old_str, "UTC  %15s  %s", qrg, dest);
+      new_str = strstr(s, "UTC");
+      if (new_str != NULL && strcmp(new_str, old_str) == 0)
+      {
+        char *beg = strchr(s, '*');
+        if (beg != NULL)
+          sprintf(beg, "%s UTC  %15s  %s", time_stamp(1), qrg, dest);
+      }
+      fprintf(t, "%s\n", s);
     }
-    fprintf(t, "%s\n", s);
   }
 
   fclose(f);

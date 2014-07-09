@@ -1,22 +1,22 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = foreign
+## Automake options should match the init call in configure.ac
+AUTOMAKE_OPTIONS = gnu -Wall -Werror
+
+## See https://bugzilla.redhat.com/show_bug.cgi?id=901333 for more
+## information about ACLOCAL_AMFLAGS
+## The work-around for this bug is to commit the m4/ directory.
+ACLOCAL_AMFLAGS = -I m4
+
 SUBDIRS = ctt data doc macro mail src inst plugins
-datadir = @prefix@/share/linpac
-data_DATA = README NEWS
-EXTRA_DIST = linpac.lsm COPYING
 
-.PHONY: postinstall noinstall
+dist_pkgdata_DATA = README NEWS
+EXTRA_DIST = linpac.lsm COPYING generate-ChangeLog.sh
 
-install: postinstall
+dist-hook:
+	sh $(top_srcdir)/generate-ChangeLog.sh $(top_srcdir) $(distdir)
 
-postinstall: 
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && rm -f autotx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && @LN_S@ autobin autotx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && rm -f rawtx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && @LN_S@ rawio rawtx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && rm -f yapptx >/dev/null 2>/dev/null)
-	(cd $(DESTDIR)@prefix@/share/linpac/bin && @LN_S@ yapp yapptx >/dev/null 2>/dev/null)
+.PHONY: noinstall
 
 noinstall:
 	@if [ -x ./src/linpac ]; then \

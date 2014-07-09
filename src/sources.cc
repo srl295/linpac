@@ -170,14 +170,16 @@ int Ax25io::get_port_data()
   while (!feof(f))
   {
     strcpy(buf, "");
-    fgets(buf, 255, f);
-    if (strlen(buf) != 0 && buf[0] != '#')
+    if (fgets(buf, 255, f) != NULL)
     {
-      pname[i] = new char[16];
-      bcall[i] = new char[10];
-      int n = sscanf(buf, "%s %s %i %i %i", pname[i], bcall[i], &speed[i],
-                                      &paclen[i], &win[i]);
-      if (n == 5) i++;
+      if (strlen(buf) != 0 && buf[0] != '#')
+      {
+        pname[i] = new char[16];
+        bcall[i] = new char[10];
+        int n = sscanf(buf, "%s %s %i %i %i", pname[i], bcall[i], &speed[i],
+                                        &paclen[i], &win[i]);
+        if (n == 5) i++;
+      }
     }
   }
   num_ports = i;
@@ -302,7 +304,10 @@ void Ax25io::handle_event(const Event &ev)
      }
 
      if (sock[ev.chn] != -1)
-        write(sock[ev.chn], buf, len);
+       if (write(sock[ev.chn], buf, len) < 0)
+       {
+         fprintf(stderr, "sources.cc: could not write to socket, ev.chn\n");
+       }
 
      delete[] buf;
   }
@@ -393,7 +398,10 @@ void Ax25io::handle_event(const Event &ev)
      {
        if (out_cnt[ev.chn] > 0) //flush output buffer
        {
-         write(sock[ev.chn], obuffer[ev.chn], out_cnt[ev.chn]);
+         if (write(sock[ev.chn], obuffer[ev.chn], out_cnt[ev.chn]) < 0)
+         {
+            fprintf(stderr, "sources.cc: could not write to socket\n");
+         }
          out_cnt[ev.chn] = 0;
        }
        close(sock[ev.chn]);
@@ -557,7 +565,10 @@ bool Ax25io::CheckRequests()
                               "There are no free channels for the callsign %s.\r"
                               "Please try to connect later.\r",
                               PACKAGE, VERSION, sconfig(chn, "call"));
-                 write(newsock, str, strlen(str));
+                 if (write(newsock, str, strlen(str)) < 0)
+                 {
+                     fprintf(stderr, "sources.cc: could not write to socket, newsock\n");
+                 }
                  norm_call(s, &addr.fsa_ax25.sax25_call);
                  emit(chn, EV_CONN_REQ, 0, s);
                  close(newsock);
@@ -922,7 +933,7 @@ void ExternCmd::send_stream_data(const Event &ev)
 //--------------------------------------------------------------------------
 // Class EventGate
 //--------------------------------------------------------------------------
-EventGate::EventGate(int socknum, EventGate *parent, vector <tapp> *ppids)
+EventGate::EventGate(int socknum, EventGate *parent, std::vector <tapp> *ppids)
 {
   sprintf(class_name, "EventGt?");
   rbuff = NULL;
@@ -944,7 +955,7 @@ EventGate::EventGate(int socknum, EventGate *parent, vector <tapp> *ppids)
   if (socknum == 0)
   {
      pid = 0; //we are the base gate
-     pids = new vector<tapp>;
+     pids = new std::vector<tapp>;
      
      sock = socket(AF_INET, SOCK_STREAM, 0);
      if (sock == -1) Error(errno, "EventGate: cannot create socket");
@@ -1291,7 +1302,7 @@ bool EventGate::own_handle_event(const Event &ev)
 
       bool fnd = false;
       bool cont = true;
-      vector <tapp>::iterator it;
+      std::vector <tapp>::iterator it;
       for (it = pids->begin(); it < pids->end(); it++)
          if (it->pid == ev.x)
          {
@@ -1420,7 +1431,7 @@ void EventGate::handle_event(const Event &ev)
        if (rc>0)
        {
           if (FD_ISSET(sock, &rdset)) data_arrived();
-          vector <EventGate *>::iterator it;
+          std::vector <EventGate *>::iterator it;
           for (it = children.begin(); it < children.end(); it++)
              if (FD_ISSET((*it)->get_sock(), &rdset))
                 (*it)->data_arrived();
@@ -1474,7 +1485,7 @@ void EventGate::handle_event(const Event &ev)
     }
     
     //check waiting gates
-    vector <tapp>::iterator it;
+    std::vector <tapp>::iterator it;
     for (it = pids->begin(); it < pids->end(); it++)
        if (it->gate && time(NULL) > it->started + MAX_GATE_WAIT)
        { //waiting too long - application probably won't start
@@ -1497,7 +1508,7 @@ void EventGate::handle_event(const Event &ev)
   if (ev.type == EV_PROCESS_FINISHED && pid == 0)
   {
     //remove the application entry from PID list
-    vector <tapp>::iterator it;
+    std::vector <tapp>::iterator it;
     for (it = pids->begin(); it < pids->end(); it++)
        if (it->pid == ev.x) {pids->erase(it); break;}
   }
@@ -1604,7 +1615,7 @@ void EventGate::interpret_command(int cmd, int data)
 
 void EventGate::child_finished(EventGate *child)
 {
-   vector <EventGate *>::iterator it;
+   std::vector <EventGate *>::iterator it;
    maxdesc = 0;
    for (it = children.begin(); it < children.end(); it++)
       if (*it == child)
@@ -1618,7 +1629,7 @@ void EventGate::child_finished(EventGate *child)
 
 void EventGate::change_child(EventGate *from, EventGate *to)
 {
-   vector <EventGate *>::iterator it;
+   std::vector <EventGate *>::iterator it;
    maxdesc = 0;
    for (it = children.begin(); it < children.end(); it++)
       if (*it == from)
@@ -1635,7 +1646,7 @@ void EventGate::change_child(EventGate *from, EventGate *to)
    if (to->get_sock() > maxdesc) maxdesc = to->get_sock();
 }
 
-void EventGate::end_work(char *reason)
+void EventGate::end_work(char const *reason)
 {
   emit(0, EV_REMOVE_OBJ, oid, this);
   close(sock);

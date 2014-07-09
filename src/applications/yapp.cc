@@ -102,7 +102,7 @@ void message(const char *fmt, ...)
   vsprintf(msg, fmt, argptr);
   va_end(argptr);
 
-  if (send_msgs) printf(msg);
+  if (send_msgs) fputs(msg, stdout);
   else lp_emit_event(lp_channel(), EV_LOCAL_MSG, strlen(msg), msg);
 }
 
@@ -173,7 +173,7 @@ void send_ET()
   printf("%c%c", EOT, 0x01);
 }
 
-void send_NR(char *reason)
+void send_NR(char const *reason)
 {
   printf("%c%c%s", NAK, (int)strlen(reason), reason);
 }
@@ -188,7 +188,7 @@ void send_RE(long size)
   putchar('\0');
 }
 
-void send_CN(char *reason)
+void send_CN(char const *reason)
 {
   printf("%c%c%s", CAN, (int)strlen(reason), reason);
 }

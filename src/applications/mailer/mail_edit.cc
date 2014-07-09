@@ -15,6 +15,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
+#include <cstdlib>
 #include <axmail.h>
 
 #include "lpapp.h"
@@ -455,7 +456,7 @@ void Editor::convert_charset(char *s)
    }
 }
 
-void Editor::errormsg(char *msg)
+void Editor::errormsg(char const *msg)
 {
    wbkgdset(win, ' ' | COLOR_PAIR(C_ERROR));
    mvwprintw(win, y2-y1, 0, " %s ", msg);
@@ -769,12 +770,14 @@ void Composer::load_texts()
      {
        char s[LINE_LEN+1];
        strcpy(s, "");
-       fgets(s, LINE_LEN, f);
-       if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
-       replace_macros(lp_channel(), s);
-       ed->line[i].accept(s);
-       i++;
-       head_lines++;
+       if (fgets(s, LINE_LEN, f) != NULL)
+       {
+         if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
+         replace_macros(lp_channel(), s);
+         ed->line[i].accept(s);
+         i++;
+         head_lines++;
+       }
      }
      fclose(f);
    }
@@ -788,11 +791,13 @@ void Composer::load_texts()
      {
        char s[LINE_LEN+1];
        strcpy(s, "");
-       fgets(s, LINE_LEN, f);
-       if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
-       replace_macros(lp_channel(), s);
-       ed->line[i].accept(s);
-       i++;
+       if (fgets(s, LINE_LEN, f) != NULL)
+       {
+         if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
+         replace_macros(lp_channel(), s);
+         ed->line[i].accept(s);
+         i++;
+       }
      }
      fclose(f);
    }

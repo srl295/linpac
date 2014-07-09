@@ -1,13 +1,14 @@
-Begin3
+Begin4
 Title:       	linpac
-Version:	0.17pre3
-Entered-date:	13 Aug 03
+Version:	0.20
+Entered-date:	14 Mar 02
 Description:	Terminal for packet radio with mail client
 Keywords:	AX.25 packet radio terminal
 Author:		radkovo@centrum.cz (Radek Burget)
-Maintained-by:	radkovo@centrum.cz (Radek Burget)
+Maintained-by:	dranch@trinnet.net (David Ranch)
 Primary-site:	http://linpac.sourceforge.net
 Alternate-site:
 Original-site:
+Platforms:
 Copying-policy:	GPL
 End

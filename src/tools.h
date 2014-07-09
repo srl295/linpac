@@ -74,7 +74,7 @@ int load_conversion_tables(int chn, char *name);
 bool get_enc_alias(const char *alias, char *name, char *table);
 
 //Redirect stderr stream to an error log
-bool redirect_errorlog(char *path);
+bool redirect_errorlog(char const *path);
 
 #endif
 

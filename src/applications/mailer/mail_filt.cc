@@ -18,8 +18,8 @@
 #define COLUMN1 20
 #define COLUMN2 40
 
-vector <tbname> bfilter;
-vector <tbname>::iterator bfit;
+std::vector <tbname> bfilter;
+std::vector <tbname>::iterator bfit;
 
 tbname &tbname::operator = (const tbname &src)
 {
@@ -27,10 +27,10 @@ tbname &tbname::operator = (const tbname &src)
   return *this;
 }
 
-void create_list(MessageIndex *ndx, vector <Msg> &msgs,
-                 vector <Board> &boards, char *mycall)
+void create_list(MessageIndex *ndx, std::vector <Msg> &msgs,
+                 std::vector <Board> &boards, char *mycall)
 {
-   vector <Msg>::iterator it;
+   std::vector <Msg>::iterator it;
    for (it = msgs.begin(); it < msgs.end(); it++)
       if (strchr(ndx->getMessage(it->index)->getFlags(), 'B') != NULL)
       {
@@ -51,7 +51,7 @@ void create_list(MessageIndex *ndx, vector <Msg> &msgs,
 
    //sort it
    sort(boards.begin(), boards.end());
-   vector <Board>::iterator where = unique(boards.begin(), boards.end());
+   std::vector <Board>::iterator where = unique(boards.begin(), boards.end());
    boards.erase(where, boards.end());
 }
 
@@ -81,7 +81,7 @@ bool operator < (const Board &b1, const Board &b2)
 
 bool BGroup::contains(const char *name)
 {
-   vector <tbname>::iterator it;
+   std::vector <tbname>::iterator it;
    for (it = content.begin(); it < content.end(); it++)
       if (strcasecmp(name, it->name) == 0) return true;
    return false;
@@ -98,7 +98,7 @@ BGroup &BGroup::operator = (const BGroup &src)
 //=========================================================================
 // Class BoardList
 //=========================================================================
-BoardList::BoardList(MessageIndex *ndx, vector <Msg> &msgs, char *mycall)
+BoardList::BoardList(MessageIndex *ndx, std::vector <Msg> &msgs, char *mycall)
 {
    create_list(ndx, msgs, boards, mycall);
    pos = 0;
@@ -116,7 +116,7 @@ BoardList::BoardList(MessageIndex *ndx, vector <Msg> &msgs, char *mycall)
    load_groups();
 }
 
-BoardList::BoardList(vector <Board> &bds)
+BoardList::BoardList(std::vector <Board> &bds)
 {
    boards = bds;
    pos = 0;
@@ -156,11 +156,11 @@ void BoardList::save_groups()
    f = fopen(fname, "w");
    if (f != NULL)
    {
-      vector <BGroup>::iterator it;
+      std::vector <BGroup>::iterator it;
       for (it = groups.begin()+1; it < groups.end(); it++)
       {
          fprintf(f, "[%s]\n", it->name);
-         vector <tbname>::iterator bname;
+         std::vector <tbname>::iterator bname;
          for (bname = it->content.begin(); bname < it->content.end(); bname++)
             fprintf(f, "%s\n", bname->name);
          fprintf(f, "\n");
@@ -196,27 +196,29 @@ void BoardList::load_groups()
       while (!feof(f))
       {
          strcpy(s, "");
-         fgets(s, 255, f);
-         if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
-         if (strlen(s) == 0) continue;
+         if (fgets(s, 255, f) != NULL)
+         {
+            if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
+            if (strlen(s) == 0) continue;
 
-         if (s[0] == '[')
-         {
-            //store previous group
-            if (creating) groups.push_back(newgroup);
-            //create new group
-            memmove(s, s+1, strlen(s));
-            s[strlen(s)-1] = '\0'; //remove ]
-            strcpy(newgroup.name, s);
-            newgroup.content.erase(newgroup.content.begin(),
-                                   newgroup.content.end());
-            newgroup.sel = false;
-            creating = true;
-         }
-         else
-         {
-            strcpy(newname.name, s);
-            newgroup.content.push_back(newname);
+            if (s[0] == '[')
+            {
+                //store previous group
+                if (creating) groups.push_back(newgroup);
+                //create new group
+                memmove(s, s+1, strlen(s));
+                s[strlen(s)-1] = '\0'; //remove ]
+                strcpy(newgroup.name, s);
+                newgroup.content.erase(newgroup.content.begin(),
+                                    newgroup.content.end());
+                newgroup.sel = false;
+                creating = true;
+            }
+            else
+            {
+                strcpy(newname.name, s);
+                newgroup.content.push_back(newname);
+            }
          }
       }
       if (creating) groups.push_back(newgroup);
@@ -227,7 +229,7 @@ void BoardList::load_groups()
 
 void BoardList::delete_group(int sel)
 {
-   vector <BGroup>::iterator it = groups.begin();
+   std::vector <BGroup>::iterator it = groups.begin();
    for (int i = 0; i < sel; i++) it++;
    groups.erase(it);
 }
@@ -338,7 +340,7 @@ void BoardList::handle_event(Event *ev)
       newgrp.sel = false;
 
       tbname newname;
-      vector <Board>::iterator it;
+      std::vector <Board>::iterator it;
       for (it = boards.begin(); it < boards.end(); it++)
         if (it->sel)
         {
@@ -433,7 +435,7 @@ void BoardList::handle_event(Event *ev)
     //select bulletins in group
     if (col == 0)
     {
-      vector <Board>::iterator it;
+      std::vector <Board>::iterator it;
       for (it = boards.begin(); it < boards.end(); it++)
         it->sel = groups[gslct].contains(it->name) ||
                   groups[gslct].content.empty();
@@ -451,7 +453,7 @@ void BoardList::handle_event(Event *ev)
 
     if (col == 1 && ev->x == '*')
     {
-      vector <Board>::iterator it;
+      std::vector <Board>::iterator it;
       for (it = boards.begin(); it < boards.end(); it++)
         it->sel = !it->sel;
     }
@@ -463,7 +465,7 @@ void BoardList::handle_event(Event *ev)
       //update bfilter
       tbname newname;
       clear_filter();
-      vector <Board>::iterator it;
+      std::vector <Board>::iterator it;
       for (it = boards.begin(); it < boards.end(); it++)
         if (it->sel)
         {

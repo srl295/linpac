@@ -8,10 +8,10 @@ s_libs = data.cc calls.cc sources.cc commands.cc event.cc names.cc screen.cc \
          hash.c
 s_linpac = linpac.cc	 
 
-CXXFLAGS = -g -Wall -funsigned-char
-
-rootdir = @prefix@/share/linpac
-root_PROGRAMS = linpac
+pkglibexec_PROGRAMS = linpac
 linpac_SOURCES = $(s_libs) $(s_linpac)		 
 
-EXTRA_DIST = *.h
+EXTRA_DIST = calls.h commands.h comp.h constants.h data.h editor.h \
+	    evaluate.h event.h evqueue.h hash.h infoline.h keyboard.h \
+            names.h screen.h sounds.h sources.h status.h tevent.h \
+            tools.h t_queue.h t_stack.h version.h watch.h windows.h

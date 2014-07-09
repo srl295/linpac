@@ -1,4 +1,5 @@
-LinPac version 0.17pre3 (unstable release)
+LinPac version 0.20 (unstable release)
+Copyright 2014 by David Ranch and Jerry Dunmire
 Copyright (c) 2003 by Radek Burget
 
 This program is free software; you can redistribute it and/or modify
@@ -12,15 +13,21 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 If you encounter any problems when compiling or using LinPac please take
-a look at http://linpac.sf.net or contact the author.
+a look at http://linpac.sourceforge.net or send email to
+linpac@trinnet.net.
 
-73! Radek Burget OK2JBG
+Many thanks to the original author:
+Radek Burget OK2JBG
 Internet e-mail   : radkovo@centrum.cz
 Packet radio mail : OK2JBG@OK0PAB.#MOR.CZE.EU
 
 
-QUICK INSTALATION
-~~~~~~~~~~~~~~~~~
+QUICK INSTALATION FROM A RELEASE PACKAGE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release packages can be identified by the presence of the ./configure in
+this directory. If the ./configure script is not present, then see the
+'Hacking' instructions below.
+
 If you plan to use LinPac for recieving and sending your mail then please
 install the ax25mail-utils package first. This package can be found
 at http://ax25mail.sf.net
@@ -57,19 +64,41 @@ KNOWN PROBLEMS
   
   See http://linpac.sf.net for actual problems and their solution.
 
+  The --enable-LINKSTATIC configuration option does not work.
 
 
-SOME NOTES TO INSTALATION (for hackers)
+NOTES FOR HACKING
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The applicatons are linked using the shared library by default (the library
-liblinpac.so is installed in /usr/local/lib). You can link all the
-applications staticaly by running
+A clean checkout from the source repository is not ready to configure
+and compile. You will need the GNU autotools
+(https://en.wikipedia.org/wiki/GNU_build_system) to create the
+./configure script and Makfile templates. Once the autotools are
+installed the full build procedure is:
 
-            configure --enable-LINKSTATIC
+    autoreconf --install
+    ./configure
+    make
+    make install
+
+You can make a release package for distribution using:
+
+    make dist
 
 For debugging LinPac it is useful to run LinPac in the place of compile 
 without installing it. For this the command 'make noinstall' can be used. 
 This will create the directory structure in the ./src directory. This is 
 only available with the staticaly linked applications.
 
-See file INSTALL for more informations about the configure tool.
+
+CONFIGURATION OPTIONS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Most of the configuration options are described in the INSTALL file.
+
+There is one custom option for linpac; --enable-LINKSTATIC.
+
+The applicatons are linked using the shared library by default (the library
+liblinpac.so is installed in /usr/local/lib). You can link all the
+applications staticaly by running
+
+            configure --enable-LINKSTATIC
+

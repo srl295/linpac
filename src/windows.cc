@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <cstdlib>
 #include <signal.h>
 #include <sys/stat.h>
 
@@ -138,7 +139,7 @@ void TLine::clear_it(int attr)
 //-------------------------------------------------------------------------
 // Class LineStack
 //-------------------------------------------------------------------------
-LineStack::LineStack(char *fname, size_t bsize)
+LineStack::LineStack(char const *fname, size_t bsize)
 {
   umask(0);
   strcopy(filename, fname, 256);
@@ -196,9 +197,15 @@ void LineStack::get(TLine &line)
     lseek(f, lpos, SEEK_SET);
     for (i=0; i<line.length; i++)
     {
-      read(f, &ch, 1);
+      if (read(f, &ch, 1) < 0)
+      {
+        fprintf(stderr, "windows.cc: read() failed in LineStack::get.\n");
+      }
       line[i].ch = ch;
-      read(f, &ch, 1);
+      if (read(f, &ch, 1) < 0)
+      {
+        fprintf(stderr, "windows.cc: second read() failed in LineStack::get.\n");
+      }
       line[i].typ = int(ch);
     }
     poz++;
@@ -213,7 +220,14 @@ void LineStack::store(TLine &line)
   if (bufend == bufsize) //buffer full
   {
     phsize = lseek(f, 0, SEEK_END);
-    if (phsize == bufstart) write(f, buffer, step);
+    if (phsize == bufstart)
+    {
+      if (write(f, buffer, step) < 0)
+      {
+        fprintf(stderr, "windows.cc: write failed in LineStack::store.\n");
+      }
+    }
+
     bufstart += step;
     memmove(buffer, buffer+step, bufsize-step);
     for (i=0; i<line.length; i++)
@@ -245,7 +259,12 @@ void LineStack::flush()
 {
   long phsize = lseek(f, 0, SEEK_END);
   if (phsize < bufstart+bufend)  //is something to flush ?
-    write(f, buffer+(phsize-bufstart), bufend-(phsize-bufstart));
+  {
+    if (write(f, buffer+(phsize-bufstart), bufend-(phsize-bufstart)) < 0)
+    {
+      fprintf(stderr, "windows.cc: write failed in LineStack:flush.\n");
+    }
+  }
   init_buffer(); //re-read buffer
 }
 
@@ -284,7 +303,10 @@ void LineStack::check_buffers()
       return;
     }
     int rd = read(f, copy, lomark);
-    write(newfile, copy, rd);
+    if (write(newfile, copy, rd) < 0)
+    {
+      fprintf(stderr, "windows.cc: write failed to %s\n", tmpname);
+    }
     close(newfile);
     close(f);
     delete[] copy;
@@ -441,6 +463,12 @@ void Window::outch(char ch, int typ)
 void Window::outstr(char *s, int typ)
 {
   char *p;
+  for (p = s; *p; p++) outch(*p, typ);
+}
+
+void Window::outstr(char const *s, int typ)
+{
+  char const *p;
   for (p = s; *p; p++) outch(*p, typ);
 }
 
@@ -723,7 +751,7 @@ QSOWindow::~QSOWindow()
 //------------------------------------------------------------------------
 // Class MonWindow
 //------------------------------------------------------------------------
-MonWindow::MonWindow(int wx1, int wy1, int wx2, int wy2, int alt_y, char *fname)
+MonWindow::MonWindow(int wx1, int wy1, int wx2, int wy2, int alt_y, char const *fname)
 {
   strcpy(class_name, "MonWin");
   act = true;
@@ -1304,9 +1332,13 @@ int InfoLine::check_proc_format()
   f = fopen(PROCFILE, "r");
   if (f != NULL)
   {
-    fgets(s, 255, f);
-    fgets(s, 255, f);
-    if (strchr(s, '/') == NULL) res = 1; //older format contains '/'
+    if (fgets(s, 255, f) != NULL)
+    {
+      if (fgets(s, 255, f) != NULL)
+      {
+        if (strchr(s, '/') == NULL) res = 1; //older format contains '/'
+      }
+    }
     fclose(f);
   }
   return res;
@@ -1349,7 +1381,7 @@ void StatLines::update(int wx1, int wy1, int wx2, int wy2)
 
 void StatLines::handle_event(const Event &ev)
 {
-  vector <info_line>::iterator it;
+  std::vector <info_line>::iterator it;
 
   switch(ev.type)
   {

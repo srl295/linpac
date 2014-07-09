@@ -64,9 +64,13 @@ int StatusServer::check_proc_format()
   f = fopen(PROCFILE, "r");
   if (f != NULL)
   {
-    fgets(s, 255, f);
-    fgets(s, 255, f);
-    if (strchr(s, '/') == NULL) res = 1; //older format contains '/'
+    if (fgets(s, 255, f) != NULL)
+    {
+      if (fgets(s, 255, f) != NULL)
+      {
+        if (strchr(s, '/') == NULL) res = 1; //older format contains '/'
+      }
+    }
     fclose(f);
   }
   return res;
