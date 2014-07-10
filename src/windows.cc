@@ -21,7 +21,9 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <signal.h>
+#include <stdlib.h>
 #include <sys/stat.h>
+#include <time.h>
 
 #include "tools.h"
 #include "data.h"

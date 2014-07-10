@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> // for mkstemp
 #include <unistd.h>
 #include <cstdlib>
 #include <sys/types.h>
