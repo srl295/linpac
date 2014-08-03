@@ -1,3 +1,7 @@
+20140803:
+- Added linpac-todo.txt for initially tracking all items that need
+  to be fixed, resolved, improved
+------------------------------------------------------------------------
 20140309:
 - Installation locations are now GNU Stardard compliant.
    - Differs slightly from FHS 2.3 because due to use of libexec
