@@ -14,6 +14,7 @@ various items resolved is highly encouraged and appreciated!
 Changes:
 --------
 08/03/13 - Some additional cleanup before commiting to Git
+         - Added missing make install tricks for a valid install 
 06/17/14 - P3: Support outgoing connections
 04/08/14 - P3: Minimize files being copied to user's homedir
 02/12/14 - P3: broken :help on console-0
@@ -38,10 +39,13 @@ P1 - Packaging:
            # rpm -ql LinPac
            (contains no files)
 
-P1 - Compiling:
+P1 - Compiling and Install
 ---------------
 
-   - None
+   - 08/03/14: make install is not creating /var/ax25/mail - be sure
+         to integrate all configuration hacks as detailed in 
+         http://www.trinityos.com/HAM/CentosDigitalModes/hampacketizing-centos.html#11a.linpacconfig
+
 
 
 P1 - UI   
