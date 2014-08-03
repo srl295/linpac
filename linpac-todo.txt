@@ -15,6 +15,7 @@ Changes:
 --------
 08/03/13 - Some additional cleanup before commiting to Git
          - Added missing make install tricks for a valid install 
+         - Added that Alt-X doesn't work
 06/17/14 - P3: Support outgoing connections
 04/08/14 - P3: Minimize files being copied to user's homedir
 02/12/14 - P3: broken :help on console-0
@@ -47,7 +48,6 @@ P1 - Compiling and Install
          http://www.trinityos.com/HAM/CentosDigitalModes/hampacketizing-centos.html#11a.linpacconfig
 
 
-
 P1 - UI   
 ---------------
 
@@ -64,6 +64,8 @@ P1 - UI
 
     - Prompting: remote user gets "LinPac: Unknown command (SP). Try :help."
       yet :help is only valid for local console users!
+
+    - Alt-X doesn't exit Linpac as the documentation says it should - KJ6LNH
 
 
 P1 - Mail
