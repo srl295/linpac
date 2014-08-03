@@ -1,0 +1,391 @@
+
+Linpac: Prioritized Goals
+
+David Ranch - KI6ZHD
+linpac@trinnet.net
+
+--------------------------------------------------------------------------------
+
+All items are in priority for their respective catagories : All help to get
+various items resolved is highly encouraged and appreciated!
+
+
+
+Changes:
+--------
+08/03/13 - Some additional cleanup before commiting to Git
+06/17/14 - P3: Support outgoing connections
+04/08/14 - P3: Minimize files being copied to user's homedir
+02/12/14 - P3: broken :help on console-0
+11/17/13 - P3: wrap and :d disconnect
+08/09/13 - P2: Added date stamp to initial connections
+07/19/13 - P1: compose full CPU load
+06/24/13 - P2: Added shell request for //Bell
+         - P2 - Packaging: Added note about mheardd running and file perms
+         - P3: UI compression indicator
+06/03/13 - added P1 linpac message overwriting bug
+05/08/13 - cleaned up and prioritized
+
+
+--------------------------------------------------------------------------------
+
+
+P1 - Packaging:
+---------------
+
+  - 10/24/12 - RPM spec file is broken (dranch can help with this)
+  
+           # rpm -ql LinPac
+           (contains no files)
+
+P1 - Compiling:
+---------------
+
+   - None
+
+
+P1 - UI   
+---------------
+
+    - 10/16/12 - CONV (converse) feature crashes Linpac when used.  Might
+      require two people to be connected
+        - 09/18/12 - when exiting :conv mode, linpac segfaults
+
+    - change last sysop activity to be shown in hours not seconds
+
+    - when remote user issues //B, send back text saying it's paging
+      me.  On jim's box, he doesn't see the paging line - aka not active
+      if (active) lp_appl_result("Ringing (PC speaker only)...")
+      Is this a related issue with OSS vs. ALSA vs PulseAudio?
+
+    - Prompting: remote user gets "LinPac: Unknown command (SP). Try :help."
+      yet :help is only valid for local console users!
+
+
+P1 - Mail
+---------------
+
+    - 08/03/14 - Linpac only supports email relaying and doesn't fully support
+           local-only messaging.  Messages can be left for the local operator but
+           no other remote callsign.  Would like to at least offer a simple interface
+           for all remote callsigns like say a Kantronics KPC3+ TNC.
+
+            - Do not have to rely on another system (FBB, etc)
+            - This should NOT use any local SMTP MTA (postfix, sendmail, etc)
+
+    - 05/07/13 - Fix $HOME/Linpac/mail/messages.local to properly report
+                 remote sender
+
+    - 06/02/13 - closing previous messages
+          looks like if you connected, did //sp and after entering the subject, your
+          connection dropped, linpac will leave left the message open. The next connect 
+          where the user started a second message, same thing happened, and when the 
+          remote user was able to issue an /ex, it finally closed all three of the messages. 
+          so if i drop this connection before doing a /ex, it will leave the original 
+          message it open until i do a /ex afer re connecting...
+
+              - If someone is writing a message and the connection drops
+                out, have Linpac send the message as a INCOMPLETE with 
+                what was written (implicit /ex)
+
+
+    - 08/24/12 
+      - When you run :mail, it only shows the last message by
+        default on the top-most line.  If the local user pushes up arrow cursor key many
+        times, Linpac will scroll back and show all the other messages.  Change behavior to 
+        show newest msg at top and older below (maybe make order a preference)
+
+    - In the mail view, H for header doesn't work
+      - when viewing msg, 
+      - ESC doesn't work but L does
+
+      - can't use control-x to delete individual messages
+        "Message 15 doesn't exist"
+
+         - when you delete messages by marking various messages and then
+            trying to delete them with control-x, they come back and :pack 
+            doesn't change that
+         - Both show and make ctl-X command to delete msg (currently
+           only sometimes works in index view)
+
+         *- have to manually delete files from $HOME/mail/ and then
+            update the messages.local index file
+
+    - the "d" command doesn't work but :getmsg 1 does work
+
+    - when using //sp (private, 100% CPU load, remote user sent
+      a blank space (not sure), message was cancedlled but then
+      100% CPU on ./bin/compose p KI6ZHD.  Also happens if
+      someone is disconnected while composing a message
+
+P1 - Defaults
+            - edit the /usr/local/share/linpac/macro/help.mac as root and insert
+              the following lines to support case-insensitive commands
+
+            //sp <address> [<subject>] - write a Private message to user [optional
+            //subject]
+            //sb <address> [<subject>] - write a Bulletin message to everyone [optional
+            //subject]
+
+
+P1 - Documentation
+    - the syntax for mail forwarding as shown in the manual vs. 
+      the home.mac are opposite.  Which is right?
+
+
+==========================================================================
+==========================================================================
+
+Priority 2 - Wanted Items (needed but not critical)
+-------------------------------------------------------------------------------
+
+P2 - Packaging
+     - Seems that //MHeard requires mheardd to be running to work.  RPM
+       should require Mheard and Linpac should check if Mheardd is running
+       and if not, it should give a warning like:
+       "Warning: mheardd not running.  Please notify sysop" 
+
+     - The permissions of the /var/ax25/mheard/mheard.dat file need to be ok 
+       (chmod 666), if they aren't, have Linpac check and warn
+
+P2 - UI
+
+     - 08/09/13 - Add the timestamp to any initial incoming connection 
+
+     - 09/25/12 - Make all // commands case insensitive
+
+     - Improve Ncurses SIGWINCH handling for screen resizing (esp. wide)
+       Could be creating the 25% CPU usage issue
+
+     - Add support that when the //Bell command is issued, run a 
+       specific shell script to do things like SMS notify, etc
+
+
+P2 - Performance issues
+
+    01/31/13 - Linpac hovers at 25% CPU utilization when idle - some sort of 
+               polling issue?
+               4788 root      20   0  114m 3420 1656 R 23.6  0.1   1240:44 linpac
+                                                       ^^^^
+               - 08/01/14 - Initial concept code is available from K6SPI
+
+P2 - Mail
+    09/09/12 - issuing the command //sp (all lower case) without a callsign
+              is accepted yet it doesn't say where the message going 
+              ("Enter message for @K6FB.#NCA.CA.USA.NOAM") but it 
+              does route to ki6zhd.  Why?
+
+   - add callsign/date/time to :mail viewer (maybe based upon the
+     file timestamp?)
+
+
+    - Show "l" as back for previous screen
+
+
+P2 - Help 
+    - In help view, ESC doesn't work
+
+
+P2 - Documentation
+    - manual doesn't talk about DEF_RCMD 
+    - Using the F10 key 
+      - give example of the power of ax25spyd vs. listen
+      - Use the pageup/pagedown keys to see all previous RX traffic
+      - Use the mouse scroll wheel to scroll up/down on previous TX
+        traffic
+
+
+P2 - Website: 
+     08/03/12 - Update the website, post new version, fix all broken links, 
+                etc. - dranch can help with this once we have a new release
+
+   - Create a source repo on SF and post code to accept contributions
+
+P2 - security
+
+     /usr/share/linpac/bin/bell might need to be SUID root (4755) to ring the 
+     bell as non-root users - some research shows this is a fundamental limitation
+     of Linux.  Is this true?
+
+P2 - Operation
+
+     Minimize full copy of Linpac config, macro, etc. files into the user
+     directory.  Have Linpac support a prefernce for changed files in the
+     user's homedir, if not, default to the /usr/share baseline files
+
+==========================================================================
+==========================================================================
+
+Priority 3 - Future features
+-------------------------------------------------------------------------------
+P3 - Connectivity
+
+   06/17/14 - Cannot make outgoing connections from a Linpac station
+              when already connected to it:
+              //c k6ks-1
+              LinPac: Channel already connected
+
+   11/17/13 - If a :d is at the end of a line in connected mode and it then
+              wraps, it should NOT count as a disconnect command
+
+   01/21/13 - add support for connections via netrom interfaces and not just 
+              ax25 interfaces as defined in axports
+
+P3 - UI
+
+   02/12/14
+   - :help on the F1 console doesn't work - seems to be intermittant and
+     when I came back later, the help was on the screen.  Maybe it's unique
+     to F1 as that's the primary F-key per the user config?
+
+   08/05/12 
+
+   - while in F10 mode, issuing a :help transmits all text over the air.
+     Should be shown only locally
+
+   - When compression is enabled per channel, the UI should indicate that
+     compression is enabled in that channel
+
+   - Add a configurable scrollback buffer (larger) via init.mac
+
+   - Add a sysop paging feature to execute a shell script
+     example script will send an email (which can then be an SMS)
+     dranch already has such a script that is run from cron.  We can
+     add it into the contrib area until this feature is integrated
+
+   - change default ax.25 listen startup to include timestamps
+     Maybe this is a change in "listen" or axspyd?
+
+   - add a prompt when a linpac command completes (configurable?)
+     - what is this about.. can't remember
+
+   - 08/07/12 - Support multiple digi paths for the last batch of lines
+        - If variables like UNDEST2, UNDEST3, UNDEST4 are defined: 
+           Option #1 - send last text entered in F10 or with :UNPROTO to each 
+                       of the paths with a configurable delay.  Alternatively, 
+                       use F11 and F12 for F10 like UNPROTO support but with 
+                       other UNDEST paths
+
+           Option #2 - have an additional keystroke like control-1, 
+                       control-2, control-3, control-4 to resend that text to
+                       a given UNDEST path if the first digipeater didn't 
+                       digipeat as expected
+
+   - 09/01/12 - When you connect to a remote station, the F key label changes
+        to reflect the new machine.  When you disconnect and revert
+        to the previous station, it doesn't change back
+
+     - running :init from the main program seems to render the text and
+       read sections in alternating places if you run :init multiple
+       times.  Something is wrong
+
+P3 - Mail
+   - Ulistd Mail never sends for relaying
+
+   - Add support for KPC TNCs for mail forwarding
+
+P3 - Sound
+     - Update sound support to either shell scripts or native
+       PulseAudio and Alsa in addition to the PC speaker
+
+P3 - Documentation
+
+==========================================================================
+==========================================================================
+
+P4 - Long term requests
+
+   - get the Java UI version working
+
+
+==========================================================================
+Completed!
+==========================================================================
+
+P1 - Packaging:
+---------------
+
+   * Resolved by Jerry Dunmire, KA6HLD
+   - Change official version of code from 0.17pre3 to 0.17pre4 - I tried getting
+     this to work but ever time I tried, it would break
+
+     when 0.17pre3, the Makefile.in file leaves top_builddir = .
+     when 0.17pre4, 
+        - configure passes once but is run again,
+        - second run runs 
+            aclocal                                                                                                
+            automake --foreign --include-deps Makefile
+
+     shows:
+
+     /bin/sh ./config.status --recheck                                                                              
+     running /bin/sh ./configure  --includedir=/usr/include/c++/3.4.6
+     CPPFLAGS=-I/usr/include/c++/3.4.6/backward  --no-create --no-recursion                                                                                       
+     checking for a BSD-compatible install... /usr/bin/install -c                                                   
+     checking whether build environment is sane... yes                                                              
+     /root/rpmbuild/BUILD/LinPac-0.17pre4/missing: Unknown `--run' option                                           
+     Try `/root/rpmbuild/BUILD/LinPac-0.17pre4/missing --help' for more information                                 
+     configure: WARNING: `missing' script is too old or missing 
+     cd . \                                                                                                         
+               && CONFIG_FILES=Makefile CONFIG_HEADERS= /bin/sh ./config.status          
+        - the Makefile.in i left to @top_builddir@
+
+
+P1 - Compiling:
+---------------
+
+   * Resolved by David Ranch, KI6ZHD
+   - Remove the requirement for the compat-gcc-libs RPM for Linpac and for
+     Ax-mail (sub-package for Linpac as found on sf.net):
+
+        ./configure --includedir=/usr/include/c++/3.4.6
+
+        Per an email on 08/03/2012 @ 5:36pm from Steven Loomis (in dranch's A-Ham-Packet 
+        folder)
+        --
+        > One example of this is the axmail-utils package.  There are other behavior
+        > differences I've seen and maybe this compat-gcc thing is one example of it.
+
+            #ifndef AXMAIL_H
+            #define AXMAIL_H
+
+            #include <iostream>
+            #include <vector>
+
+            like that, from axmail.h
+
+         Well, I fixed it by replacing #include <vector.h>  with   #include <vector>
+        and using std::vector;
+        --
+
+       Another user said he did something similar and it worked ok for him
+       --
+       08/19/12 - (08:07:50 PM) Jim, KJ6YWD: in any that included vector.h
+       (08:07:56 PM) Jim, KJ6YWD: got it , works now
+       (08:08:20 PM) Jim, KJ6YWD: newer gcc uses just <vector>
+       (08:08:24 PM) Jim, KJ6YWD: or "vector"
+       --
+
+       tried changing:
+          src/watch.h:#include <vector.h>
+          src/event.h:#include <vector.h>
+          src/applications/mailer/mail_list.h:#include <vector.h>
+          src/applications/mailer/mail_route.cc:#include <vector.h>
+          src/applications/mailer/mail_filt.h:#include <vector.h>
+          src/applications/mailer/axmail.h.orig:#include <vector.h>
+          src/screen.h:#include <vector.h>
+          src/data.h:#include <vector.h>
+          src/commands.h:#include <vector.h>
+          src/infoline.h:#include <vector.h>
+
+     Neither of these fixes worked for dranch.
+
+   -----------------------------------------------------------------------------
+
+   * Resolved by David Ranch, KI6ZHD
+   - Integrate various dranch patches that I have already authored
+     (digipeat path length, use console beep vs. obsolete 
+     OSS /dev/dsp)
+
+     See http://www.trinityos.com/HAM/CentosDigitalModes/usr/src/redhat/SOURCES/linpac*
+
