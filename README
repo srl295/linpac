@@ -1,22 +1,29 @@
-LinPac version 0.20 (unstable release)
-Copyright 2014 by David Ranch and Jerry Dunmire
-Copyright (c) 2003 by Radek Burget
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+LinPac version 0.20 (stable release)
+Copyright (c) 2014 by David Ranch (KI6ZHD) 
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Linpac is a modular console-oriented packet radio terminal for Linux with a 
+built-in messaging client.  Using Linux's native AX.25 network stack, it
+can support eight concurrent connected sessions (QSOs) as well as send
+UNPROTO packets (UI) to any preconfigured ax25 digi path.  Local messaging 
+support is currently fairly simple yet Linpac is designed to relay all
+messages to remote BBSes for full messaging if configured.  Linpac stable
+currently supports an ncurses-based CLI client but there an unstable Java-based
+client/server version with a GUI client that's partially operational but needs 
+work.
 
-If you encounter any problems when compiling or using LinPac please take
-a look at http://linpac.sourceforge.net or send email to
-linpac@trinnet.net.
+   Packet radio mail: KI6ZHD@N0ARY.#NCA.CA.USA.NOAM
 
-Many thanks to the original author:
+
+Current contributors:
+
+  - Jerry Dunmire (KA6HLD)
+
+
+If you encounter any problems when compiling or using LinPac please go to
+http://linpac.sourceforge.net for support.
+
+Many thanks to the original author of Linpac:
 Radek Burget OK2JBG
 Internet e-mail   : radkovo@centrum.cz
 Packet radio mail : OK2JBG@OK0PAB.#MOR.CZE.EU
@@ -28,11 +35,12 @@ Release packages can be identified by the presence of the ./configure in
 this directory. If the ./configure script is not present, then see the
 'Hacking' instructions below.
 
-If you plan to use LinPac for recieving and sending your mail then please
-install the ax25mail-utils package first. This package can be found
+If you plan to use Linpac for recieving and sending your mail via a
+remote BBS system (optional), please install the ax25mail-utils package 
+first before first running Linpac. This package can be found
 at http://ax25mail.sf.net
 
-Before compilation please run
+Before compilation of Linpac please run:
 
               ./configure
 
@@ -84,7 +92,7 @@ You can make a release package for distribution using:
 
     make dist
 
-For debugging LinPac it is useful to run LinPac in the place of compile 
+For debugging Linpac it is useful to run Linpac in the place of compile 
 without installing it. For this the command 'make noinstall' can be used. 
 This will create the directory structure in the ./src directory. This is 
 only available with the staticaly linked applications.
@@ -94,11 +102,13 @@ CONFIGURATION OPTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Most of the configuration options are described in the INSTALL file.
 
-There is one custom option for linpac; --enable-LINKSTATIC.
+[broken]
+  There is one custom option for linpac; --enable-LINKSTATIC.
 
-The applicatons are linked using the shared library by default (the library
-liblinpac.so is installed in /usr/local/lib). You can link all the
-applications staticaly by running
+  The applicatons are linked using the shared library by default (the library
+  liblinpac.so is installed in /usr/local/lib). You can link all the
+  applications staticaly by running
 
             configure --enable-LINKSTATIC
+
 
