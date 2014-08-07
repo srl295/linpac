@@ -9,7 +9,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 ## information about the AC_CONFIG_MACRO_DIR
 AC_CONFIG_MACRO_DIR([m4])
 LT_PREREQ([2.2.6])
-AM_PROG_AR
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT
 AM_INIT_AUTOMAKE([gnu -Wall -Werror 1.11.1])
 
