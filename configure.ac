@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Prelude
-AC_INIT([LinPac], [0.20], [linpac@trinnet.net] , , [http://linpac.sourceforge.net/])
+AC_INIT([LinPac], [0.21], [linpac@trinnet.net] , , [http://linpac.sourceforge.net/])
 AC_PREREQ([2.63])
 AC_CONFIG_SRCDIR([src/linpac.cc])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -9,6 +9,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 ## information about the AC_CONFIG_MACRO_DIR
 AC_CONFIG_MACRO_DIR([m4])
 LT_PREREQ([2.2.6])
+## Required to allow running on both autoconf 2.69 (ubuntu 14.04) as well as 2.63 (centos 6.5)
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT
 AM_INIT_AUTOMAKE([gnu -Wall -Werror 1.11.1])
@@ -22,7 +23,7 @@ AC_PATH_PROG([PERL], [perl], ["none"])
 if test $PERL = "none"
 then
   echo "-------------------------------------------------------------------"
-  echo " WARNING: Cannot found 'perl' installed. Some tools won't work !!!"
+  echo " WARNING: Cannot find 'perl' installed. Some tools won't work !!!"
   echo "-------------------------------------------------------------------"
   set PERL="/usr/bin/perl"
 fi
@@ -67,7 +68,7 @@ AH_TEMPLATE([NO_SOCKLEN_T], [Socket length type])
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([VERINFO], [Version string])
 # TODO: move VERINFO to a more prominate location or eliminated it
-AC_DEFINE([VERINFO], ["Development snapshot 030813"])
+AC_DEFINE([VERINFO], ["Development snapshot 080714"])
 
 # Package Options
 # TODO: make sure this is the up-to-date method and that it works right
