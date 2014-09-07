@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+09/07/14 - Noted issues with logging timestamps
 08/03/13 - Some additional cleanup before commiting to Git
          - Added missing make install tricks for a valid install 
          - Added that Alt-X doesn't work
@@ -293,6 +294,13 @@ P3 - Mail
 P3 - Sound
      - Update sound support to either shell scripts or native
        PulseAudio and Alsa in addition to the PC speaker
+
+P3 - Backend
+     - Logging that goes into ~/Linpac/log 
+         #1 - the connection of a station isn't going to the right file
+              depending on what SSID is assigned to each F-key
+         #2 - UTC time seems to be off; log file gets updated (ATIME) but
+              nothing written to the log when making an outgoing connection
 
 P3 - Documentation
 
