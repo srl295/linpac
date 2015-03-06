@@ -1,3 +1,4 @@
+.libs
 *.swp
 *.html
 /autom4te.cache

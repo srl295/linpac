@@ -167,23 +167,21 @@ bool call_match(const char *call1, const char *call2)
   return (*s1 && *s2 && strcasecmp(s1, s2) == 0 && call_ssid(call1) == call_ssid(call2));
 }
 
-char *state_str(int state)
+const char *state_str(int state)
 {
-  static char s[20];
   switch (state)
   {
-    case 0: strcpy(s, "Disconnected"); break;
-    case 1: strcpy(s, "Link setup"); break;
-    case 2: strcpy(s, "Disconnecting"); break;
-    case 3: strcpy(s, "Info transfer"); break;
-    case 4: strcpy(s, "Wait ack"); break;
-    case 5: strcpy(s, "State 5"); break;
-    case 6: strcpy(s, "State 6"); break;
-    case 7: strcpy(s, "State 7"); break;
-    case 8: strcpy(s, "State 8"); break;
-    default: strcpy(s, "Unknown");
+    case 0: return "Disconnected";
+    case 1: return "Link setup";
+    case 2: return "Disconnecting";
+    case 3: return "Info transfer";
+    case 4: return "Wait ack";
+    case 5: return "State 5";
+    case 6: return "State 6";
+    case 7: return "State 7";
+    case 8: return "State 8";
+    default: return "Unknown";
   }
-  return s;
 }
 
 bool is_number(const char *s)

@@ -19,12 +19,14 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <errno.h>
+#include <time.h>
 #include <sys/time.h>
 #include <ctime>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <linux/ax25.h>
+#include <stdlib.h>
 #include "version.h"
 #include "tools.h"
 #include "evaluate.h"

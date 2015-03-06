@@ -30,6 +30,7 @@ class Object
     unsigned oid;
     char class_name[16];
     virtual void handle_event(const Event &) = 0;
+    virtual ~Object(){}
 };
 
 //-------------------------------------------------------------------------
