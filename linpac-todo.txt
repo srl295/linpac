@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+12/06/14 - Bug in parsing /etc/ax25/axports
 09/07/14 - Noted issues with logging timestamps
 08/03/13 - Some additional cleanup before commiting to Git
          - Added missing make install tricks for a valid install 
@@ -51,6 +52,10 @@ P1 - Compiling and Install
 
 P1 - UI   
 ---------------
+
+    - 12/06/14 - If say another callsigns appears in the /etc/ax25/axports
+      file ABOVE the one in use, linpac's unproto feature no longer TXs but
+      connected sessions still work
 
     - 10/16/12 - CONV (converse) feature crashes Linpac when used.  Might
       require two people to be connected
