@@ -62,7 +62,7 @@ char *normalize_call(char *call);
 bool call_match(const char *call1, const char *call2);
 
 //Return Ax.25 status description
-char *state_str(int state);
+const char *state_str(int state);
 
 //Return true if string represents a decadic number
 bool is_number(const char *s);
