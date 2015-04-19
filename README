@@ -1,27 +1,30 @@
 
-LinPac version 0.20 (stable release)
-Copyright (c) 2014 by David Ranch (KI6ZHD) 
+LinPac version 0.21 (stable release)
+Copyright (c) 2015 by David Ranch (KI6ZHD) 
 
 Linpac is a modular console-oriented packet radio terminal for Linux with a 
 built-in messaging client.  Using Linux's native AX.25 network stack, it
 can support eight concurrent connected sessions (QSOs) as well as send
 UNPROTO packets (UI) to any preconfigured ax25 digi path.  Local messaging 
 support is currently fairly simple yet Linpac is designed to relay all
-messages to remote BBSes for full messaging if configured.  Linpac stable
-currently supports an ncurses-based CLI client but there an unstable Java-based
-client/server version with a GUI client that's partially operational but needs 
-work.
+messages to remote BBSes for full messaging if configured.  Linpac "stable"
+currently supports an Ncurses-based CLI client but there is also an unstable 
+Java-based client/server version with a GUI client that's partially 
+operational but needs work.
 
-   Packet radio mail: KI6ZHD@N0ARY.#NCA.CA.USA.NOAM
+If you encounter any problems when compiling or using LinPac please go to
+http://linpac.sourceforge.net for support.
+
 
 
 Current contributors:
 
-  - Jerry Dunmire (KA6HLD)
+  - David Ranch (KI6ZHD)
+       Packet radio mail: KI6ZHD@N0ARY.#NCA.CA.USA.NOAM
 
+  - Jerry Dunmire (KA6HLD) - Auto-tools
+  - Steven Loomis (K6SPI)  - Misc patches
 
-If you encounter any problems when compiling or using LinPac please go to
-http://linpac.sourceforge.net for support.
 
 Many thanks to the original author of Linpac:
 Radek Burget OK2JBG
@@ -35,12 +38,35 @@ Release packages can be identified by the presence of the ./configure in
 this directory. If the ./configure script is not present, then see the
 'Hacking' instructions below.
 
-If you plan to use Linpac for recieving and sending your mail via a
-remote BBS system (optional), please install the ax25mail-utils package 
-first before first running Linpac. This package can be found
-at http://ax25mail.sf.net
+  Optional: 
+  ---------
+  If you plan to use Linpac for recieving and sending your packet mail via a
+  remote BBS system (not required), you need install the ax25mail-utils 
+  package first before first running Linpac. This package can be found
+  at http://ax25mail.sf.net
 
-Before compilation of Linpac please run:
+
+Before compilation of Linpac, you must have these other packages installed:
+
+  NOTE: Though some distributions offer the AX25 libraries natively in 
+        their own repositories, they are usually very old and lack several
+        important fixes.  You can read more about these improvements here:
+
+           https://code.google.com/p/linuxax25/wiki/Ax25AppsDiffs
+
+   Debian / Ubunutu package names:    libax25 ax25-apps libncurses5
+                 Optional install:    ax25-tools ax25-xtools ax25mail-utils
+
+   Centos / Fedora package names:     libax25 ax25apps ncurses-libs
+                 Optional install:    ax25tools ax25mail-utils
+
+        I recommend all users install or build the AX.25 stack from 
+        this alternative provider for now:
+
+           https://code.google.com/p/linuxax25/source/browse/#svn%2Fdownloads
+
+
+Once you have installed the above dependencies, please run:
 
               ./configure
 
