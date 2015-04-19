@@ -88,9 +88,32 @@ to compile the package and then type
 or
             make install-strip
 
-to install the package. The install-strip command will also strip the
+or 
+            For Debian/Ubuntu folks, you might consider using "checkinstall" which 
+            is a tool that will run "make install" and wrap everything into an 
+            unofficial .deb file
+
+to install the package. The "install-strip" command will also strip the
 debugging information from the program (the instalation is then
-MUCH SMALLER).
+MUCH SMALLER) but harder to report issues to the developer.
+
+
+ONCE INSTALLED
+~~~~~~~~~~~~~~
+Once Linpac is installed, you MUST configure the Linux AX.25 system first.
+Linpac is only an application that uses a fully functional AX.25 stack.
+Please review the various resources on the Internet on how to do this 
+such as:
+
+  - Official AX25 HOWTO (old, dated but still useful)
+    http://tldp.org/HOWTO/AX25-HOWTO/
+
+  - John Ackermann's pages: 
+    http://www.febo.com/packet/linux-ax25/ax25-config.html
+
+  - David Ranch's pages:
+    http://www.trinityos.com/HAM/CentosDigitalModes/hampacketizing-centos.html#7.ax25initsetup
+
 
 
 KNOWN PROBLEMS
