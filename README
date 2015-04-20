@@ -54,11 +54,15 @@ Before compilation of Linpac, you must have these other packages installed:
 
            https://code.google.com/p/linuxax25/wiki/Ax25AppsDiffs
 
-   Debian / Ubunutu package names:    libax25 ax25-apps libncurses5
+
+   Dependencies:
+   ~~~~~~~~~~~~
+   Debian / Ubunutu package names:    libax25 ax25-apps libncurses5-dev
                  Optional install:    ax25-tools ax25-xtools ax25mail-utils
 
    Centos / Fedora package names:     libax25 ax25apps ncurses-libs
                  Optional install:    ax25tools ax25mail-utils
+
 
         I recommend all users install or build the AX.25 stack from 
         this alternative provider for now:
@@ -89,13 +93,15 @@ or
             make install-strip
 
 or 
-            For Debian/Ubuntu folks, you might consider using "checkinstall" which 
-            is a tool that will run "make install" and wrap everything into an 
-            unofficial .deb file
+            For Debian/Ubuntu folks, you might consider using the "checkinstall" 
+            tool (must be installed seperately).  This is a tool that will run 
+            "make install" and wrap everything into an unofficial .deb file
+            for proper packaging
 
-to install the package. The "install-strip" command will also strip the
-debugging information from the program (the instalation is then
-MUCH SMALLER) but harder to report issues to the developer.
+
+One of these options will install Linpac onto your system.  The "install-strip" 
+command will also strip the debugging information from the program (the installation 
+is then MUCH SMALLER) but harder to report issues to the developer.
 
 
 ONCE INSTALLED
@@ -126,7 +132,7 @@ KNOWN PROBLEMS
 
 NOTES FOR HACKING
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-A clean checkout from the source repository is not ready to configure
+A clean checkout from the GIT source repository is not ready to configure
 and compile. You will need the GNU autotools
 (https://en.wikipedia.org/wiki/GNU_build_system) to create the
 ./configure script and Makfile templates. Once the autotools are
@@ -141,7 +147,7 @@ You can make a release package for distribution using:
 
     make dist
 
-For debugging Linpac it is useful to run Linpac in the place of compile 
+For debugging Linpac, it is useful to run Linpac in the place of compile 
 without installing it. For this the command 'make noinstall' can be used. 
 This will create the directory structure in the ./src directory. This is 
 only available with the staticaly linked applications.
