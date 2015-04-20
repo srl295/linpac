@@ -19,7 +19,7 @@ Packager: David Ranch (KI6ZHD) <dranch@trinnet.net>
 Distribution: RedHat Linux
 AutoReqProv: yes
 Provides: linpac
-Requires: libax25 ax25apps
+Requires: libax25 ax25apps ncurses-libs
 BuildRequires: perl
 #This was required before all the vector fixes
 #BuildRequires: compat-gcc-34-c++
@@ -35,6 +35,7 @@ Project Home Page : http://linpac.sourceforge.net
 rm -rf $RPM_BUILD_DIR/%{name}-%{version}
 
 %setup
+autoreconf --install
 
 %build
 
@@ -74,8 +75,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun
 
 %changelog
-* Sun Mar 15 2015 David Ranch <dranch@trinnet.net>
-- New 0.21 version with some improvements
+* Sat Apr 04 2015 David Ranch <dranch@trinnet.net>
+- New 0.21 version with some fixes from K6SPI
+- Added a require libncurses requirement
 * Sun Aug 03 2014 David Ranch <dranch@trinnet.net>
 - New 0.20 version with all previous patches included
 - Updated autoconf configuration care of Jerry Dunmire, KA6HLD
