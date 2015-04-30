@@ -184,10 +184,18 @@ void close_env()
 
 char *sconfig(int chn, const char *name)
 {
-   char *nm = new char[strlen(name)+2];
-   sprintf(nm, "_%s", name);
+   char buf[128];
+   char *nm;
+   if(128 > (strlen(name)+2)) {
+     nm = buf;
+   } else {
+     nm = new char[strlen(name)+2];
+   }
+   nm[0]='_';
+   strcpy(nm+1,name);
+   //sprintf(nm, "_%s", name);
    char *r = env[chn].getSValue(nm);
-   delete[] nm;
+   if(nm!=buf) delete[] nm;
    return r;
 }
 
