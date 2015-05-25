@@ -1,7 +1,7 @@
 #Spec file for LinPac
 
 %define	name	linpac
-%define	version	0.21
+%define	version	0.22
 %define	release	1
 
 %define  debug_package %{nil}
@@ -75,6 +75,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun
 
 %changelog
+* Sun May 24 2015 David Ranch <dranch@trinnet.net>
+- New 0.22 version with ....
 * Sat Apr 04 2015 David Ranch <dranch@trinnet.net>
 - New 0.21 version with some fixes from K6SPI
 - Added a require libncurses requirement
