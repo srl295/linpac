@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+05/30/15 - Added a messaging bug report where the same ID gets written twice
 12/06/14 - Bug in parsing /etc/ax25/axports
 09/07/14 - Noted issues with logging timestamps
 08/03/13 - Some additional cleanup before commiting to Git
@@ -100,6 +101,17 @@ P1 - Mail
                 out, have Linpac send the message as a INCOMPLETE with 
                 what was written (implicit /ex)
 
+    - 05/30/15 - probably related to the above 06/02/13 messaging bug where a
+                 previous message wasn't closed, I just left a message and
+                 when exiting it, I saw:
+
+                   Message written OK.  Mid: 000159KJ6YWD  Size: 346
+
+                   Message written OK.  Mid: 000159KJ6YWD  Size: 318
+
+                 Same message ID with diferent sizes. Did this just overwrite
+                 the previous message?  Did it just append stuff to it?  Unclear 
+                 but important to understand what's happening
 
     - 08/24/12 
       - When you run :mail, it only shows the last message by
