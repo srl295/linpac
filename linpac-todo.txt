@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+06/19/15 - Added an issue when ax25mail-utils isn't installed
 05/30/15 - Added a messaging bug report where the same ID gets written twice
 12/06/14 - Bug in parsing /etc/ax25/axports
 09/07/14 - Noted issues with logging timestamps
@@ -141,6 +142,18 @@ P1 - Mail
       a blank space (not sure), message was cancedlled but then
       100% CPU on ./bin/compose p KI6ZHD.  Also happens if
       someone is disconnected while composing a message
+
+    - If ax25mail-utils isn't installed and a user issues :mail, the program
+      complains with:  
+
+      	"./bin/ail: error while loading sharedlibraries: liblinpac.so.6: cannot
+	open shared object file: No such file or directory"
+
+      Linpac should trap the missing library and instead state:
+
+        "Sorry, mail won't work as it seems you haven't installed
+	ax25mail-utils"
+
 
 P1 - Defaults
             - edit the /usr/local/share/linpac/macro/help.mac as root and insert
