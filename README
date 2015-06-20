@@ -121,8 +121,10 @@ or
 
             # The old classic way
             make install
+            ldconfig
 or
             make install-strip
+            ldconfig
 
 
 One of these options will install Linpac onto your system.  The "install-strip" 
