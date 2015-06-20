@@ -27,9 +27,7 @@ Current contributors:
 
 
 Many thanks to the original author of Linpac:
-Radek Burget OK2JBG
-Internet e-mail   : radkovo@centrum.cz
-Packet radio mail : OK2JBG@OK0PAB.#MOR.CZE.EU
+Radek Burget OK2JBG ( radkovo@centrum.cz )
 
 
 QUICK INSTALATION FROM A RELEASE PACKAGE
@@ -38,10 +36,11 @@ Release packages can be identified by the presence of the ./configure in
 this directory. If the ./configure script is not present, then see the
 'Hacking' instructions below.
 
+
   Optional: 
   ---------
   If you plan to use Linpac for recieving and sending your packet mail via a
-  remote BBS system (not required), you need install the ax25mail-utils 
+  remote BBS system (not required), you must install the ax25mail-utils 
   package first before first running Linpac. This package can be found
   at http://ax25mail.sf.net
 
