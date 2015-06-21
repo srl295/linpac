@@ -19,7 +19,7 @@ Packager: David Ranch (KI6ZHD) <dranch@trinnet.net>
 Distribution: RedHat Linux
 AutoReqProv: yes
 Provides: linpac
-Requires: libax25 ax25apps ncurses-libs
+Requires: libax25 ax25apps ncurses-libs ax25mail-utils
 BuildRequires: perl
 #This was required before all the vector fixes
 #BuildRequires: compat-gcc-34-c++
@@ -76,7 +76,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 %changelog
 * Sun May 24 2015 David Ranch <dranch@trinnet.net>
-- New 0.22 version with ....
+- New 0.22 version making the ax25mail-utils package required
 * Sat Apr 04 2015 David Ranch <dranch@trinnet.net>
 - New 0.21 version with some fixes from K6SPI
 - Added a require libncurses requirement
