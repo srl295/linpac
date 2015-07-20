@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+07/19/15 - added a bad message example
 06/19/15 - Added an issue when ax25mail-utils isn't installed
 05/30/15 - Added a messaging bug report where the same ID gets written twice
 12/06/14 - Bug in parsing /etc/ax25/axports
@@ -101,6 +102,22 @@ P1 - Mail
               - If someone is writing a message and the connection drops
                 out, have Linpac send the message as a INCOMPLETE with 
                 what was written (implicit /ex)
+
+              - An example bad message.  not sure why it doesn't show the 
+                "Last message number is 323" pre-text as expected
+                --
+                // sp Ki6h/ ex
+                /ex
+                Last message number is 322
+                Enter subject of PRIVATE MESSAGE (max 80 characters)
+
+                Message written OK.  Mid: 000323KI6ZHD  Size: 242
+                //ex
+                LinPac: Unknown command (ex). Try :help.
+                Enter message for KI6H/@K6FB.#NCA.CA.USA.NOAM
+                End with /EX or (Ctrl-Z) in first column
+                --
+
 
     - 05/30/15 - probably related to the above 06/02/13 messaging bug where a
                  previous message wasn't closed, I just left a message and
