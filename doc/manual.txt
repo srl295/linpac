@@ -229,7 +229,7 @@ User manual
    :Write off
 
    For receiving the plain binary file corresponding command :WBin can be
-   used. This way of transfering binary files is not recommended, use the
+   used. This way of transferring binary files is not recommended, use the
    autobin or yapp protocol instead.
 
    There are following commands available for sending files:
@@ -610,7 +610,7 @@ User manual
 
   8.1 File transfer protocols
 
-   At present LinPac supports two protocols for transfering files:
+   At present LinPac supports two protocols for transferring files:
      * Autobin - a simple protocol suitable for short files
      * YAPP - very sophisticated transfer protocol that provides better error
        detection and is able to resume previously interrupted transfer
