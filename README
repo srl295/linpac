@@ -1,5 +1,5 @@
 
-LinPac version 0.21 (stable release)
+LinPac version 0.22 (stable release)
 Copyright (c) 2015 by David Ranch (KI6ZHD) 
 
 Linpac is a modular console-oriented packet radio terminal for Linux with a 
@@ -27,9 +27,7 @@ Current contributors:
 
 
 Many thanks to the original author of Linpac:
-Radek Burget OK2JBG
-Internet e-mail   : radkovo@centrum.cz
-Packet radio mail : OK2JBG@OK0PAB.#MOR.CZE.EU
+Radek Burget OK2JBG ( radkovo@centrum.cz )
 
 
 QUICK INSTALATION FROM A RELEASE PACKAGE
@@ -38,10 +36,11 @@ Release packages can be identified by the presence of the ./configure in
 this directory. If the ./configure script is not present, then see the
 'Hacking' instructions below.
 
+
   Optional: 
   ---------
   If you plan to use Linpac for recieving and sending your packet mail via a
-  remote BBS system (not required), you need install the ax25mail-utils 
+  remote BBS system (not required), you must install the ax25mail-utils 
   package first before first running Linpac. This package can be found
   at http://ax25mail.sf.net
 
@@ -74,8 +73,23 @@ Once you have installed the above dependencies, please run:
 
               ./configure
 
-The default destination directory prefix is set to /usr/local
-If you want to change this, add --prefix switch:
+NOTE:  If the "configure" prompt isn't present, you probably got the sources
+       from Git. If so, run the following:
+
+              autoreconf --install
+              ./configure
+
+       If autoreconf doesn't run, you need to install the Auto-tools:
+
+          Deb-based: 
+                         sudo apt-get install automake autoconf
+
+          rpm-based
+                         yum install automake autoconf
+
+
+The default installation destination directory prefix is /usr/local/*.  If you 
+want to change this, add the following configuure --prefix switch:
 
              ./configure --prefix=DIR
 
@@ -86,17 +100,30 @@ After this just type
     
              make
 
-to compile the package and then type
+to compile the package.  At that point, you can install the application a few
+ways:
 
+            For Debian/Ubuntu folks:
+            --
+            Consider using the "checkinstall" tool instead of "make install".  
+            This tool must be installed seperately but it will run the 
+            equivelent of "make install" but instead, wrap everything into an 
+            unofficial .deb file with proper packaging
+
+or
+            For rpm based folks:
+            --
+            Consider using the included contrib/packaging/rpm/linpac.spec
+            file with the rpmbuild tool.  This tool must be installed seperately
+            but takes care of creating a clean RPM package to install
+or
+
+            # The old classic way
             make install
+            ldconfig
 or
             make install-strip
-
-or 
-            For Debian/Ubuntu folks, you might consider using the "checkinstall" 
-            tool (must be installed seperately).  This is a tool that will run 
-            "make install" and wrap everything into an unofficial .deb file
-            for proper packaging
+            ldconfig
 
 
 One of these options will install Linpac onto your system.  The "install-strip" 
@@ -125,12 +152,13 @@ such as:
 KNOWN PROBLEMS
 ~~~~~~~~~~~~~~
   
-  See http://linpac.sf.net for actual problems and their solution.
-
   The --enable-LINKSTATIC configuration option does not work.
 
+  Please see the linpac-todo.txt file in this source package as well as see 
+  http://linpac.sf.net for actual problems and their solution.
 
-NOTES FOR HACKING
+
+NOTES FOR HACKING with the Source code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A clean checkout from the GIT source repository is not ready to configure
 and compile. You will need the GNU autotools
@@ -157,7 +185,7 @@ CONFIGURATION OPTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Most of the configuration options are described in the INSTALL file.
 
-[broken]
+[broken at the moment]
   There is one custom option for linpac; --enable-LINKSTATIC.
 
   The applicatons are linked using the shared library by default (the library
