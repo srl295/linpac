@@ -1,3 +1,156 @@
+commit 903ce17
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-08-19
+
+    Added some debugging
+
+generate-ChangeLog.sh
+
+commit 663f62f
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-08-19
+
+    changed permissions
+
+generate-ChangeLog.sh
+
+commit aafffdf
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-07-28
+
+    fixed spelling issues
+
+doc/manual.html
+doc/manual.txt
+
+commit 6ebb907
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-07-19
+
+    added bad message example
+
+linpac-todo.txt
+
+commit 2f20464
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-07-11
+
+    removed ax25mail-utils as it's not really a requirement
+
+contrib/packaging/rpm/linpac.spec
+
+commit e73c300
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-07-11
+
+    updated the version
+
+linpac.lsm
+
+commit 527b067
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-07-11
+
+    additional updates
+
+NEWS
+
+commit 3192065
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-06-20
+
+    making ax25mail-utils required
+
+contrib/packaging/rpm/linpac.spec
+
+commit 352e04a
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-06-20
+
+    minor cleanups
+
+README
+
+commit a2ace48
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-06-19
+
+    added ldconfig after install
+
+README
+
+commit ca1b6ea
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-06-19
+
+    added error message about missing ax25mail-utils package
+
+linpac-todo.txt
+
+commit df9ba3b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-06-15
+
+    cleaned up the installation section a bit to include tools needed to run autoreconf; added the mention of building with rpmbuild, and other minor cleanups
+
+README
+
+commit c347717
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-06-13
+
+    made running autoreconf more obvious
+
+README
+
+commit 39c7fbf
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-30
+
+    Added a messaging bug report where the same ID gets written twice
+
+linpac-todo.txt
+
+commit d583951
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-25
+
+    Updated the version here that talks about the changed paths
+
+inst/linpac.in
+
+commit 6a4bc97
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-24
+
+    Updated the README
+
+README
+
+commit b9f1379
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-24
+
+    Updated RPM spec file for new version
+
+configure.ac
+
+commit abd7e1c
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-24
+
+    Updated RPM spec file for new version
+
+contrib/packaging/rpm/linpac.spec
+
+commit 4e1d8d9
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-24
+
+    Updated the blank Changelog based upon Git commit comments
+
+ChangeLog
+
 commit 91b1537
 Author: Steven R. Loomis <k6spi@fahmu.net>
 Date:   2015-04-30
