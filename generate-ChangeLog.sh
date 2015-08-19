@@ -26,11 +26,11 @@ echo -e "   distdir:    $distdir\n"
 
 # Check the ChangeLog length to avoid over-writing.
 # Placeholder ChangeLog in the git repository has only a single line.
-if [ `cat ${distdir}/ChangeLog | wc -l` = "1" ]; then
+#if [ `cat ${distdir}/ChangeLog | wc -l` = "1" ]; then
     chmod u+w ${distdir}/ChangeLog && \
     cd ${top_srcdir} && \
     echo "Running: git log --stat --name-only --date=short --abbrev-commit > ${builddir}/${distdir}/ChangeLog"
     git log --stat --name-only --date=short --abbrev-commit > ${builddir}/${distdir}/ChangeLog
-   else
-    echo "Doing nothing"
-fi
+#   else
+#    echo "Doing nothing"
+#fi
