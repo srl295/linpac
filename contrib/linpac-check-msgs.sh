@@ -2,30 +2,45 @@
 
 # /usr/local/sbin/linpac-check-msgs.sh
 # dranch@trinnet.net
-# 12/10/14
+# 08/20/15
 
 # What does this script do:
 #
-#    Essentially, it looks for new files in a specific directory and if one
-#    exists, it emails it to the specified email address.  This script is
+#    Essentially, it looks for new files in a specific directory (new Linpac messages)
+#    and if one exists, it emails the message to the specified email address.  This script is
 #    currently tailored to check for new Linpac messages but can be adapted 
-#    to anything.
+#    to really monitor any file
 #
-#    This file also assumes the user is using the packetrig.sh script
-#    which creates the listen-date.log
+#    This script assumes the user is using the packetrig.sh script which creates 
+#    automatically creates the listen-date.log file
 #
 #
 #  To enable execution of this scriptf for Centos Linux.  Adapt to your own
 #  distro to suit:
 #
-#    1. Write this script to /usr/local/sbin/linpac-check-msgs.sh
+#    1. Copy this script to /usr/local/sbin/linpac-check-msgs.sh
 #    2. chmod 700 /usr/local/sbin/linpac-check-msgs.sh
 #    3. cd /etc/cron.5min
 #    4. ln -s /usr/local/sbin/linpac-check-msgs.sh .
 
 
+# -------------------
+# Script Dependencies
+# -------------------
+# This script requires:
+#
+#   mutt
+#   diff
+#   tail
+#   awk
+#   find
+
+
+
 # Errata
 # ------
+# 08/20/15 - Updated the evaluation of MSGPATH to better support different username paths
+#          - Improved some of the script comments
 # 12/10/14 - Now using a sorted ls listing for better results, trying to troubleshoot
 #            possible wrapping issue at message 299
 # 06/10/13 - Added more logic for abandoned messages that are zero bytes
@@ -41,17 +56,6 @@
 # 04/16/13 - first version
 
 
-# ------------
-# Dependencies
-# ------------
-# This script requires:
-#
-#   mutt
-#   diff
-#   tail
-#   awk
-#   find
-
 
 
 #-----------------------
@@ -61,19 +65,22 @@
 LINPACUSER=root
 
 #Path to Linpac messages - do NOT have a trailing /
+#  Using complicated eval to avoid potential malicious use
 MSGPATH="/$LINPACUSER/LinPac/mail"
+eval MSGPATH="$(printf "~$LINPACUSER/%q" "LinPac/mail")"
 
 #Msg status file
-OLDMSGLIST="/var/tmp/linpac-old-msg-list.txt"
-NEWMSGLIST="/var/tmp/linpac-new-msg-list.txt"
+TMPPATH="/var/tmp"
+OLDMSGLIST="linpac-old-msg-list.txt"
+NEWMSGLIST="linpac-new-msg-list.txt"
 
 #DOESN'T seem to work : Source email address if you don't want it to be "root"
-EMAIL="dranch@hampacket2.trinnet.net"
+EMAIL="n0call@gmail.com"
 
-#Where to send messages - supports two destinations: one for email, another for 
-# an email to SMS gateway
-DESTEMAILADDR="change-me@gmail.com"
-DESTSMSADDR="change-me@vtext.com"
+#Where to send messages
+DESTEMAILADDR="n0call@gmail.com"
+#Sending to Verizon SMS service
+DESTSMSADDR="changeme@vtext.com"
 
 #Callsign that accepts messages - it's important to LEAVE the two trailing asterisks 
 # for proper regex matching of your call with or without a SSID
@@ -106,11 +113,13 @@ NEWMSG=""
 #echo "DEBUG: Path to New messages: $MSGPATH"
 
 #New installation - startup corner case
-if [ ! -f $OLDMSGLIST ]; then
-   echo -e "New installation.. seeding $OLDMSGLIST"
-   ls -1 $MSGPATH | sort -g > $OLDMSGLIST
+if [ ! -f $TMPPATH/$OLDMSGLIST ]; then
+   echo -e "Tmp file dir: $TMPPATH"
+   ls -la $TMPPATH
+   echo -e "No OLDMSGLIST temp file found, assuming new installation.. seeding $OLDMSGLIST"
+   ls -1 $MSGPATH | sort -g > $TMPPATH/$OLDMSGLIST
    if [ $? -ne 0 ]; then
-      echo -e "Error: could not write $OLDMSGLIST"
+      echo -e "Error: could not write $TMPPATH/$OLDMSGLIST"
       exit 1
    fi
 fi
@@ -122,7 +131,7 @@ fi
 
 #Do this all inline to minimize writing to the HD when not required
 #echo -e "DEBUG: diff list"
-NEWMSG="`ls -1 $MSGPATH | sort -g | diff $OLDMSGLIST - | tail -n +2 | awk '{print $2}'`"
+NEWMSG="`ls -1 $MSGPATH | sort -g | diff $TMPPATH/$OLDMSGLIST - | tail -n +2 | awk '{print $2}'`"
 
 #echo -e "DEBUG: NEWMSG is '$NEWMSG'"
 
@@ -146,9 +155,9 @@ if [ "$NEWMSG" != '' ]; then
       exit 1
    fi
       
-   ls -1 $MSGPATH | sort -g > $OLDMSGLIST
+   ls -1 $MSGPATH | sort -g > $TMPPATH/$OLDMSGLIST
    if [ $? -ne 0 ]; then
-      echo -e "Error: could not write $OLDMSGLIST"
+      echo -e "Error: could not write $TMPPATH/$OLDMSGLIST"
       exit 1
    fi
 
