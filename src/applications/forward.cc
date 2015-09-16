@@ -271,7 +271,7 @@ void send_block()
   if (blocks == 0) return;
   if (!bbs_connected) connect_bbs(homebbs);
 
-  lp_statline("forward: transfering messages");
+  lp_statline("forward: transferring messages");
   
   /* send proposals */
   for (i=0; i<5; i++)
