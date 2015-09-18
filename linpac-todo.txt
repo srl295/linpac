@@ -13,6 +13,9 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+09/17/15 - Added issue when enabling and using the shell feature
+09/16/15 - Added mheard truncation issue
+         - fixed ax25tools packaging dependency
 07/19/15 - added a bad message example
 06/19/15 - Added an issue when ax25mail-utils isn't installed
 05/30/15 - Added a messaging bug report where the same ID gets written twice
@@ -55,6 +58,10 @@ P1 - Compiling and Install
 
 P1 - UI   
 ---------------
+
+    - 09/16/15 - The output of //mheard begins to show the output of the ax.25 program's
+      mheard in the opposite order (oldest first) but truncates the output.  Linpac should
+      show newest first and limit the output to say the last 15 stations
 
     - 12/06/14 - If say another callsigns appears in the /etc/ax25/axports
       file ABOVE the one in use, linpac's unproto feature no longer TXs but
@@ -194,9 +201,8 @@ Priority 2 - Wanted Items (needed but not critical)
 -------------------------------------------------------------------------------
 
 P2 - Packaging
-     - Seems that //MHeard requires mheardd to be running to work.  RPM
-       should require Mheard and Linpac should check if Mheardd is running
-       and if not, it should give a warning like:
+     - Seems that //MHeard requires mheardd to be running to work.  
+     - Linpac should check if Mheardd is running and if not, it should give a warning like:
        "Warning: mheardd not running.  Please notify sysop" 
 
      - The permissions of the /var/ax25/mheard/mheard.dat file need to be ok 
@@ -213,6 +219,11 @@ P2 - UI
 
      - Add support that when the //Bell command is issued, run a 
        specific shell script to do things like SMS notify, etc
+
+     - 09/17/15 - If the SHell command is enabled (disabled by default), 
+       color-enabled prompts are sent to the remote station which creates 
+       all kinds of ugly ANSI characters on their side.  Exporting a new 
+       PS1 prompt doesn't help.  Need another way of fixing this
 
 
 P2 - Performance issues
@@ -442,6 +453,11 @@ P1 - Compiling:
      Neither of these fixes worked for dranch.
 
    -----------------------------------------------------------------------------
+
+P2 - Packging 
+-------------
+
+   09/16/15 - RPM should require Mheard 
 
    * Resolved by David Ranch, KI6ZHD
    - Integrate various dranch patches that I have already authored

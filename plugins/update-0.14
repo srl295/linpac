@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # Add the 'encodings' file into the home directory
 
 [ ! -r $HOMEDIR/encodings ] && cp $SHAREDIR/encodings $HOMEDIR

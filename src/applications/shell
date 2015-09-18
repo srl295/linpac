@@ -1,1 +1,2 @@
-bash -i
+#!/bin/bash
+/bin/bash -i

@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # Add BLOCK7P setting to the init script
 
 FILE=$HOMEDIR/macro/init.mac
