@@ -1,3 +1,132 @@
+commit 6b674ca
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-18
+
+    Updated version for next release
+
+README
+configure.ac
+contrib/packaging/rpm/linpac.spec
+linpac.lsm
+
+commit 2cde3cb
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-18
+
+    made to be a script placeholder
+
+plugins/pkgs
+
+commit 6c4038c
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-18
+
+    removed an unwanted space on first line
+
+plugins/update-0.16
+
+commit 1c6ca7b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-18
+
+    removed an unwanted space on first line
+
+plugins/update-0.14
+
+commit f40378b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-18
+
+    missed adding the exclaimation mark
+
+src/applications/shell
+
+commit 022c2af
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-17
+
+    prefixed with bash startup line
+
+src/applications/mheard
+src/applications/shell
+
+commit 6a7321e
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-17
+
+    added an ANSI character issue when running the disabled SHell command
+
+linpac-todo.txt
+
+commit d8970f9
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-16
+
+    added mheard listing bug, fixed ax25tool .spec dependency
+
+linpac-todo.txt
+
+commit a90c1d2
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-16
+
+    ax25tools is required for mheard support
+
+contrib/packaging/rpm/linpac.spec
+
+commit cadf84b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-16
+
+    made files non-executable
+
+plugins/pkgs
+plugins/update-0.14
+plugins/update-0.16
+
+commit 46929c2
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-16
+
+    fixed minor spelling error
+
+src/applications/forward.cc
+
+commit ac6eb0a
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-08-20
+
+    updated script for improved paths and debugging
+
+contrib/linpac-check-msgs.sh
+
+commit 622f3e1
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-08-19
+
+    Updated version for next release
+
+README
+configure.ac
+contrib/packaging/rpm/linpac.spec
+linpac.lsm
+
+commit 2df221e
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-08-19
+
+    Updated changelog
+
+ChangeLog
+
+commit bf273ff
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-08-19
+
+    Disabled the overwrite check for now
+
+generate-ChangeLog.sh
+
 commit 903ce17
 Author: David Ranch <linpac@trinnet.net>
 Date:   2015-08-19
