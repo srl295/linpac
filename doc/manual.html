@@ -1003,9 +1003,10 @@ binary data is hidden and replaced with the &lt;Binary data&gt; information.
   Changes the channel callsign. </p>
    
 <p><b>Port &lt;port_name&gt;</b> <br>
-  Sets the default port for the Connect command. This can be overriden for
-particular channels by setting the <tt>CHN_PORT</tt> variable for the channel
-(see <a href="#POS3_3">chapter 3.3</a>).</p>
+   Sets the default port for the Connect command. This is usually the first
+   port defined in the /etc/ax25/axports file but can be overriden here.
+   This can be overriden for particular channels by setting the <tt>CHN_PORT</tt> 
+   variable for the channel (see <a href="#POS3_3">chapter 3.3</a>).</p>
    
 <p><b>PRIVate [on|off]</b> <br>
   Marks the channel as private. No stations are allowed to connect on this
@@ -1029,11 +1030,17 @@ channel, where the command should be executed (e.g. //GET@5 NAME). </p>
 <p><b>TIMEZone [zone]</b> <br>
   Set the time zone. Used for information only, doesn't affect time. </p>
    
-<p><b>UNSrc [call]</b> <br>
-  The source callsign for UI frames. </p>
-   
 <p><b>UNDest [call]</b> <br>
   The destination address for UI frames. </p>
+   
+<p><b>UNPort &lt;port_name&gt;</b> <br>
+     Sets the default port for the UI frames / unproto traffic command or F10
+unproto traffic area. This is usually the first port defined in the 
+/etc/ax25/axports file but can be overriden here. This can be overriden 
+for particular channels by setting the unport variable for the channel. HTML
+   
+<p><b>UNSrc [call]</b> <br>
+  The source callsign for UI frames. </p>
    
 <p><b>WAtch &lt;port | 0&gt; &lt;pattern&gt; &lt;command/text&gt;</b> <br>
   Starts to watch specified port (0 for all ports). When specified pattern 

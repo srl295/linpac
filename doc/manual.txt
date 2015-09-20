@@ -916,9 +916,10 @@ Appendix A - LinPac commands
    Changes the channel callsign.
 
    Port <port_name>
-   Sets the default port for the Connect command. This can be overriden for
-   particular channels by setting the CHN_PORT variable for the channel (see
-   chapter 3.3).
+   Sets the default port for the Connect command. This is usually the first
+   port defined in the /etc/ax25/axports file but can be overriden here.
+   This can be overriden for particular channels by setting the CHN_PORT 
+   variable for the channel (see chapter 3.3).
 
    PRIVate [on|off]
    Marks the channel as private. No stations are allowed to connect on this
@@ -943,11 +944,17 @@ Appendix A - LinPac commands
    TIMEZone [zone]
    Set the time zone. Used for information only, doesn't affect time.
 
-   UNSrc [call]
-   The source callsign for UI frames.
-
    UNDest [call]
    The destination address for UI frames.
+   
+   UNPort <port_name>
+   Sets the default port for the UI frames / unproto traffic command or F10 
+   unproto traffic area. This is usually the first port defined in the 
+   /etc/ax25/axports file but can be overriden here. This can be overriden 
+   for particular channels by setting the unport variable for the channel 
+
+   UNSrc [call]
+   The source callsign for UI frames.
 
    WAtch <port | 0> <pattern> <command/text>
    Starts to watch specified port (0 for all ports). When specified pattern
