@@ -2,8 +2,11 @@
 ;; Linpac init script
 ;; This script is called when LinPac is started
 
-;; Default port
+;; Default connected port
 port #PORT#
+
+;; Default unproto port
+unport #PORT#
 
 ;; Log errors
 errorlog error.log
