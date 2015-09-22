@@ -86,6 +86,7 @@ AC_SUBST([PERL])
 AC_SUBST([VERSION])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile \
+          contrib/Makefile \
           ctt/Makefile \
 	  data/Makefile \
           doc/Makefile \
