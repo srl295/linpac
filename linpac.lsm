@@ -1,7 +1,7 @@
 Begin4
 Title:       	linpac
-Version:	0.23
-Entered-date:	19 Aug 15
+Version:	0.24
+Entered-date:	18 Sep 15
 Description:	Terminal for packet radio with mail client
 Keywords:	AX.25 packet radio terminal
 Author:		dranch@trinnet.net (David Ranch)

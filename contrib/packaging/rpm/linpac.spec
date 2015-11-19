@@ -1,7 +1,7 @@
 #Spec file for LinPac
 
 %define	name	linpac
-%define	version	0.23
+%define	version	0.24
 %define	release	1
 
 %define  debug_package %{nil}
@@ -75,6 +75,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun
 
 %changelog
+* Fri Sep 18 2015 David Ranch <dranch@trinnet.net>
+- New 0.24 version 
 * Wed Sep 16 2015 David Ranch <dranch@trinnet.net>
 - New 0.23 version that adds ax25tools as a requirement for mheard support
 * Sun May 24 2015 David Ranch <dranch@trinnet.net>

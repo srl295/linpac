@@ -8,7 +8,7 @@ AUTOMAKE_OPTIONS = gnu -Wall -Werror
 ## The work-around for this bug is to commit the m4/ directory.
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = ctt data doc macro mail src inst plugins
+SUBDIRS = contrib ctt data doc macro mail src inst plugins
 
 dist_pkgdata_DATA = README NEWS
 EXTRA_DIST = linpac.lsm COPYING generate-ChangeLog.sh

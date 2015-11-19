@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Prelude
-AC_INIT([LinPac], [0.23], [linpac@trinnet.net] , , [http://linpac.sourceforge.net/])
+AC_INIT([LinPac], [0.24], [linpac@trinnet.net] , , [http://linpac.sourceforge.net/])
 AC_PREREQ([2.63])
 AC_CONFIG_SRCDIR([src/linpac.cc])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -86,6 +86,7 @@ AC_SUBST([PERL])
 AC_SUBST([VERSION])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile \
+          contrib/Makefile \
           ctt/Makefile \
 	  data/Makefile \
           doc/Makefile \
