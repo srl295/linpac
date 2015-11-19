@@ -1,3 +1,54 @@
+commit afb13a7
+Merge: df15d7a 3a1c4af
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-11-19
+
+    Merge branch 'develop'
+
+commit 3a1c4af
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-11-14
+
+    moved libraries into /usr/include/linpac by default
+
+src/applications/libaxmail/Makefile.am
+src/applications/liblinpac/Makefile.am
+
+commit e384d6e
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-21
+
+    Add missing packaging and contrib scripts to published tarball
+
+Makefile.am
+configure.ac
+contrib/Makefile.am
+
+commit 0d8b4a2
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-20
+
+    Added the unport command and description
+
+doc/manual.html
+doc/manual.txt
+
+commit e4d820d
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-20
+
+    Added undest unproto port example
+
+macro/init.mac
+
+commit 308726b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-18
+
+    Updated the Changelog based upon recent Git commit comments
+
+ChangeLog
+
 commit 6b674ca
 Author: David Ranch <linpac@trinnet.net>
 Date:   2015-09-18
@@ -8,6 +59,13 @@ README
 configure.ac
 contrib/packaging/rpm/linpac.spec
 linpac.lsm
+
+commit df15d7a
+Merge: 1cc0e7b 2cde3cb
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-09-18
+
+    Merge branch 'develop'
 
 commit 2cde3cb
 Author: David Ranch <linpac@trinnet.net>
@@ -110,6 +168,13 @@ README
 configure.ac
 contrib/packaging/rpm/linpac.spec
 linpac.lsm
+
+commit 1cc0e7b
+Merge: 7ce475f 2df221e
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-08-19
+
+    Merge branch 'develop'
 
 commit 2df221e
 Author: David Ranch <linpac@trinnet.net>
@@ -248,6 +313,14 @@ Date:   2015-05-25
 
 inst/linpac.in
 
+commit 7ce475f
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-24
+
+    fixed the version
+
+README
+
 commit 6a4bc97
 Author: David Ranch <linpac@trinnet.net>
 Date:   2015-05-24
@@ -263,6 +336,24 @@ Date:   2015-05-24
     Updated RPM spec file for new version
 
 configure.ac
+
+commit 9639ae3
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-24
+
+    Updated the README
+
+README
+
+commit f29c021
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-05-24
+
+    Deleted files manually
+
+configure.ac
+contrib/packaging/rpm/linpac-0.20.spec
+generate-ChangeLog.sh
 
 commit abd7e1c
 Author: David Ranch <linpac@trinnet.net>
