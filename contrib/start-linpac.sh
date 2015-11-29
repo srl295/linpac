@@ -4,6 +4,7 @@
 # dranch@arrl.net
 
 # 11/29/15 - Removed screen logging as it doesn't work well for Ncurses UIs
+#          - Start linpac and then attach to it if possible
 # 12/11/14 - Enabled screen logging to a specific file
 # 08/30/14 - disabled screen logging
 # 02/06/14 - Added screen loggin
@@ -23,6 +24,7 @@ if [ -n "`ps aux | grep -v grep | grep -i screen | grep -i linpac`" ]; then
   else
    echo -e "\nPrevious Linpac not found.  Starting"
    date > /var/log/linpac.log
-   screen -S linpac sudo linpac
+   screen -d -m -S linpac sudo linpac
+   screen -d -r linpac
 fi
 
