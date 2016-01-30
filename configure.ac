@@ -62,6 +62,13 @@ AC_TRY_COMPILE([#include <sys/socket.h>
 # Checks for library functions
 AC_CHECK_LIB([ncurses], [main], , [AC_MSG_ERROR([ncurses library not found !])])
 
+#Add specific tinfo checks for distros that are missing pkgconfig files for Ncurses - PClinux (mandriva)
+AC_CHECK_LIB(tinfo, tgetent, USE_TERMCAP_LIB=-ltinfo,
+       AC_CHECK_LIB(termcap, tgetent, USE_TERMCAP_LIB=-ltermcap,
+               AC_MSG_ERROR([[Linpac requires ncurses library.]])))
+
+
+
 # Definitions
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([NO_SOCKLEN_T], [Socket length type])
