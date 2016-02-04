@@ -1274,7 +1274,7 @@ void InfoLine::redraw(bool update)
                    chstat.sendq, chstat.recvq);
           }
         else
-          wprintw(win, "%54s", "Disconnected");
+          wprintw(win, "%54s", "CONNECTED");
       else
         wprintw(win, "%54s", "Disconnected");
     } else wprintw(win, "%58s", " ");
