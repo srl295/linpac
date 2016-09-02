@@ -1,5 +1,6 @@
 /*
   LinPac Mailer
+  (c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2016
   (c) 1998 - 1999 by Radek Burget OK2JBG (xburge01@stud.fee.vutbr.cz)
 
   This program is free software; you can redistribute it and/or
@@ -120,7 +121,7 @@ void Main_scr::draw(bool all)
   werase(win);
   box(win, ACS_VLINE, ACS_HLINE);
   mvwaddstr(win, 2, CENTER(26), "LinPac Packet Radio Mailer");
-  mvwaddstr(win, 3, CENTER(26), "(c) 1998 - 2001  by OK2JBG");
+  mvwaddstr(win, 3, CENTER(26), "(c) 1998 - 2016  by KI6ZHD");
   wrefresh(win);
 }
 

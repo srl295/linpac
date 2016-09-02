@@ -1,5 +1,6 @@
 /*
    join - join two LinPac channels
+   (c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2016
    (c) 1998-2001 by OK2JBG
 */
 #include <stdio.h>
