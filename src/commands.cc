@@ -1,6 +1,6 @@
 /*==========================================================================
    LinPac: Packet Radio Terminal for Linux
-   (c) Radek Burget OK2JBG (radkovo@centrum.cz) 1998 - 2002
+   (c) Radek Burget OK2JBG (radkovo@centrum.cz) 1998 - 2016
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -11,7 +11,7 @@
 
    Objects for commands executing
 
-   Last update 27.11.2002
+   Last update 09.09.2016
   =========================================================================*/
 #include <stdarg.h>
 #include <stdio.h>
@@ -1196,11 +1196,11 @@ void Commander::version(int chn)
 {
   static char s[256];
   #ifndef NEW_AX25
-  sprintf(s, "\r%s / %s\rVersion %s (Compiled on %s)\r%s\r\r",
-          PACKAGE, sys_info(), VERSION, __DATE__, VERINFO);
+  sprintf(s, "\r%s version %s (Compiled on %s)\r%s\rOS: %s\r\r",
+          PACKAGE, VERSION, __DATE__, VERINFO, sys_info());
   #else
-  sprintf(s, "\r%s / %s\rVersion %s (Compiled on %s) (new AX.25)\r%s\r\r",
-          PACKAGE, sys_info(), VERSION, __DATE__, VERINFO);
+  sprintf(s, "\r%s version %s (Compiled on %s) (new AX.25)\r%s\rOS: %s\r\r",
+          PACKAGE, VERSION, __DATE__, VERINFO, sys_info());
   #endif
   emit(chn, EV_TEXT_COOKED, 0, s);
   emit(chn, EV_TEXT_FLUSH, FLAG_FLUSH_IMMEDIATE, NULL);
