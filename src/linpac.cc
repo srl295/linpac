@@ -440,7 +440,7 @@ int main(int argc, char **argv)
     if (!daemon_start(1))
       printf("LinPac: cannot become a daemon - aborting\n");
 
-  Message(1, "Alt-X to exit.");
+  Message(0, "Alt-X to exit.");
 
   //start main loop
   mgr.quit = false;
