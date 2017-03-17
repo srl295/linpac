@@ -73,19 +73,41 @@ Once you have installed the above dependencies, please run:
 
               ./configure
 
-NOTE:  If the "configure" prompt isn't present, you probably got the sources
-       from Git. If so, run the following:
+NOTE:  If the "configure" prompt isn't present, you probably got your source
+       code from Git. If so, run the following:
 
               autoreconf --install
               ./configure
 
-       If autoreconf doesn't run, you need to install the Auto-tools:
+
+       If autoreconf doesn't run, it probably means you need to install Autotools:
 
           Deb-based: 
                          sudo apt-get install automake autoconf
 
           rpm-based
                          yum install automake autoconf
+
+
+       If "autoreconf --install" fails with:
+ 
+          src/applications/liblinpac/Makefile.am:4: error: Libtool library used but 'LIBTOOL' is undefined
+          src/applications/liblinpac/Makefile.am:4:   The usual way to define 'LIBTOOL' is to add 'LT_INIT'
+          src/applications/liblinpac/Makefile.am:4:   to 'configure.ac' and run 'aclocal' and 'autoconf' again.
+          src/applications/liblinpac/Makefile.am:4:   If 'LT_INIT' is in 'configure.ac', make sure
+          src/applications/liblinpac/Makefile.am:4:   its definition is in aclocal's search path.
+
+       Do the following:
+
+          deb-based: 
+             sudo apt-get install libtool
+             libtoolize 
+             autoreconf --install
+
+          rpm-based: 
+             sudo yum install libtool
+             libtoolize 
+             autoreconf --install
 
 
 The default installation destination directory prefix is /usr/local/*.  If you 
