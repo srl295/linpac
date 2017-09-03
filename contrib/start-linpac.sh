@@ -3,6 +3,7 @@
 # /usr/local/sbin/start-linpac.sh
 # dranch@arrl.net
 
+# 09/02/17 - Added a check for stale lock files
 # 11/29/15 - Removed screen logging as it doesn't work well for Ncurses UIs
 #          - Start linpac and then attach to it if possible
 # 12/11/14 - Enabled screen logging to a specific file
@@ -23,8 +24,15 @@ if [ -n "`ps aux | grep -v grep | grep -i screen | grep -i linpac`" ]; then
    screen -d -r linpac
   else
    echo -e "\nPrevious Linpac not found.  Starting"
+   if [ -f /var/lock/LinPac.0 ]; then
+      echo -e "\nPrevious LinPac lock file found in /var/lock/LinPac.0"
+      echo -e "Remove this lock file and try again"
+      exit 1
+   fi
    date > /var/log/linpac.log
    screen -d -m -S linpac sudo linpac
+   #Comment out the following line if you don't want screen to attach to the
+   # started Linpac screen session right now
    screen -d -r linpac
 fi
 
