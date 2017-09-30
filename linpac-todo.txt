@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+09/30/17 - Added a segmentation fault entry when using a misconfigured ax.25 stack
 09/17/15 - Added issue when enabling and using the shell feature
 09/16/15 - Added mheard truncation issue
          - fixed ax25tools packaging dependency
@@ -58,6 +59,26 @@ P1 - Compiling and Install
 
 P1 - UI   
 ---------------
+
+    - 09/30/17 - Segmentation Fault: If the Linux ax.25 stack is started up but isn't properly configured
+      where say the command "call vhfdrop n0call" will return with "call: no AX.25 port data configured",
+      a properly configured Linpac will give the following segmentation fault.  This needs to be trapped.
+      --
+      #0  0x0805c1c6 in Window::outch (this=0x9e6f618, ch=13 '\r', typ=3) at windows.cc:401 cp = 3
+      #1  0x0805d843 in MonWindow::next_mon_line (this=0x9e6f618) at windows.cc:951
+              p = 0x0
+              src = "\000\000\000\000\vHw\267\022\u357f\234\367\346\t"
+      #2  0x0805dbd0 in MonWindow::handle_event (this=0x9e6f618, ev=...) at windows.cc:861
+              i = 37
+              buf = "listen: no AX.25 port data configured\n\000\000XM\a\b@\035\353\t\000\252\356N&\000\000\000'\000\000\000\364\u357f\301.9\033\032\215R\000\002\000\000\000p\354h\000\000\360q\267\214\u357f\000\000\000\000\377\377\377\377d\310p\267\204\u357f\000\000\000\000\000\000\000\000\020\000\000\000\204\u357f-\225\n\000\000\000\000\000\f\354\316Y\001\000\000\000\002\000\000\000`~\345\t\000\000\000\000\200{\345\t\f\354\316Y:\225\n\000\000\000\000\000\001", '\000' <repeats 12 times>, "\252\356N`\214\346\t\270\203\346\t\251\307p\267\000Pt\267\001\000\000\000\240\205\346\t\000Pt\267"...
+              rc = <optimized out>
+      #3  0x080592fe in Obj_man::send_all (this=0x8074de0 <mgr>, ev=...) at event.cc:255
+              i = 8
+      #4  0x080596dd in Obj_man::do_step (this=0x8074de0 <mgr>) at event.cc:292
+              noev = {type = 0, chn = 0, x = 134524462, y = 0, ch = -88 '\250', data = 0x0}
+      #5  0x0804a40d in main (argc=1, argv=0xbf95e6d4) at linpac.cc:448
+      --
+
 
     - 09/16/15 - The output of //mheard begins to show the output of the ax.25 program's
       mheard in the opposite order (oldest first) but truncates the output.  Linpac should
