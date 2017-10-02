@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+10/01/17 - Wrong Alt-X creates a segfault
 09/30/17 - Added a segmentation fault entry when using a misconfigured ax.25 stack
 09/17/15 - Added issue when enabling and using the shell feature
 09/16/15 - Added mheard truncation issue
@@ -102,6 +103,8 @@ P1 - UI
     - Prompting: remote user gets "LinPac: Unknown command (SP). Try :help."
       yet :help is only valid for local console users!
 
+    - 10/01/17 - An incorrectly configured Alt when used with Alt-X then ENTER 
+      creates a Segmentation fault on Linpac from an OSX terminal
     - Alt-X doesn't exit Linpac as the documentation says it should - KJ6LNH
 
 
