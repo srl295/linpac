@@ -1,6 +1,6 @@
 
 LinPac version 0.25 (stable release)
-Copyright (c) 2015 by David Ranch (KI6ZHD) 
+Copyright (c) 2017 by David Ranch (KI6ZHD) 
 
 Linpac is a modular console-oriented packet radio terminal for Linux with a 
 built-in messaging client.  Using Linux's native AX.25 network stack, it
