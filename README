@@ -26,8 +26,10 @@ Current contributors:
   - Steven Loomis (K6SPI)  - Misc patches
 
 
-Many thanks to the original author of Linpac:
-Radek Burget OK2JBG ( radkovo@centrum.cz )
+Many thanks to the original author of Linpac for creating this flexible
+and valuable package for Linux:
+
+   Radek Burget OK2JBG ( radkovo@centrum.cz )
 
 
 QUICK INSTALATION FROM A RELEASE PACKAGE
@@ -41,7 +43,7 @@ this directory. If the ./configure script is not present, then see the
   ---------
   If you plan to use Linpac for recieving and sending your packet mail via a
   remote BBS system (not required), you must install the ax25mail-utils 
-  package first before first running Linpac. This package can be found
+  package first BEFORE first running Linpac. This package can be found
   at http://ax25mail.sf.net
 
 
@@ -51,7 +53,7 @@ Before compilation of Linpac, you must have these other packages installed:
         their own repositories, they are usually very old and lack several
         important fixes.  You can read more about these improvements here:
 
-           https://code.google.com/p/linuxax25/wiki/Ax25AppsDiffs
+           https://github.com/ve7fet/linuxax25
 
 
    Dependencies:
@@ -66,7 +68,7 @@ Before compilation of Linpac, you must have these other packages installed:
         I recommend all users install or build the AX.25 stack from 
         this alternative provider for now:
 
-           https://code.google.com/p/linuxax25/source/browse/#svn%2Fdownloads
+           https://github.com/ve7fet/linuxax25
 
 
 Once you have installed the above dependencies, please run:
@@ -82,7 +84,7 @@ NOTE:  If the "configure" prompt isn't present, you probably got your source
 
        If autoreconf doesn't run, it probably means you need to install Autotools:
 
-          Deb-based: 
+          deb-based: 
                          sudo apt-get install automake autoconf
 
           rpm-based
