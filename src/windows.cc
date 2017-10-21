@@ -762,6 +762,8 @@ MonWindow::MonWindow(int wx1, int wy1, int wx2, int wy2, int alt_y, char const *
   enabled = true;
   scroll = false;
   sounds = false;
+  convcnt = 0;
+  conv = NULL;
   colorset = false;
   alt_pos = false;
   ctrlp = false;
