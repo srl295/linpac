@@ -36,25 +36,26 @@ mycall@5 #CALL#
 mycall@6 #CALL#
 mycall@7 #CALL#
 mycall@8 #CALL#
-;; Unproto calls
+;; Unproto calls destination (unsrc) and digi path (undest)
 unsrc LINPAC
 undest INFO
 
 ;; Other settings
 cbell on
 knax on
+;; Required to be on or linpac won't accept any // commands from the remote user
 remote on
 infolevel 1
 
 ;; Default QRG
 set QRG@0 "144.8125 MHz"
 
-;; Default encoding translation (for all channels)
+;; Default encoding translation (for all channels) - controlled by terminal 0
 set DEF_ENC@0 iso1
 translate %DEF_ENC@0
 
 ;; Default set of enabled remote commands
-set DEF_RCMD@0 "AB D E VER L RP B MH N RT YPUT W R WB RB A CONV I H Q U CS"
+set DEF_RCMD@0 "AB D E VER L RP B MH N RT YPUT W R WB RB A COMP CONV I H Q U CS SP SB"
 
 ;; Paths
 set SAVE_PATH "./save"
