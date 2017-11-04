@@ -1040,7 +1040,7 @@ void EventGate::add_rbuffer(const char *data, size_t count)
 
 bool EventGate::flush_wbuffer(int fd)
 {
-  if (wbufsize == 0 && fd == -1) return true;
+  if (wbufsize == 0 || fd == -1) return true;
   else
   {
     int w;
