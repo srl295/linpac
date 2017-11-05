@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+11/05/17 - Export html documentation to txt
 10/01/17 - Wrong Alt-X creates a segfault
 09/30/17 - Added a segmentation fault entry when using a misconfigured ax.25 stack
 09/17/15 - Added issue when enabling and using the shell feature
@@ -214,6 +215,8 @@ P1 - Defaults
 
 
 P1 - Documentation
+    - the TXT version of the documentation is not getting updates from the HTML version.
+      The makefile doesn't seem to include any export
     - the syntax for mail forwarding as shown in the manual vs. 
       the home.mac are opposite.  Which is right?
 
