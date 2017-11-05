@@ -175,11 +175,46 @@ such as:
 
 KNOWN PROBLEMS
 ~~~~~~~~~~~~~~
+
+  - Signifincant issue with AX.25 and Raspbian Stretch
+
+    I have confirmed that with Raspian Stretch, there is some sort of conflict with
+    it's newly enabled predictable network interface names. What are those? If you
+    run the command "ifconfig" or "ip addr", you will no longer see Ethernet
+    interfaces with names like "eth0" but instead, you'll see something like
+    "enxb827eb5f05". How's that for catchy? For known reasons to the AX.25 kernel
+    maintainers, in the sa_data kernel data structure, both the stock Raspbian AX.25
+    .debs and the 3rd party VE7FET ax.25 debs will give errors like the following when
+    ANY network interface name is longer than 13 characters:
+
+      SIOCGIFHWADDR: No such device
+
+    Programs like beacon will fail to start. Linpac will also crash upon start with
+
+      /usr/bin/linpac: line 181:  9811 Segmentation fault   $PKG_BINDIR/linpac $*
+
+    Fortunately, if you disable predictable network interface names, things work fine.
+    To do this, do the following steps:
+
+      sudo vi /boot/cmdline.txt
+
+        #append the following to the end of the one line in this file
+        net.ifnames=0 biosdevname=0
+
+    Reboot your Raspberry Pi and things will work from there on out. Btw, if Linpac
+    crashed on you, your terminal might be screwed up and not working properly.
+
+    To fix that, run the commands:
+
+      stty sane
+      rm -f rm /var/lock/LinPac.0
+
+
   
-  The --enable-LINKSTATIC configuration option does not work.
+  - The --enable-LINKSTATIC configuration option does not work.
 
   Please see the linpac-todo.txt file in this source package as well as see 
-  http://linpac.sf.net for actual problems and their solution.
+  http://linpac.sf.net for other possible problems and their solutions.
 
 
 NOTES FOR HACKING with the Source code

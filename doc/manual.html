@@ -16,8 +16,8 @@
 <hr width="100%"></h1>
   </center>
       
-<center>Version 0.24   
-<p>(c) 1998 - 2016 by David Ranch KI6ZHD</p>
+<center>Version 0.25
+<p>(c) 1998 - 2017 by David Ranch KI6ZHD</p>
   </center>
       
 <p><br>
@@ -122,7 +122,7 @@ Please wait a moment for creating your personal configuration
 Installation done.
 Press ENTER to run LinPac
 </p>
-<p>The above information is then stored in the <tt>LinPac/macro/init.mac</tt> file as
+<p>The above information is then stored in the <tt>$HOME/LinPac/macro/init.mac</tt> file as
 various 'functions'.  These functions are based on the very simple interpreted 
 language (actually it's not a language but something like the batch files in 
 DOS). In the LinPac/macro directory, it contains all the scripts written in this 
@@ -131,8 +131,7 @@ the commands to setup the callsigns and other settings. You can modify this file
 to change the initial configuration of LinPac.  Other macros can be run in LinPac 
 desired or required.  The simplest case of the macro is normal text file that is 
 just printed to the screen (or sent to the remote peer) when executed. The language 
-is described in <a href="#POS6">chapter 
-6</a>. </p>
+is described in <a href="#POS6">chapter 6</a>. </p>
    
 <p>You may also want to review/change following macro files: </p>
    
@@ -150,8 +149,11 @@ of connection). It should print some farewell and disconnect. <br>
 <p><a name="POS3"></a> </p>
    
 <h2> 3 LinPac controls</h2>
-   After running LinPac the main screen apears. In the standard configuraion 
- it's divided to five parts (described from top of the screen to bottom): 
+   After automatically running the LinPac setup routing, the main screen should apear. 
+If you see a segmentation fault, please see <a href="https://sourceforge.net/p/linpac/bugs/24/">
+Linux AX.25 issues with long predictable network interface names</a> for a work around.
+Moving on, in Linpac's main interface in the standard configuraion, the screen is divided 
+to five parts (described from top of the screen to bottom): 
   
 <ul>
    <li> <b>QSO window</b>: this window contains the text that came from the
@@ -513,8 +515,8 @@ i/o character conversion. <br>
  add the argument <tt>-c &lt;callsign&gt;</tt>. </p>
    
 <p>Examples: <br>
-  <tt>:Name John</tt> <br>
-  <tt>:Name -c OK2JBG -l JN89HF Radek</tt> <br>
+  <tt>:Name David</tt> <br>
+  <tt>:Name -c KI6ZHD -l CM97ai David</tt> <br>
   <tt>:Name -i</tt> </p>
    
 <p><a name="POS5_3"></a> </p>
@@ -865,6 +867,7 @@ doesn't try to connect <i>ax25spyd</i> at all. </p>
 </ul>
    <a name="POS10"></a>   
 <h2> 10 Copying</h2>
+   LinPac is Copyright (c) 2002-2016 bu David Ranch KI6ZHD 
    LinPac is Copyright (c) 1998-2002 by Radek Burget, OK2JBG   
 <p>This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1309,12 +1312,12 @@ parts using <b>7plus</b> and creates a separate message for each part. When
 <p> </p>
    
 <hr width="100%">   
-<div align="left"><i><font size="-1">Last update: 29.7.2002</font></i>  
+<div align="left"><i><font size="-1">Last update: 11/5/2017</font></i>  
  <br>
 </div>
    
 <div align="left"><i><font size="-1">Please report any mistakes to <a
- href="mailto:radkovo@centrum.cz">radkovo@centrum.cz</a></font></i>    <br>
+ href="mailto:linpac@trinnet.net">linpac@trinnet.net</a></font></i>    <br>
  </div>
   <br>
 </body>
