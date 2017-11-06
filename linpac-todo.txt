@@ -13,6 +13,7 @@ various items resolved is highly encouraged and appreciated!
 
 Changes:
 --------
+11/06/17 - Added new issue when using //sp without specifying a destination callsign
 11/05/17 - Export html documentation to txt
 10/01/17 - Wrong Alt-X creates a segfault
 09/30/17 - Added a segmentation fault entry when using a misconfigured ax.25 stack
@@ -111,6 +112,28 @@ P1 - UI
 
 P1 - Mail
 ---------------
+
+    - 11/06/17 - //sp command without a destination callsign doesn't fully open
+                 a messge and doesn't tell the user to use "/ex" to terminate the
+                 session:
+                 --
+                 //sp
+                 Last message number is 428
+                 Enter subject of PRIVATE MESSAGE (max 80 characters)
+                 HI David, Dan here
+                 My message via QMSBBS
+                 --
+
+                 vs. say:
+                 --
+                 //SP KI6ZHD
+                 Last message number is 427
+                 Enter subject of PRIVATE MESSAGE (max 80 characters)
+
+                 It's working!
+                 Enter message for KI6ZHD@K6FB.#NCA.CA.USA.NOAM
+                 End with /EX or (Ctrl-Z) in first colum
+                 --
 
     - 08/03/14 - Linpac only supports email relaying and doesn't fully support
            local-only messaging.  Messages can be left for the local operator but
