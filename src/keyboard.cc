@@ -55,7 +55,7 @@ void Keyscan::handle_event(const Event &ev)
       if (ch == '\x1B')
       {
         re.y = FLAG_MOD_ALT;
-        ch = wgetch(stdscr);
+        ch = wgetch(keywin);
       }
       else re.y = FLAG_MOD_NONE;
       re.x = ch;
