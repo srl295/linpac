@@ -14,38 +14,38 @@
    Last update 21.10.2000
   =========================================================================*/
 
+#include <string.h>
+#include <iostream>
+#include <ncurses.h>
+
 #include "version.h"
 #include "event.h"
 #include "data.h"
 #include "keyboard.h"
 
-#include <string.h>
-#include <iostream>
-
 //--------------------------------------------------------------------------
 // Class Keyscan
 //--------------------------------------------------------------------------
-#include <ncurses.h>
 
 Keyscan::Keyscan()
 {
   strcpy(class_name, "Keyscan");
   keywin = newwin(1, 1, 0, 0);
-  keypad(reinterpret_cast<WINDOW *>(keywin), true);
-  meta(reinterpret_cast<WINDOW *>(keywin), true);
-  nodelay(reinterpret_cast<WINDOW *>(keywin), true);
+  keypad(keywin, true);
+  meta(keywin, true);
+  nodelay(keywin, true);
 }
 
 Keyscan::~Keyscan()
 {
-  delwin(reinterpret_cast<WINDOW *>(keywin));
+  delwin(keywin);
 }
 
 void Keyscan::handle_event(const Event &ev)
 {
   if (ev.type == EV_NONE) //only when void-loop
   {
-    int ch = wgetch(reinterpret_cast<WINDOW *>(keywin));
+    int ch = wgetch(keywin);
     //int ch = getch();
     std::cout.flush();
     if (ch != ERR)
