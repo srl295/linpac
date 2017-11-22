@@ -328,7 +328,11 @@ void BoardList::handle_event(Event *ev)
   if (wait_gname)
   {
     wait_gname = false;
-    if (iline != NULL) delete iline;
+    if (iline != NULL)
+    {
+        delete iline;
+        iline = NULL;
+    }
 
     if (strlen(ibuffer) > 0)
     {
@@ -353,7 +357,11 @@ void BoardList::handle_event(Event *ev)
   if (wait_gdel)
   {
     wait_gdel = false;
-    if (iline != NULL) delete iline;
+    if (iline != NULL)
+    {
+        delete iline;
+        iline = NULL;
+    }
 
     if (ibuffer[0] == 'Y' || ibuffer[0] == 'y')
     {

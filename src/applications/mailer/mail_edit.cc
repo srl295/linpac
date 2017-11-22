@@ -207,6 +207,20 @@ void Editor::handle_event(Event *ev)
        wmove(win, cry, crx);
        wrefresh(win);
    }
+
+   if (ev->type==EV_KEY_PRESS_MULTI)
+   {
+        if (!ev->y)
+        {
+            // Treat this the same as if we received multiple EV_KEY_PRESS events
+            // where each event is guaranteed to be only a printable character.
+            char *buffer = (char *)ev->data;
+            for (int ix = 0; ix < strlen(buffer); ix++)
+                newch(buffer[ix]);
+        }
+       wmove(win, cry, crx);
+       wrefresh(win);
+   }
 }
 
 void Editor::draw(bool all)
@@ -715,6 +729,29 @@ void Composer::handle_event(Event *ev)
                 break;
                     
     }
+  }
+  else if (ev->type == EV_KEY_PRESS_MULTI)
+  {
+    // Only triggered by pasting, so here we need only support the To and Subject
+    // fields, plus the editor.
+    ed->clear_error();
+    if (cry > SYSLINES) // editor
+        ed->handle_event(ev);
+    else if (cry == 0 || cry == 2) // To or Subject
+    {
+      // Treat this the same as if we received multiple EV_KEY_PRESS events
+      // where each event is guaranteed to be only a printable character.
+      char *buffer = (char *)ev->data;
+      char *target = (cry == 0 ? to : subj);
+      for (int ix = 0; ix < strlen(buffer); ix++)
+      {
+        if (strlen(target)<ADDR_LEN-1) strncat(target, &buffer[ix], 1);
+      }
+    }
+  }
+
+  if (ev->type == EV_KEY_PRESS || ev->type == EV_KEY_PRESS_MULTI)
+  {
     if (cry <= SYSLINES) draw_header();
     if (cry == 0) {crx = strlen(to); wmove(win, 1, 12+crx);}
     if (cry == 1) {crx = 0; wmove(win, 2, 12);}

@@ -44,6 +44,7 @@ class InputLine : public screen_obj
     InputLine(WINDOW *parent, int wx, int wy, int flen, unsigned textlen,
               char const *prompt, char *buffer, int mode = INPUT_ALL);
     void handle_event(Event *ev);
+    void newch(char ch);
     void draw(bool all = false);
     virtual ~InputLine() {};
 };
