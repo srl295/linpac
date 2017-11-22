@@ -587,7 +587,7 @@ void Messages::draw(bool all)
       box(mwin, ACS_VLINE, ACS_HLINE);
 
       char sf[32];
-      if (folder == FOLDER_INCOMMING) strcpy(sf, "Incomming mail");
+      if (folder == FOLDER_INCOMMING) strcpy(sf, "Incoming mail");
       if (folder == FOLDER_OUTGOING) strcpy(sf, "Outgoing mail");
 
       mvwprintw(mwin, 0, 2, "%s: %s", bbs, sf);
