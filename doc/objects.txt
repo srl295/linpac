@@ -8,8 +8,8 @@ name (up to 10 characters).
 ----------------+-----------------------------------------------------------
   SCREEN	| Screen manager.
 		|
-  Keyscan	| Reads the keyboard, generates appropriate events when a
-		| key is pressed (EV_KEY_PRESS)
+  Keyscan	| Reads the keyboard, generates appropriate events when one or
+		| more keys are pressed (EV_KEY_PRESS, EV_KEY_PRESS_MULTI)
 		|
   Command	| Interpret commands represented by EV_DO_COMMANDS,
                 | EV_TEXT_COOKED (starting with :) or EV_LINE_RECV
@@ -33,7 +33,8 @@ name (up to 10 characters).
     QSOWin8 	| in EV_DATA_INPUT, EV_DATA_OUTPUT and EV_LOCAL_MSG events.
 		|
   Editor0 -	| Editor windows each channel (0 = unproto mode). Reads the 
-    Editor8	| EV_KEY_PRESSED events and produces EV_TEXT_RAW events.
+    Editor8	| EV_KEY_PRESSED and EV_KEY_PRESS_MULTI events and produces
+		| EV_TEXT_RAW events.
 		|
   Statln1 -	| Managers of additional status lines (one for each
     Statln8	| channel).
