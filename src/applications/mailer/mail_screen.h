@@ -41,8 +41,8 @@
 extern bool act;            //application is visible
 extern bool stop;           //abort received
 extern int maxx, maxy;      //screen sizes
-extern void *main_window;   //main screen window
-extern void *focus_window;  //focused window
+extern WINDOW *main_window;   //main screen window
+extern WINDOW *focus_window;  //focused window
 
 extern char ttable[256];    //actual translation table
 extern int tabsize;         //size of actual table
@@ -59,7 +59,7 @@ void redraw();
 void help(const char *s);
 
 void load_table(int n);
-int safe_wrefresh(void *win);
+int safe_wrefresh(WINDOW *win);
 
 //Generic screen object class
 class screen_obj

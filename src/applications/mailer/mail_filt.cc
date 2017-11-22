@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <string.h>
 #include <ctype.h>
+#include <ncurses.h>
 
 #include "mail_filt.h"
 
@@ -235,26 +236,24 @@ void BoardList::delete_group(int sel)
 }
 
 //-------------------------------------------------------------------------
-#include <ncurses.h>
 
-void BoardList::init_screen(void *pwin, int height, int width, int wy, int wx)
+void BoardList::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
 {
    xsize = width;
    ysize = height;
    x = wx;
    y = wy;
  
-   //WINDOW *win = subwin(reinterpret_cast<WINDOW *>(pwin), ysize, xsize, y, x);
-   WINDOW *win = reinterpret_cast<WINDOW *>(pwin);
-   mwin = win;
-   keypad(win, true);
-   meta(win, true);
-   nodelay(win, true);
+   //WINDOW *win = subwin(pwin, ysize, xsize, y, x);
+   mwin = pwin;
+   keypad(pwin, true);
+   meta(pwin, true);
+   nodelay(pwin, true);
  
    draw(true);
  
    old_focus_window = focus_window;
-   focus_window = win;
+   focus_window = pwin;
    old_focused = focused;
    focused = this;
  
@@ -263,19 +262,17 @@ void BoardList::init_screen(void *pwin, int height, int width, int wy, int wx)
 
 void BoardList::draw(bool all)
 {
-   WINDOW *win = reinterpret_cast<WINDOW *>(mwin);
- 
    if (all)
    {
-      wbkgdset(win, ' ' | COLOR_PAIR(C_TEXT) | A_BOLD);
-      werase(win);
-      box(win, ACS_VLINE, ACS_HLINE);
-      mvwprintw(win, 0, 2, "Select bulletins");
-      mvwprintw(win, 1, 4, "Groups");
-      mvwprintw(win, 1, COLUMN1+4, "Bulletins");
+      wbkgdset(mwin, ' ' | COLOR_PAIR(C_TEXT) | A_BOLD);
+      werase(mwin);
+      box(mwin, ACS_VLINE, ACS_HLINE);
+      mvwprintw(mwin, 0, 2, "Select bulletins");
+      mvwprintw(mwin, 1, 4, "Groups");
+      mvwprintw(mwin, 1, COLUMN1+4, "Bulletins");
   
-      mvwvline(win, 1, COLUMN1, ACS_VLINE, ysize-2);
-      mvwvline(win, 1, COLUMN2, ACS_VLINE, ysize-2);
+      mvwvline(mwin, 1, COLUMN1, ACS_VLINE, ysize-2);
+      mvwvline(mwin, 1, COLUMN2, ACS_VLINE, ysize-2);
    }
    
    //Draw group names
@@ -286,18 +283,18 @@ void BoardList::draw(bool all)
          if (gslct == i+gpos && col == 0) attr = COLOR_PAIR(C_SELECT);
                                      else attr = COLOR_PAIR(C_UNSELECT);
          
-         wbkgdset(win, ' ' | attr);
+         wbkgdset(mwin, ' ' | attr);
      
          int sl;
          if (groups[i+gpos].sel) sl = ACS_BULLET;
                             else sl = ' ';
    
-         mvwprintw(win, i+2, 2, "%c %-*.*s", sl, COLUMN1-5, COLUMN1-5, groups[i+gpos].name);
+         mvwprintw(mwin, i+2, 2, "%c %-*.*s", sl, COLUMN1-5, COLUMN1-5, groups[i+gpos].name);
       }
       else
       {
-         wbkgdset(win, COLOR_PAIR(C_TEXT));
-         mvwprintw(win, i+2, 2, "%-*.*s", COLUMN1-3, COLUMN1-3, "");
+         wbkgdset(mwin, COLOR_PAIR(C_TEXT));
+         mvwprintw(mwin, i+2, 2, "%-*.*s", COLUMN1-3, COLUMN1-3, "");
       }
  
    //Draw bulletin names
@@ -308,21 +305,21 @@ void BoardList::draw(bool all)
          if (slct == i+pos && col == 1) attr = COLOR_PAIR(C_SELECT);
                                    else attr = COLOR_PAIR(C_UNSELECT);
          
-         wbkgdset(win, ' ' | attr);
+         wbkgdset(mwin, ' ' | attr);
      
          int sl;
          if (boards[i+pos].sel) sl = ACS_BULLET;
                            else sl = ' ';
    
-         mvwprintw(win, i+2, COLUMN1+2, "%c %-*.*s", sl, COLUMN2-COLUMN1-5, COLUMN2-COLUMN1-5, boards[i+pos].name);
+         mvwprintw(mwin, i+2, COLUMN1+2, "%c %-*.*s", sl, COLUMN2-COLUMN1-5, COLUMN2-COLUMN1-5, boards[i+pos].name);
       }
       else
       {
-         wbkgdset(win, COLOR_PAIR(C_TEXT));
-         mvwprintw(win, i+2, COLUMN1+2, "%-*.*s", COLUMN2-COLUMN1-3, COLUMN2-COLUMN1-3, "");
+         wbkgdset(mwin, COLOR_PAIR(C_TEXT));
+         mvwprintw(mwin, i+2, COLUMN1+2, "%-*.*s", COLUMN2-COLUMN1-3, COLUMN2-COLUMN1-3, "");
       }
  
-    wnoutrefresh(win);
+    wnoutrefresh(mwin);
     for (int i = 0; i < 5; i++) doupdate(); //must be done many times, don't know why
 }
 

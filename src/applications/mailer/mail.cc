@@ -16,6 +16,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <axmail.h>
+#include <ncurses.h>
 #include "lpapp.h"
 #include "mail_call.h"
 #include "mail_data.h"

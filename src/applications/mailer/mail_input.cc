@@ -23,7 +23,7 @@ WINDOW *win;
 //--------------------------------------------------------------------------
 // Class InputLine
 //--------------------------------------------------------------------------
-InputLine::InputLine(void *parent, int wx, int wy, int flen, unsigned textlen,
+InputLine::InputLine(WINDOW *parent, int wx, int wy, int flen, unsigned textlen,
                     char const *prompt, char *buffer, int mode)
 {
   sprintf(class_name, "InputLine");
@@ -34,7 +34,7 @@ InputLine::InputLine(void *parent, int wx, int wy, int flen, unsigned textlen,
 
   strcpy(buf, "");
 
-  win = subwin((WINDOW *)parent, 1, fieldln, y, x);
+  win = subwin(parent, 1, fieldln, y, x);
   scrollok(win, false);
   draw(true);
 

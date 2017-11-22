@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <axmail.h>
+#include <ncurses.h>
 
 #include "lpapp.h"
 #include "mail_edit.h"
@@ -512,7 +513,7 @@ Composer::Composer(WINDOW *parent, int wx1, int wy1, int wx2, int wy2, char *toa
    ed = new Editor(win, x1+1, y1+SYSLINES+3, x2-1, y2-1, maxlines);
    load_texts();
  
-   old_focus_window = (WINDOW *) focus_window;
+   old_focus_window = focus_window;
    focus_window = win;
    old_focused = focused;
    focused = this;

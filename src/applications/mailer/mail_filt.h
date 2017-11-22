@@ -60,7 +60,7 @@ class BGroup : public Board
 class BoardList : public screen_obj
 {
   private:
-    void *mwin;                  //window
+    WINDOW *mwin;                //window
     unsigned x, y, xsize, ysize; //window position
     unsigned slct, gslct;        //selected bulletin, group
     unsigned pos, gpos;          //scroll position in bulletins, groups
@@ -71,7 +71,7 @@ class BoardList : public screen_obj
     char ibuffer[30];            //input line buffer
     InputLine *iline;            //input line
 
-    void *old_focus_window;
+    WINDOW *old_focus_window;
     screen_obj *old_focused;
 
   public:
@@ -80,7 +80,7 @@ class BoardList : public screen_obj
     
     BoardList(MessageIndex *ndx, std::vector <Msg> &, char *mycall);
     BoardList(std::vector <Board> &);
-    void init_screen(void *pwin, int height, int width, int wy, int wx);
+    void init_screen(WINDOW *pwin, int height, int width, int wy, int wx);
 
     void save_groups();
     void load_groups();
