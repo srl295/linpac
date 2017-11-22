@@ -73,7 +73,29 @@ void Keyscan::handle_event(const Event &ev)
         else if (ch == KEY_F(7)) emit(7, EV_SELECT_CHN, 0, NULL);
         else if (ch == KEY_F(8)) emit(8, EV_SELECT_CHN, 0, NULL);
         else if (ch == KEY_F(10)) emit(0, EV_SELECT_CHN, 0, NULL);
-        else emit(re);
+        else if (!isprint(ch)) emit(re);
+        else
+        {
+            // Accumulate printable characters into a single event while ncurses
+            // still has input to give us or until we fill our buffer.
+            char buffer[LINE_LEN+1];
+            int ix = 0;
+
+            buffer[ix++] = ch;
+            while (isprint(ch = wgetch(keywin)) && ix < LINE_LEN)
+                buffer[ix++] = ch;
+            // If we got a non-printable character, put it back for next time.
+            if (ch != ERR) ungetch(ch);
+            // Only emit a multi-key event if we have multiple keys.
+            if (ix > 1)
+            {
+                buffer[ix] = '\0';
+                re.type = EV_KEY_PRESS_MULTI;
+                re.x = 0;
+                re.data = buffer;
+            }
+            emit(re);
+        }
       }
       else
       {

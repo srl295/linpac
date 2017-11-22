@@ -13,6 +13,7 @@
 #define EV_NONE 0               //no event
 //User interaction
 #define EV_KEY_PRESS 1          //key pressed (x=keycode), y=FLAG_MOD_ALT if 'Alt' pressed
+#define EV_KEY_PRESS_MULTI 103  //accumulated key presses (printable only)
 #define EV_BUTTON_PRESS 2       //mouse button pressed (x,y = position)
 #define EV_BUTTON_RELEASE 3     //mouse button released (x,y = position)
 #define EV_TEXT_ARGS 204        //cooking arguments for TEXT_RAW, must precede TEXT_RAW
