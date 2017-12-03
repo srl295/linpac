@@ -77,7 +77,7 @@ void InputLine::handle_event(Event *ev)
     // Treat this the same as if we received multiple EV_KEY_PRESS events
     // where each event is guaranteed to be only a printable character.
     char *buffer = (char *)ev->data;
-    for (int ix = 0; ix < strlen(buffer); ix++)
+    for (unsigned ix = 0; ix < strlen(buffer); ix++)
       newch(buffer[ix]);
     if (focused == this) draw();
   }
