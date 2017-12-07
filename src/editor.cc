@@ -407,7 +407,7 @@ void Editor::convert_charset(char *s)
   char *p = s;
   while (*p)
   {
-    if (*p < convcnt) *p = conv[*p];
+    if (*p < convcnt) *p = conv[(unsigned)*p];
     p++;
   }
 }

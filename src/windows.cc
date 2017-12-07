@@ -398,7 +398,7 @@ void Window::outch(char ch, int typ)
   if (typ < 1 || typ > 4 || !enabled) return;
   int cp = typ;
   //try to convert character
-  if (ch < convcnt) ch = conv[ch];
+  if (ch < convcnt) ch = conv[(unsigned)ch];
   //interpret character
   switch (ch)
   {

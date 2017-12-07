@@ -466,7 +466,7 @@ void Editor::convert_charset(char *s)
    char *p = s;
    while (*p)
    {
-     if (*p < convcnt) *p = conv[*p];
+     if (*p < convcnt) *p = conv[(unsigned)*p];
      p++;
    }
 }
@@ -869,7 +869,7 @@ bool Composer::send_message()
    if (ttabnum > -1) load_table(ttabnum);
    //translate subject
    for (unsigned i = 0; i < strlen(subj); i++)
-       if (subj[i] < ttabsize) subj[i] = ttable[subj[i]];
+       if (subj[i] < ttabsize) subj[i] = ttable[(unsigned)subj[i]];
    
    //get source callsign
    char *mycall = strdup(call_call(lp_chn_call(lp_channel())));
@@ -919,7 +919,7 @@ bool Composer::send_message()
       if (ed->line[i].editable)
       {
          for (unsigned i = 0; i < strlen(s); i++)
-            if (s[i] < ttabsize) s[i] = ttable[s[i]];
+            if (s[i] < ttabsize) s[i] = ttable[(unsigned)s[i]];
          fprintf(f, "%s\n", s);
       }
    }
