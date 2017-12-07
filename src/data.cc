@@ -344,7 +344,6 @@ struct Ax25Status chstat;
 
 bool get_axstat(const char *src, const char *dest, int form)
 {
-  int len=0;
   char buffer[256];
   char dama[7];
   char dest_addr[256]; //this can contain digipeater callsigns
@@ -366,7 +365,7 @@ bool get_axstat(const char *src, const char *dest, int form)
         chstat.sendq = chstat.recvq = 0;
         if (form == 0) //2.0.x kernels
         {
-          len=sscanf(buffer, "%s %s %s %d %d %d %d %d/%d %d/%d %d/%d %d/%d %d/%d %d %d %d %s %d %d",
+          (void)sscanf(buffer, "%s %s %s %d %d %d %d %d/%d %d/%d %d/%d %d/%d %d/%d %d %d %d %s %d %d",
             dest_addr, source_addr,
             chstat.devname,
             &chstat.state,
@@ -385,7 +384,7 @@ bool get_axstat(const char *src, const char *dest, int form)
         }
         if (form == 1) //2.2.x kernels
         {
-          len=sscanf(buffer, "%s %s %s %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+          (void)sscanf(buffer, "%s %s %s %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
             dummy,
             chstat.devname,
             source_addr, dest_addr,

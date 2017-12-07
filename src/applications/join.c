@@ -63,8 +63,6 @@ void chn_remove_statline(int chn)
 
 int main(int argc, char **argv)
 {
-  char teststr[256];
-
   lp_app_ident("join");
   if (lp_start_appl())
   {

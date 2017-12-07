@@ -443,7 +443,7 @@ void receive()
   char path[256], ppath[256], *p;
   int buflen;
   int rc;
-  int timeout, eofrm, eot, times;
+  int timeout, eofrm, eot;
   char name[256];
   long fsize;
   long rcvd = 0;
@@ -461,7 +461,6 @@ void receive()
   lp_set_event_handler(my_handler);
   state = STATE_R;
   eot = 0;
-  times = 0;
 
   lp_disable_screen();
 

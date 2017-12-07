@@ -88,11 +88,10 @@ char *fgets_cr(char *s, int size, FILE *stream)
 void try_decode(char *path, char *name, int parts)
 {
   char cmd[LINE_LEN];
-  int r;
 
   sprintf(cmd, "cd %s; %s %s > /dev/null; cd $OLDPWD", path, DECODE_CMD, name);
   lp_event_handling_off();
-  r = system(cmd);
+  (void)system(cmd); // ignore result
   lp_event_handling_on();
   /*if (r == 0) printf("save7pl: File succesfully decoded.\r");
               else printf(strerror(errno));*/
