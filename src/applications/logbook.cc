@@ -5,6 +5,7 @@
    Usage: logbook <start|stop> <source_callsign> <dest_callsign> <qrg>
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <locale.h>
 #include <time.h>
@@ -52,7 +53,9 @@ void start_record(char *logname, char *dest, char *qrg)
 void stop_record(char *logname, char *dest, char *qrg)
 {
   FILE *f, *t;
-  char tname[256], s[256];
+  int tfd;
+  char tname[] = "/tmp/logbookXXXXXX";
+  char s[256];
 
   f = fopen(logname, "r");
   if (f == NULL)
@@ -61,13 +64,14 @@ void stop_record(char *logname, char *dest, char *qrg)
     return;
   }
 
-  if (tmpnam(tname) == NULL)
+  tfd = mkstemp(tname);
+  if (tfd == -1)
   {
     fprintf(stderr, "logbook: cannot generate temp filename\n");
   }
   else
   {
-    t = fopen(tname, "w");
+    t = fdopen(tfd, "w");
     if (t == NULL)
     {
       fprintf(stderr, "logbook: cannot open temp file %s\n", tname);
