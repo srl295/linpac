@@ -376,6 +376,7 @@ void BoardList::handle_event(Event *ev)
   if (ev->type == EV_KEY_PRESS)
   {
     if (ev->x == KEY_DOWN)
+    {
       if (col == 0)
       {
         if (gslct < groups.size()-1) gslct++;
@@ -386,8 +387,10 @@ void BoardList::handle_event(Event *ev)
         if (slct < boards.size()-1) slct++;
         if (slct-pos >= ysize-3) pos++;
       }
+    }
 
     if (ev->x == KEY_UP)
+    {
       if (col == 0)
       {
         if (gslct > 0) gslct--;
@@ -398,6 +401,7 @@ void BoardList::handle_event(Event *ev)
         if (slct > 0) slct--;
         if (slct < pos) pos--;
       }
+    }
 
     if (ev->x == KEY_NPAGE)
       for (unsigned j=0; j < (ysize-3); j++)
@@ -426,6 +430,7 @@ void BoardList::handle_event(Event *ev)
         }
 
     if (ev->x == '\t')
+    {
       if (col == 1)
       {
         col = 0;
@@ -436,6 +441,7 @@ void BoardList::handle_event(Event *ev)
         col = 1;
         help(HELP_BOARDS2);
       }
+    }
 
     //select bulletins in group
     if (col == 0)

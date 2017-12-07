@@ -256,8 +256,10 @@ void receive()
    lp_remove_statline();
    message("LinPac: Autobin RX finished, CRC = %i.\r", crc);
    if (!old_form)
+   {
      if (crc == ex_crc) message("        CRC check OK.\r");
                    else message("        CRC check FAILED.\r");
+   }
 
    fclose(f);
    if (ut.actime != 0) utime(fname, &ut);

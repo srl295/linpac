@@ -923,10 +923,12 @@ void ExternCmd::send_stream_data(const Event &ev)
 
     int cnt = write(pip_in[1], data, pcnt);
     if (cnt != pcnt)
+    {
       if (errno == EAGAIN)
         fprintf(stderr, "ExternCmd: application pid %i not responding\n", pid);
       else
         Error(errno, "Error while sending data to application pid %i", pid);
+    }
     delete[] data;
 }
 

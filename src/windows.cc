@@ -608,6 +608,7 @@ void QSOWindow::handle_event(const Event &ev)
   if (act)
   {
     if (ev.type == EV_KEY_PRESS)
+    {
       if (!ctrlp)
         switch (ev.x)
         {
@@ -624,6 +625,7 @@ void QSOWindow::handle_event(const Event &ev)
           case 16:  ctrlp = true; break; //Ctrl-P
         }
       else ctrlp = false;
+    }
 
     if (ev.type == EV_CONN_REQ)
     {
@@ -814,6 +816,7 @@ void MonWindow::handle_event(const Event &ev)
   if (act)
   {
     if (ev.type == EV_SELECT_CHN)
+    {
       if (ev.chn >= 0)
       {
         if ((ev.chn == 0 && !alt_pos) || (ev.chn != 0 && alt_pos))
@@ -827,8 +830,10 @@ void MonWindow::handle_event(const Event &ev)
         else redraw();
       }
       else act = false;
+    }
 
     if (ev.type == EV_KEY_PRESS)
+    {
       if (!ctrlp)
         switch (ev.x)
         {
@@ -845,6 +850,7 @@ void MonWindow::handle_event(const Event &ev)
           case 16: ctrlp = true; break; //Ctrl-P
         }
       else ctrlp = false;
+    }
   }
 
   if (ev.type == EV_NONE)
@@ -945,8 +951,10 @@ void MonWindow::next_mon_line()
      if (!dontshow)
      {
         if (header)
+        {
           if (!bconfig("mon_bin")) bin = binary(mon_line);
           else bin = false;
+        }
     
         if (!bin)
         {
@@ -1155,10 +1163,12 @@ void ChannelInfo::redraw(bool update)
   wbkgdset(win, ' ' | COLOR_PAIR(CI_NORM) | fgattr(CI_NORM));
   waddch(win, '\n');
   if (visible < MAX_CHN)
+  {
      if (achn <= visible)
        mvwaddch(win, 0, x2-x1-1, '>' | COLOR_PAIR(CI_NORM) | fgattr(CI_NORM));
      else
        mvwaddch(win, 0, x2-x1-1, '>' | COLOR_PAIR(CI_NORM) | fgattr(CI_NORM) | A_BLINK);
+  }
   if (update && act) wrefresh(win);
 }
 
