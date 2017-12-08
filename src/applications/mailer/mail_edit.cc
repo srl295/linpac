@@ -637,8 +637,10 @@ void Composer::handle_event(Event *ev)
         else ed->errormsg("Cannot open file");
         delete[] name;
      }
+     return;
   }
-  else if (ev->type == EV_KEY_PRESS)
+
+  if (ev->type == EV_KEY_PRESS)
   {
     ed->clear_error();
     if (!ev->y) switch (ev->x)
@@ -736,7 +738,8 @@ void Composer::handle_event(Event *ev)
                     
     }
   }
-  else if (ev->type == EV_KEY_PRESS_MULTI)
+
+  if (ev->type == EV_KEY_PRESS_MULTI)
   {
     // Only triggered by pasting, so here we need only support the To and Subject
     // fields, plus the editor.
