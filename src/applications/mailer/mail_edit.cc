@@ -28,11 +28,17 @@
 
 #define LINE_LEN 200
 #define ADDR_LEN 64
-#define SCREEN_LINES (x2-x1-2)
+#define ADDR_FMT "%-64.64s"
+#define SUBJ_LEN 78
+#define SUBJ_FMT "%-78.78s"
+#define ENC_LEN 32
+#define ENC_FMT "%-32.32s"
+#define HEADER_FMT(hdr,fmt) ("%-7.7s : " fmt) , hdr
 
 #define TAB_SIZE 8
 
 #define SYSLINES 3
+#define SCREEN_LINES (x2-x1-2)
 
 //uncoment this to make BS to skip to previous line when pressed at the
 //begining of line
@@ -508,8 +514,8 @@ Composer::Composer(WINDOW *parent, int wx1, int wy1, int wx2, int wy2, char *toa
    }
    else strcpy(to, "");
 
-   subj = new char[LINE_LEN];
-   if (subject != NULL) strncpy(subj, subject, LINE_LEN-1);
+   subj = new char[SUBJ_LEN];
+   if (subject != NULL) strncpy(subj, subject, SUBJ_LEN-1);
                    else strcpy(subj, "");
  
    //win = subwin(parent, y2-y1+1, x2-x1+1, y1, x1);
@@ -724,7 +730,7 @@ void Composer::handle_event(Event *ev)
                       if (toupper(ev->x) == 'P' ||
                           toupper(ev->x) == 'B') type = toupper(ev->x);
                     if (cry == 2)
-                      if (strlen(to)<ADDR_LEN-1) strncat(subj, &c, 1);
+                      if (strlen(subj)<SUBJ_LEN-1) strncat(subj, &c, 1);
                   }
                 break;
                     
@@ -743,9 +749,10 @@ void Composer::handle_event(Event *ev)
       // where each event is guaranteed to be only a printable character.
       char *buffer = (char *)ev->data;
       char *target = (cry == 0 ? to : subj);
+      unsigned target_len = (cry == 0 ? ADDR_LEN : SUBJ_LEN);
       for (unsigned ix = 0; ix < strlen(buffer); ix++)
       {
-        if (strlen(target)<ADDR_LEN-1) strncat(target, &buffer[ix], 1);
+        if (strlen(target)<target_len-1) strncat(target, &buffer[ix], 1);
       }
     }
   }
@@ -763,13 +770,13 @@ void Composer::handle_event(Event *ev)
 
 void Composer::draw_header()
 {
-  mvwprintw(win, 1, 2, "To      : %-40.40s", to);
-  mvwprintw(win, 2, 2, "Type    : %c", type);
-  mvwprintw(win, 3, 2, "Subject : %-40.40s", subj);
+  mvwprintw(win, 1, 2, HEADER_FMT("To",ADDR_FMT), to);
+  mvwprintw(win, 2, 2, HEADER_FMT("Type","%c"), type);
+  mvwprintw(win, 3, 2, HEADER_FMT("Subject",SUBJ_FMT), subj);
   if (ttabnum == -1)
-    mvwprintw(win, 4, 2, "Encode  : <no encoding>");
+    mvwprintw(win, 4, 2, HEADER_FMT("Encode","<no encoding>"));
   else
-    mvwprintw(win, 4, 2, "Encode  : %-40.40s", tables[ttabnum]);
+    mvwprintw(win, 4, 2, HEADER_FMT("Encode",ENC_FMT), tables[ttabnum]);
 }
 
 void Composer::draw(bool all)
