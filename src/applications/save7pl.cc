@@ -85,16 +85,18 @@ char *fgets_cr(char *s, int size, FILE *stream)
 }
 
 //Try to decode 7plus file
-void try_decode(char *path, char *name, int parts)
+int try_decode(char *path, char *name, int parts)
 {
   char cmd[LINE_LEN];
+  int r;
 
   sprintf(cmd, "cd %s; %s %s > /dev/null; cd $OLDPWD", path, DECODE_CMD, name);
   lp_event_handling_off();
-  (void)system(cmd); // ignore result
+  r = system(cmd);
   lp_event_handling_on();
   /*if (r == 0) printf("save7pl: File succesfully decoded.\r");
               else printf(strerror(errno));*/
+  return r;
 }
 
 //Recieve the file
@@ -200,7 +202,7 @@ void receive()
     message("\rsave7pl: %s saved\r", ppath);
   }
   fclose(f);
-  if (type == TYPE_BIN) try_decode(path, prefix, parts);
+  if (type == TYPE_BIN) (void)try_decode(path, prefix, parts);
 }
 
 
