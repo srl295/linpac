@@ -23,7 +23,7 @@ WINDOW *win;
 //--------------------------------------------------------------------------
 // Class InputLine
 //--------------------------------------------------------------------------
-InputLine::InputLine(void *parent, int wx, int wy, int flen, unsigned textlen,
+InputLine::InputLine(WINDOW *parent, int wx, int wy, int flen, unsigned textlen,
                     char const *prompt, char *buffer, int mode)
 {
   sprintf(class_name, "InputLine");
@@ -34,7 +34,7 @@ InputLine::InputLine(void *parent, int wx, int wy, int flen, unsigned textlen,
 
   strcpy(buf, "");
 
-  win = subwin((WINDOW *)parent, 1, fieldln, y, x);
+  win = subwin(parent, 1, fieldln, y, x);
   scrollok(win, false);
   draw(true);
 
@@ -68,54 +68,62 @@ void InputLine::handle_event(Event *ev)
                         focused->draw(true);
                         focused->handle_event(NULL);
                         break;
-        default:
-              char ch;
-              switch (imode)
-              {
-                case INPUT_ALL:
-                  if (ev->x > ' ' && !ev->y)
-                  {
-                    ch = ev->x;
-                    if (strlen(buf) <= textln) strncat(buf, &ch, 1);
-                  }
-                  break;
-                case INPUT_ALNUM:
-                  if (isalnum(ev->x) && !ev->y)
-                  {
-                    ch = ev->x;
-                    if (strlen(buf) <= textln) strncat(buf, &ch, 1);
-                  }
-                  break;
-                case INPUT_UPC:
-                  if (isalnum(ev->x) && !ev->y)
-                  {
-                    ch = toupper(ev->x);
-                    if (strlen(buf) <= textln) strncat(buf, &ch, 1);
-                  }
-                  break;
-                case INPUT_NUM:
-                  if (isdigit(ev->x) && !ev->y)
-                  {
-                    ch = ev->x;
-                    if (strlen(buf) <= textln) strncat(buf, &ch, 1);
-                  }
-                  break;
-                case INPUT_ONECH:
-                  if (isalnum(ev->x) && !ev->y)
-                  {
-                    ch = ev->x;
-                    strncat(buf, &ch, 1);
-                    focus_window = old_focus_window;
-                    focused = old_focused;
-                    delwin(win);
-                    focused->draw(true);
-                    focused->handle_event(NULL);
-                  }
-                  break;
-              }
+        default:        if (!ev->y) newch(ev->x);
       }
       if (focused == this) draw();
   }
+  if (ev->type==EV_KEY_PRESS_MULTI)
+  {
+    // Treat this the same as if we received multiple EV_KEY_PRESS events
+    // where each event is guaranteed to be only a printable character.
+    char *buffer = (char *)ev->data;
+    for (unsigned ix = 0; ix < strlen(buffer); ix++)
+      newch(buffer[ix]);
+    if (focused == this) draw();
+  }
+}
+
+void InputLine::newch(char ch)
+{
+    switch (imode)
+    {
+      case INPUT_ALL:
+        if (ch > ' ')
+        {
+          if (strlen(buf) <= textln) strncat(buf, &ch, 1);
+        }
+        break;
+      case INPUT_ALNUM:
+        if (isalnum(ch))
+        {
+          if (strlen(buf) <= textln) strncat(buf, &ch, 1);
+        }
+        break;
+      case INPUT_UPC:
+        if (isalnum(ch))
+        {
+          ch = toupper(ch);
+          if (strlen(buf) <= textln) strncat(buf, &ch, 1);
+        }
+        break;
+      case INPUT_NUM:
+        if (isdigit(ch))
+        {
+          if (strlen(buf) <= textln) strncat(buf, &ch, 1);
+        }
+        break;
+      case INPUT_ONECH:
+        if (isalnum(ch))
+        {
+          strncat(buf, &ch, 1);
+          focus_window = old_focus_window;
+          focused = old_focused;
+          delwin(win);
+          focused->draw(true);
+          focused->handle_event(NULL);
+        }
+        break;
+    }
 }
 
 void InputLine::draw(bool all)

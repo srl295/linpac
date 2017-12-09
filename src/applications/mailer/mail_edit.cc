@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <axmail.h>
+#include <ncurses.h>
 
 #include "lpapp.h"
 #include "mail_edit.h"
@@ -203,6 +204,20 @@ void Editor::handle_event(Event *ev)
              default:
                    if (ev->x <= 255) newch(ev->x);
           }
+       wmove(win, cry, crx);
+       wrefresh(win);
+   }
+
+   if (ev->type==EV_KEY_PRESS_MULTI)
+   {
+        if (!ev->y)
+        {
+            // Treat this the same as if we received multiple EV_KEY_PRESS events
+            // where each event is guaranteed to be only a printable character.
+            char *buffer = (char *)ev->data;
+            for (unsigned ix = 0; ix < strlen(buffer); ix++)
+                newch(buffer[ix]);
+        }
        wmove(win, cry, crx);
        wrefresh(win);
    }
@@ -512,7 +527,7 @@ Composer::Composer(WINDOW *parent, int wx1, int wy1, int wx2, int wy2, char *toa
    ed = new Editor(win, x1+1, y1+SYSLINES+3, x2-1, y2-1, maxlines);
    load_texts();
  
-   old_focus_window = (WINDOW *) focus_window;
+   old_focus_window = focus_window;
    focus_window = win;
    old_focused = focused;
    focused = this;
@@ -714,6 +729,29 @@ void Composer::handle_event(Event *ev)
                 break;
                     
     }
+  }
+  else if (ev->type == EV_KEY_PRESS_MULTI)
+  {
+    // Only triggered by pasting, so here we need only support the To and Subject
+    // fields, plus the editor.
+    ed->clear_error();
+    if (cry > SYSLINES) // editor
+        ed->handle_event(ev);
+    else if (cry == 0 || cry == 2) // To or Subject
+    {
+      // Treat this the same as if we received multiple EV_KEY_PRESS events
+      // where each event is guaranteed to be only a printable character.
+      char *buffer = (char *)ev->data;
+      char *target = (cry == 0 ? to : subj);
+      for (unsigned ix = 0; ix < strlen(buffer); ix++)
+      {
+        if (strlen(target)<ADDR_LEN-1) strncat(target, &buffer[ix], 1);
+      }
+    }
+  }
+
+  if (ev->type == EV_KEY_PRESS || ev->type == EV_KEY_PRESS_MULTI)
+  {
     if (cry <= SYSLINES) draw_header();
     if (cry == 0) {crx = strlen(to); wmove(win, 1, 12+crx);}
     if (cry == 1) {crx = 0; wmove(win, 2, 12);}

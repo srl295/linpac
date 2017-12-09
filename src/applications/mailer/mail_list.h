@@ -19,7 +19,7 @@ class TheFile : public screen_obj
   private:
     Message *msg;           //the message
 
-    void *mwin;             //window
+    WINDOW *mwin;           //window
     int x, y, xsize, ysize; //screen position
     //int slct;
     unsigned pos;           //first visible line
@@ -35,7 +35,7 @@ class TheFile : public screen_obj
     char ibuffer[64];       //input line buffer
     InputLine *iline;       //input line
 
-    void *old_focus_window;
+    WINDOW *old_focus_window;
     screen_obj *old_focused;
 
   public:
@@ -50,7 +50,7 @@ class TheFile : public screen_obj
     unsigned max_len();           //the length of longest line
     bool return_addr(char *result); //try to determine the return address
 
-    void init_screen(void *pwin, int height, int width, int wy, int wx);
+    void init_screen(WINDOW *pwin, int height, int width, int wy, int wx);
     virtual void handle_event(Event *);
     virtual void draw(bool all = false);
 
@@ -64,7 +64,7 @@ class Messages : public screen_obj
    private:
       char *bbs;         //BBS callsign
       char *mycall;      //user's callsign
-      void *mwin;        //window handle
+      WINDOW *mwin;      //window handle
       int x, y, xsize, ysize; //window geometry
       int slct;          //current message index
       int pos;           //scroll position
@@ -77,7 +77,7 @@ class Messages : public screen_obj
       std::vector <Board> boards; //list of boards
 
       //saved old screen status
-      void *old_focus_window;
+      WINDOW *old_focus_window;
       screen_obj *old_focused;
  
       TheFile *viewer;    //text viewer
@@ -90,7 +90,7 @@ class Messages : public screen_obj
       //NOTE: in function arguments 'index' means index of the message
       //      in global list 'ndx', 'num' means message numbers at BBS
       Messages(char *bbs_name, char *call, bool all = false);
-      void init_screen(void *pwin, int height, int width, int wy, int wx);
+      void init_screen(WINDOW *pwin, int height, int width, int wy, int wx);
       void reload(bool all = false);
       
       int count() {return msg.size();} //number of messages

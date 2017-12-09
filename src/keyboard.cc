@@ -14,38 +14,38 @@
    Last update 21.10.2000
   =========================================================================*/
 
+#include <string.h>
+#include <iostream>
+#include <ncurses.h>
+
 #include "version.h"
 #include "event.h"
 #include "data.h"
 #include "keyboard.h"
 
-#include <string.h>
-#include <iostream>
-
 //--------------------------------------------------------------------------
 // Class Keyscan
 //--------------------------------------------------------------------------
-#include <ncurses.h>
 
 Keyscan::Keyscan()
 {
   strcpy(class_name, "Keyscan");
   keywin = newwin(1, 1, 0, 0);
-  keypad(reinterpret_cast<WINDOW *>(keywin), true);
-  meta(reinterpret_cast<WINDOW *>(keywin), true);
-  nodelay(reinterpret_cast<WINDOW *>(keywin), true);
+  keypad(keywin, true);
+  meta(keywin, true);
+  nodelay(keywin, true);
 }
 
 Keyscan::~Keyscan()
 {
-  delwin(reinterpret_cast<WINDOW *>(keywin));
+  delwin(keywin);
 }
 
 void Keyscan::handle_event(const Event &ev)
 {
   if (ev.type == EV_NONE) //only when void-loop
   {
-    int ch = wgetch(reinterpret_cast<WINDOW *>(keywin));
+    int ch = wgetch(keywin);
     //int ch = getch();
     std::cout.flush();
     if (ch != ERR)
@@ -55,7 +55,7 @@ void Keyscan::handle_event(const Event &ev)
       if (ch == '\x1B')
       {
         re.y = FLAG_MOD_ALT;
-        ch = wgetch(stdscr);
+        ch = wgetch(keywin);
       }
       else re.y = FLAG_MOD_NONE;
       re.x = ch;
@@ -73,7 +73,29 @@ void Keyscan::handle_event(const Event &ev)
         else if (ch == KEY_F(7)) emit(7, EV_SELECT_CHN, 0, NULL);
         else if (ch == KEY_F(8)) emit(8, EV_SELECT_CHN, 0, NULL);
         else if (ch == KEY_F(10)) emit(0, EV_SELECT_CHN, 0, NULL);
-        else emit(re);
+        else if (!isprint(ch)) emit(re);
+        else
+        {
+            // Accumulate printable characters into a single event while ncurses
+            // still has input to give us or until we fill our buffer.
+            char buffer[LINE_LEN+1];
+            int ix = 0;
+
+            buffer[ix++] = ch;
+            while (isprint(ch = wgetch(keywin)) && ix < LINE_LEN)
+                buffer[ix++] = ch;
+            // If we got a non-printable character, put it back for next time.
+            if (ch != ERR) ungetch(ch);
+            // Only emit a multi-key event if we have multiple keys.
+            if (ix > 1)
+            {
+                buffer[ix] = '\0';
+                re.type = EV_KEY_PRESS_MULTI;
+                re.x = 0;
+                re.data = buffer;
+            }
+            emit(re);
+        }
       }
       else
       {

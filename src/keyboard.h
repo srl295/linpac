@@ -20,7 +20,7 @@
 class Keyscan : public Object
 {
   private:
-    void *keywin; //(WINDOW * cannot be declared now - ncurses conflicts)
+    WINDOW *keywin;
   public:
     Keyscan();
     virtual ~Keyscan();

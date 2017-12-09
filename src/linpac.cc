@@ -442,11 +442,17 @@ int main(int argc, char **argv)
 
   Message(0, "Alt-X to exit.");
 
+  //main loop delay time
+  struct timespec delay;
+  delay.tv_sec = 0;
+  delay.tv_nsec = 10000000L;
+
   //start main loop
   mgr.quit = false;
   while (mgr.quit == false)
   {
      mgr.do_step();
+     nanosleep(&delay, NULL); //ignore any interruptions
   }
 
   Error(0, "LinPac going down (quit)");

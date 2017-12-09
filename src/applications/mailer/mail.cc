@@ -16,6 +16,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <axmail.h>
+#include <ncurses.h>
 #include "lpapp.h"
 #include "mail_call.h"
 #include "mail_data.h"
@@ -87,7 +88,7 @@ void my_handler(Event *ev)
       }
       else act = false;
    }
-   else if (act && ev->type == EV_KEY_PRESS)
+   else if (act && (ev->type == EV_KEY_PRESS || ev->type == EV_KEY_PRESS_MULTI))
    {
       main_scr.handle_event(ev);
       if (focused != NULL)
