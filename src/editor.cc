@@ -191,14 +191,18 @@ void Editor::handle_event(const Event &ev)
   if (act && ev.type == EV_EDIT_INFO) ins_info((char *)ev.data);
 
   if (ev.type == EV_STAT_LINE && chnum != 0)
+  {
     if (bconfig("swap_edit"))
       update(x1, y1, x2, ev.x-1);
     else
       update(x1, ev.x+1, x2, y2);
+  }
 
   if (ev.type == EV_CHN_LINE && chnum != 0)
+  {
     if (!bconfig("swap_edit"))
       update(x1, y1, x2, ev.x-1);
+  }
 
   if (ev.type == EV_SWAP_EDIT && chnum != 0)
   {
@@ -407,7 +411,7 @@ void Editor::convert_charset(char *s)
   char *p = s;
   while (*p)
   {
-    if (*p < convcnt) *p = conv[*p];
+    if (*p < convcnt) *p = conv[(unsigned)*p];
     p++;
   }
 }

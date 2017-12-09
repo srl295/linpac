@@ -550,7 +550,7 @@ void Messages::draw_line(int i)
       char subj[256];
       strncpy(subj, ndx->getMessage(index)->getSubj(), 255); subj[255] = '\0';
       for (unsigned j=0; j<strlen(subj); j++) //convert subject's charset
-         if (subj[j] < tabsize) subj[j] = ttable[subj[j]];
+         if (subj[j] < tabsize) subj[j] = ttable[(unsigned)subj[j]];
                         
       if (folder == FOLDER_INCOMMING)
          mvwprintw(mwin, i+2, 2, "%6i%c%2s %5i %-6.6s %-7.7s %-6.6s %6.6s %-*.*s",
@@ -914,7 +914,7 @@ void TheFile::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
  
    char *subj = strdup(msg->getSubj());
    for (unsigned j=0; j<strlen(subj); j++)
-      if (subj[j] < tabsize) subj[j] = ttable[subj[j]];
+      if (subj[j] < tabsize) subj[j] = ttable[(unsigned)subj[j]];
  
    //WINDOW *win = subwin(pwin, ysize, xsize, y, x);
    mwin = pwin;
@@ -941,7 +941,7 @@ void TheFile::draw(bool all)
 {
    char *subj = strdup(msg->getSubj());
    for (unsigned j=0; j<strlen(subj); j++)
-      if (subj[j] < tabsize) subj[j] = ttable[subj[j]];
+      if (subj[j] < tabsize) subj[j] = ttable[(unsigned)subj[j]];
 
    if (all)
    {
@@ -960,7 +960,7 @@ void TheFile::draw(bool all)
          sprintf(s, "%-*.*s", xsize-3, xsize-3, "");
       if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
       for (unsigned j=0; j<strlen(s); j++)
-         if (s[j] < tabsize) s[j] = ttable[s[j]];
+         if (s[j] < tabsize) s[j] = ttable[(unsigned)s[j]];
       mvwaddstr(mwin, i+2, 1, s);
    }
    wnoutrefresh(mwin);
@@ -1065,7 +1065,7 @@ void TheFile::handle_event(Event *ev)
                   //convert charset
                   char *newl = strdup(line[i]);
                   for (unsigned u=0; u<strlen(newl); u++)
-                     if (newl[u] < tabsize) newl[u] = ttable[newl[u]];
+                     if (newl[u] < tabsize) newl[u] = ttable[(unsigned)newl[u]];
                   //insert toe ditor
                   comp_insert(newl);
                }
@@ -1176,7 +1176,7 @@ void TheFile::handle_event(Event *ev)
             //convert charset
             char *newl = strdup(line[i]);
             for (unsigned u=0; u<strlen(newl); u++)
-               if (newl[u] < tabsize) newl[u] = ttable[newl[u]];
+               if (newl[u] < tabsize) newl[u] = ttable[(unsigned)newl[u]];
             //insert to editor
             comp_insert(newl, false);
          }
