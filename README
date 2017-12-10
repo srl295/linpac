@@ -22,6 +22,7 @@ Current contributors:
   - David Ranch (KI6ZHD)
        Packet radio mail: KI6ZHD@N0ARY.#NCA.CA.USA.NOAM
 
+  - Martin Cooper (KD6YAM) - Polling load reduction; mail bug fixes; warning cleanups
   - Jerry Dunmire (KA6HLD) - Auto-tools
   - Steven Loomis (K6SPI)  - Misc patches
 
