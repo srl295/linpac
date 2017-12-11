@@ -1,7 +1,7 @@
 #Spec file for LinPac
 
 %define	name	linpac
-%define	version	0.25
+%define	version	0.26
 %define	release	1
 
 %define  debug_package %{nil}
@@ -75,8 +75,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun
 
 %changelog
-* Thu Nov 19 2015 David Ranch <dranch@trinnet.net>
-- Start of 0.25 version 
+* Sun Dec 10 2017 David Ranch <dranch@trinnet.net>
+- New 0.26 version 
 * Fri Sep 18 2015 David Ranch <dranch@trinnet.net>
 - New 0.24 version 
 * Wed Sep 16 2015 David Ranch <dranch@trinnet.net>
