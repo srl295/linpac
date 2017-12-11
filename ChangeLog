@@ -1,3 +1,537 @@
+commit 1c898b2
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-10
+
+    Updated to 0.26 version for next release
+
+README
+configure.ac
+contrib/packaging/rpm/linpac.spec
+linpac.lsm
+
+commit 33a4c0c
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-10
+
+    Added KD6YAM
+
+AUTHORS
+
+commit 8c1676b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-10
+
+    major clean-up, moved items around, added new items
+
+linpac-todo.txt
+
+commit 039ab39
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-10
+
+    align both versions
+
+macro/en/help.mac
+
+commit ae6d8a6
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-10
+
+    Added Martin Cooper (KD6YAM) for his helpful contributions
+
+README
+
+commit dd27b77
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-10
+
+    new development version
+
+configure.ac
+
+commit 6a52f1d
+Merge: f117b59 78daf75
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-09
+
+    Merge branch 'cleanup' into develop
+    
+    Cleanup of compiler warnings and bug fixes.
+
+commit f117b59
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-08
+
+    updated develop version
+
+configure.ac
+
+commit d438590
+Merge: 20d3042 0b52ba9
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-08
+
+    Merge branch 'loadreduce-try2' into develop
+
+commit 20d3042
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-08
+
+    date fix
+
+doc/applguide.html
+
+commit 78daf75
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-08
+
+    Fix a bug in file name input handling.
+    
+    The UI would hang after the user entered a file name in order to insert,
+    export, or attach a file. This was caused by fall-through from the case
+    that had finished handling of file name input.
+
+src/applications/mailer/mail_edit.cc
+
+commit bba9d99
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-07
+
+    Fix bugs related to mail header field lengths.
+    
+    Header length checking and formatting was using multiple inconsistent
+    lengths for the same field, as well as checking the length for one field
+    against the state of another. Added new constants and macros, factored
+    out formatting, and corrected all length checks to address this.
+
+src/applications/mailer/mail_edit.cc
+
+commit 118a2d5
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-07
+
+    Fix warning about ignoring system() result.
+
+src/applications/save7pl.cc
+
+commit fd481b1
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-07
+
+    Fix warnings about ambiguous 'else'; add braces.
+
+src/applications/autobin.cc
+src/applications/mailer/mail_filt.cc
+src/editor.cc
+src/sources.cc
+src/windows.cc
+
+commit be7b814
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-07
+
+    Fix warning about tmpnam; use mkstemp instead.
+
+src/applications/logbook.cc
+
+commit 3f67908
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-07
+
+    Fix warnings about signed array subscripts.
+
+src/applications/mailer/mail_edit.cc
+src/applications/mailer/mail_list.cc
+src/editor.cc
+src/windows.cc
+
+commit fe5f35c
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-07
+
+    Fix warnings about unused variables and results.
+
+src/applications/bell.cc
+src/applications/getmsg.cc
+src/applications/join.c
+src/applications/save7pl.cc
+src/applications/yapp.cc
+src/data.cc
+
+commit 0b52ba9
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-12-02
+
+    Correct loop control variable type.
+
+src/applications/mailer/mail_edit.cc
+src/applications/mailer/mail_input.cc
+src/editor.cc
+
+commit f483086
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-11-22
+
+    Add support for new EV_KEY_PRESS_MULTI event.
+    
+    This event is supported wherever the user might think to paste into the mail
+    application. For example, when composing a new message, the To and Subject
+    lines and the message body might be pasted into; when creating a new filter,
+    the name might be pasted into.
+
+src/applications/mailer/mail.cc
+src/applications/mailer/mail_edit.cc
+src/applications/mailer/mail_filt.cc
+src/applications/mailer/mail_input.cc
+src/applications/mailer/mail_input.h
+src/applications/mailer/tevent.h
+
+commit d94cb01
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-11-22
+
+    Document the new EV_KEY_PRESS_MULTI event.
+
+doc/events.txt
+doc/objects.txt
+
+commit dc95b8f
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-11-22
+
+    Add support for new EV_KEY_PRESS_MULTI event.
+    
+    Accumulate immediately-available key presses and generate a single event,
+    instead of an individual event for each key press. Previously, each key
+    press required a full cycle around the application's idle loop.
+    
+    Only printable characters are accumulated, so that this does not interfere
+    with immediate actions, or changes of state, triggered by control characters.
+
+src/editor.cc
+src/keyboard.cc
+src/tevent.h
+
+commit f161491
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-11-22
+
+    Fix a typo that appears in the mail UI.
+
+src/applications/mailer/mail_list.cc
+
+commit ba0c81e
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-11-22
+
+    Use the correct type (WINDOW) for ncurses windows.
+    
+    Incorrect include ordering had caused a problem with using the WINDOW type
+    in some type definitions. Correcting the order of includes resolves the
+    the problem, allowing the correct type to be used, and allowing the removal
+    of numerous reinterpret_cast invocations, and temporary variables, that
+    were previously required.
+
+src/applications/mailer/mail.cc
+src/applications/mailer/mail_comp.cc
+src/applications/mailer/mail_comp.h
+src/applications/mailer/mail_edit.cc
+src/applications/mailer/mail_filt.cc
+src/applications/mailer/mail_filt.h
+src/applications/mailer/mail_help.cc
+src/applications/mailer/mail_help.h
+src/applications/mailer/mail_input.cc
+src/applications/mailer/mail_input.h
+src/applications/mailer/mail_list.cc
+src/applications/mailer/mail_list.h
+src/applications/mailer/mail_screen.cc
+src/applications/mailer/mail_screen.h
+
+commit edcdecf
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-11-19
+
+    Fix inconsistent args in wgetch() calls.
+    
+    If the first call returns an Alt, a second call is made to determine the key
+    to be modified. The code was erroneously using a different WINDOW arg for
+    the second call.
+
+src/keyboard.cc
+
+commit 6b40825
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2017-11-19
+
+    Use the correct type (WINDOW) for the key window.
+    
+    Incorrect include ordering had caused a problem with using the WINDOW type
+    in the Keyscan type definition. Correcting the order of includes resolves
+    the problem, allowing the correct type to be used, and allowing the removal
+    of numerous reinterpret_cast invocations that were previously required.
+
+src/keyboard.cc
+src/keyboard.h
+
+commit 708601b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-12
+
+    update dev version
+
+configure.ac
+
+commit f94537a
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-12
+
+    KD6YAM: load reduction patches with mail app fixes
+
+src/applications/liblinpac/lpapp.c
+src/linpac.cc
+
+commit 068fece
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-06
+
+    noted message issue when no destination callsign is given
+
+linpac-todo.txt
+
+commit d2b4aaa
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-05
+
+    Added that the doc/manual.txt file isn't getting updated from the html doc
+
+linpac-todo.txt
+
+commit b9618ba
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-05
+
+    Added mention of known issue with long predictable network interface names
+
+README
+doc/manual.html
+
+commit c37eca1
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-04
+
+    new development version
+
+configure.ac
+
+commit 44ece4f
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-04
+
+    KD6YAM: Fix incorrect condition leading to EPIPE / broken pipe errors
+
+src/sources.cc
+
+commit f5dd868
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-01
+
+    new development version
+
+configure.ac
+
+commit 1ccfb93
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-01
+
+    added omitted comp, SP, and SB commands
+
+macro/init.mac
+
+commit 7436dff
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-01
+
+    added omitted send message commands in help
+
+macro/help.mac
+
+commit 7baf8c3
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-11-01
+
+    added omitted send message commands
+
+macro/commands
+
+commit 46641a2
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-10-21
+
+    Updated the copyright date
+
+README
+
+commit a6cd4e1
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-10-21
+
+    Updated the alternative AX.25 stack URL from the old Google one to the VE7FET repo
+
+README
+
+commit 8c748d6
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-10-21
+
+    Updated development snapshot date
+
+configure.ac
+
+commit 5639ab2
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-10-21
+
+    segfault fixes exposed in newer GCCs.  Thanks to Martin Cooper KD6YAM
+
+src/data.cc
+src/windows.cc
+
+commit bce365b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-10-02
+
+    Added new segmentation fault issue for Alt-X with incorrect OSX Alt keymapping
+
+linpac-todo.txt
+
+commit 9ada5f6
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-09-30
+
+    Added new segmentation fault issue on misconfigured ax25 stacks
+
+linpac-todo.txt
+
+commit b9b35c7
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-09-02
+
+    Added a check for stale lock files and some comments
+
+contrib/start-linpac.sh
+
+commit 757d3c4
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-03-16
+
+    Added autoreconf help in certain errors
+
+README
+
+commit 9cf2377
+Merge: 017e50a e9ebaae
+Author: David Ranch <linpac@trinnet.net>
+Date:   2016-09-10
+
+    Merge commit 'e9ebaae017cfb02f96c56c8f2609e391fd277031' into develop
+
+commit 017e50a
+Author: David Ranch <linpac@trinnet.net>
+Date:   2016-09-09
+
+    improve version display output
+
+src/commands.cc
+
+commit cb5c5d2
+Author: David Ranch <linpac@trinnet.net>
+Date:   2016-09-09
+
+    new development version
+
+configure.ac
+
+commit 0a2e66b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2016-09-02
+
+    Updating displayed callsign and comments from OK2JBG to KI6ZHD
+
+src/applications/join.c
+src/applications/mailer/mail_screen.cc
+src/applications/testapp.c
+src/linpac.cc
+
+commit e89af88
+Author: Steven R. Loomis <k6spi@fahmu.net>
+Date:   2016-02-04
+
+    Show Connected/Disconnected properly.
+    
+    fix connected/disconnected text.
+    
+    https://sourceforge.net/p/linpac/bugs/21/
+
+src/windows.cc
+
+commit e9ebaae
+Author: Steven R. Loomis <k6spi@fahmu.net>
+Date:   2016-02-04
+
+    Fix error message on console.
+    
+    Fixes: https://sourceforge.net/p/linpac/bugs/23/
+    
+    Change 1 -> 0 so "permission denied" error doesn't show up randomly on screen!
+    
+    In console: "Alt-X to exit. : Operation not permitted"
+    
+    (actually was in Spanish on my system)
+    
+    Signed-off-by: Steven R. Loomis <k6spi@fahmu.net>
+
+src/linpac.cc
+
+commit 091e821
+Author: David Ranch <linpac@trinnet.net>
+Date:   2016-01-30
+
+    Add specific tinfo checks for distros that are missing pkgconfig files for Ncurses - PClinux (mandriva)
+
+configure.ac
+
+commit 5ab8a10
+Author: David Ranch <linpac@trinnet.net>
+Date:   2016-01-29
+
+    Updated the author, version, and added an example of the startup prompting
+
+doc/manual.html
+
+commit 80a39f5
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-11-29
+
+    start linpac detached and then attach if possible
+
+contrib/start-linpac.sh
+
+commit 178ede8
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-11-29
+
+    better grepping, disabled logging for Ncurses UI
+
+contrib/start-linpac.sh
+
+commit 17c5f04
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-11-19
+
+    Updated the Changelog to start 0.25
+
+ChangeLog
+
 commit 1c67d7c
 Author: David Ranch <linpac@trinnet.net>
 Date:   2015-11-19
