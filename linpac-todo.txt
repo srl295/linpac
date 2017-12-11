@@ -1,6 +1,6 @@
 
 Linpac: Prioritized Goals
-12/10/17
+12/11/17
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -57,9 +57,19 @@ All issues resolved - rpm and deb (via checkinstall) work fine
 P1 - Compiling and Install
 ---------------
 
+   - 12/11/17 - BUG: There seems to be a strange bugs with Linpac's make install on Debian 
+          Stretch/Jessie where it's not creating the correct directories for the first time install.  
+          The following commands will help work around the issue before you start the next packaging step:
+
+            sudo /bin/mkdir -p "/usr/share/linpac/contrib"
+            sudo /bin/mkdir -p "/usr/share/doc/linpac/czech"
+            sudo /bin/mkdir -p "/usr/share/linpac/macro/cz"
+            sudo /bin/mkdir -p "/usr/libexec/linpa
+
    - 08/03/14: BUG: make install is not creating /var/ax25/mail - be sure
          to integrate all configuration hacks as detailed in 
          http://www.trinityos.com/HAM/CentosDigitalModes/hampacketizing-centos.html#11a.linpacconfig
+
 
 P1 - Performance issues
 -----------------------
