@@ -266,10 +266,9 @@ P1 - Documentation
 
 
 ==========================================================================
+Priority 2 - Wanted Items (needed but not critical)
 ==========================================================================
 
-Priority 2 - Wanted Items (needed but not critical)
--------------------------------------------------------------------------------
 
 P2 - Packaging
 --------------
@@ -305,6 +304,12 @@ P2 - UI
 
 P2 - Mail
 ---------
+    - 12/11/17 - ENHANCEMENT: there's a significant amount of code that was copied from linpac 
+           itself into the mail app. This is clearly bad, and leads to all sorts of maintenance 
+           issues, not to mention complicating things for anyone trying to understand how to 
+           build an app for linpac. It would be better if such code lived in a shared library, 
+           though not the existing liblinpac one
+
     - 08/03/14 - ENHANCEMENT: Linpac only supports email relaying and doesn't fully support
            local-only messaging.  Messages can be left for the local operator but
            no other remote callsign.  Would like to at least offer a simple interface
@@ -575,6 +580,7 @@ P2 - Website:
 ==========================================================================
 Errata:
 ==========================================================================
+12/11/17 - Noted that mail app has a lot of base linpac code in it
 12/10/17 - Cleaned up various items; tagged each one with BUG/ENHANCEMENT/etc
          - Moved various items around to higher/lower priorities/resolved
          - Notable changes: CPU loading issue has been notably improve (but not 100% done)
