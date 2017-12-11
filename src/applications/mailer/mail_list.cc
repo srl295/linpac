@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <sys/types.h>
+#include <ncurses.h>
 #include "mail_list.h"
 #include "mail_comp.h"
 #include "mail_help.h"
@@ -492,18 +493,17 @@ bool TheFile::return_addr(char *result)
 }
 
 //==========================================================================
-// Functions using ncurses (conflicting)
+// Functions using ncurses
 //==========================================================================
-#include <ncurses.h>
 
-void Messages::init_screen(void *pwin, int height, int width, int wy, int wx)
+void Messages::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
 {
    xsize = width;
    ysize = height;
    x = wx;
    y = wy;
  
-   WINDOW *win = subwin(reinterpret_cast<WINDOW *>(pwin), ysize, xsize, y, x);
+   WINDOW *win = subwin(pwin, ysize, xsize, y, x);
    mwin = win;
    keypad(win, true);
    meta(win, true);
@@ -525,8 +525,6 @@ void Messages::init_screen(void *pwin, int height, int width, int wy, int wx)
 
 void Messages::draw_line(int i)
 {
-   WINDOW *win = reinterpret_cast<WINDOW *>(mwin);
-
    if (i+pos < (int)msg.size())
    {
       long attr;
@@ -543,7 +541,7 @@ void Messages::draw_line(int i)
          if (ndx->getMessage(index)->isPresent()) attr |= A_BOLD;
       }
       
-      wbkgdset(win, ' ' | attr);
+      wbkgdset(mwin, ' ' | attr);
   
       int sl;
       if (msg[i+pos].select) sl = ACS_BULLET;
@@ -552,10 +550,10 @@ void Messages::draw_line(int i)
       char subj[256];
       strncpy(subj, ndx->getMessage(index)->getSubj(), 255); subj[255] = '\0';
       for (unsigned j=0; j<strlen(subj); j++) //convert subject's charset
-         if (subj[j] < tabsize) subj[j] = ttable[subj[j]];
+         if (subj[j] < tabsize) subj[j] = ttable[(unsigned)subj[j]];
                         
       if (folder == FOLDER_INCOMMING)
-         mvwprintw(win, i+2, 2, "%6i%c%2s %5i %-6.6s %-7.7s %-6.6s %6.6s %-*.*s",
+         mvwprintw(mwin, i+2, 2, "%6i%c%2s %5i %-6.6s %-7.7s %-6.6s %6.6s %-*.*s",
                    ndx->getMessage(index)->getNum(), sl,
                    ndx->getMessage(index)->getFlags(),
                    ndx->getMessage(index)->getSize(),
@@ -565,7 +563,7 @@ void Messages::draw_line(int i)
                    ndx->getMessage(index)->getDate().toStringShort(),
                    xsize-49, xsize-50, subj);
       if (folder == FOLDER_OUTGOING)
-         mvwprintw(win, i+2, 2, "%6i%c%2s %-20.20s %-6.6s %6.6s %-*.*s",
+         mvwprintw(mwin, i+2, 2, "%6i%c%2s %-20.20s %-6.6s %6.6s %-*.*s",
                    ndx->getMessage(index)->getNum(), sl,
                    ndx->getMessage(index)->getFlags(),
                    ndx->getMessage(index)->getDest(),
@@ -575,34 +573,32 @@ void Messages::draw_line(int i)
    }
    else
    {
-      wbkgdset(win, COLOR_PAIR(C_TEXT));
-      mvwprintw(win, i+2, 2, "%*s", xsize-4, "");
+      wbkgdset(mwin, COLOR_PAIR(C_TEXT));
+      mvwprintw(mwin, i+2, 2, "%*s", xsize-4, "");
    }
 }
 
 void Messages::draw(bool all)
 {
-   WINDOW *win = reinterpret_cast<WINDOW *>(mwin);
- 
    if (all)
    {
-      wbkgdset(win, ' ' | COLOR_PAIR(C_TEXT) | A_BOLD);
-      werase(win);
-      box(win, ACS_VLINE, ACS_HLINE);
+      wbkgdset(mwin, ' ' | COLOR_PAIR(C_TEXT) | A_BOLD);
+      werase(mwin);
+      box(mwin, ACS_VLINE, ACS_HLINE);
 
       char sf[32];
-      if (folder == FOLDER_INCOMMING) strcpy(sf, "Incomming mail");
+      if (folder == FOLDER_INCOMMING) strcpy(sf, "Incoming mail");
       if (folder == FOLDER_OUTGOING) strcpy(sf, "Outgoing mail");
 
-      mvwprintw(win, 0, 2, "%s: %s", bbs, sf);
-      if (state == STATE_WAIT) mvwprintw(win, 0, 25, " (starting download) ");
-      if (state == STATE_DNLD) mvwprintw(win, 0, 25, " (downloading messages) ");
+      mvwprintw(mwin, 0, 2, "%s: %s", bbs, sf);
+      if (state == STATE_WAIT) mvwprintw(mwin, 0, 25, " (starting download) ");
+      if (state == STATE_DNLD) mvwprintw(mwin, 0, 25, " (downloading messages) ");
    }
    
    for (int i=0; i<ysize-3; i++) draw_line(i);
 
-   wrefresh(win);
-   wnoutrefresh(win);
+   wrefresh(mwin);
+   wnoutrefresh(mwin);
    for (int i = 0; i < 5; i++) doupdate(); //must be done many times, don't know why
 }
 
@@ -646,7 +642,7 @@ void Messages::handle_event(Event *ev)
             {
                draw_line(slct-1-pos);
                draw_line(slct-pos);
-               wrefresh((WINDOW *)mwin);
+               wrefresh(mwin);
             }
          }
       }
@@ -664,7 +660,7 @@ void Messages::handle_event(Event *ev)
             {
                draw_line(slct+1-pos);
                draw_line(slct-pos);
-               wrefresh((WINDOW *)mwin);
+               wrefresh(mwin);
             }
          }
       }
@@ -706,7 +702,7 @@ void Messages::handle_event(Event *ev)
   
       if (toupper(ev->x) == 'Q')
       {
-         //delwin(reinterpret_cast<WINDOW *>(mwin));
+         //delwin(mwin);
          focus_window = old_focus_window;
          focused = old_focused;
       }
@@ -849,7 +845,7 @@ void Messages::handle_event(Event *ev)
       else if (toupper(ev->x) == 'H')
       {
          if (helper == NULL)
-            helper = new HelpWindow(reinterpret_cast<WINDOW *>(mwin), ysize, xsize, y, x);
+            helper = new HelpWindow(mwin, ysize, xsize, y, x);
          else
             helper->show();
       }
@@ -861,14 +857,12 @@ void Messages::handle_event(Event *ev)
       else if (toupper(ev->x) == 'F')
       {
          blister = new BoardList(boards);
-         blister->init_screen(reinterpret_cast<WINDOW *>(mwin),
-                               ysize, xsize, y, x);
+         blister->init_screen(mwin, ysize, xsize, y, x);
       }
       else if (ev->x == '\n')
       {
          viewer = new TheFile(ndx->getMessage(msg[slct].index));
-         viewer->init_screen(reinterpret_cast<WINDOW *>(mwin),
-                             ysize, xsize, y, x);
+         viewer->init_screen(mwin, ysize, xsize, y, x);
       }
       else
          if (ev->x != KEY_DOWN && ev->x != KEY_UP) draw();
@@ -909,7 +903,7 @@ void Messages::handle_event(Event *ev)
 
 //------------------------------------------------------------------------
 
-void TheFile::init_screen(void *pwin, int height, int width, int wy, int wx)
+void TheFile::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
 {
    xsize = width;
    ysize = height;
@@ -920,23 +914,22 @@ void TheFile::init_screen(void *pwin, int height, int width, int wy, int wx)
  
    char *subj = strdup(msg->getSubj());
    for (unsigned j=0; j<strlen(subj); j++)
-      if (subj[j] < tabsize) subj[j] = ttable[subj[j]];
+      if (subj[j] < tabsize) subj[j] = ttable[(unsigned)subj[j]];
  
-   //WINDOW *win = subwin(reinterpret_cast<WINDOW *>(pwin), ysize, xsize, y, x);
-   WINDOW *win = reinterpret_cast<WINDOW *>(pwin);
-   mwin = win;
-   keypad(win, true);
-   meta(win, true);
-   nodelay(win, true);
+   //WINDOW *win = subwin(pwin, ysize, xsize, y, x);
+   mwin = pwin;
+   keypad(pwin, true);
+   meta(pwin, true);
+   nodelay(pwin, true);
  
-   wbkgdset(win, ' ' | COLOR_PAIR(C_MSG) | A_BOLD);
-   werase(win);
-   box(win, ACS_VLINE, ACS_HLINE);
-   mvwprintw(win, 0, 2, "Message %i:%s", msg->getNum(), subj);
+   wbkgdset(pwin, ' ' | COLOR_PAIR(C_MSG) | A_BOLD);
+   werase(pwin);
+   box(pwin, ACS_VLINE, ACS_HLINE);
+   mvwprintw(pwin, 0, 2, "Message %i:%s", msg->getNum(), subj);
    draw();
  
    old_focus_window = focus_window;
-   focus_window = win;
+   focus_window = pwin;
    old_focused = focused;
    focused = this;
  
@@ -946,18 +939,16 @@ void TheFile::init_screen(void *pwin, int height, int width, int wy, int wx)
 
 void TheFile::draw(bool all)
 {
-   WINDOW *win = reinterpret_cast<WINDOW *>(mwin);
-
    char *subj = strdup(msg->getSubj());
    for (unsigned j=0; j<strlen(subj); j++)
-      if (subj[j] < tabsize) subj[j] = ttable[subj[j]];
+      if (subj[j] < tabsize) subj[j] = ttable[(unsigned)subj[j]];
 
    if (all)
    {
-      wbkgdset(win, ' ' | COLOR_PAIR(C_MSG) | A_BOLD);
-      werase(win);
-      box(win, ACS_VLINE, ACS_HLINE);
-      mvwprintw(win, 0, 2, "Message %i:%s", msg->getNum(), subj);
+      wbkgdset(mwin, ' ' | COLOR_PAIR(C_MSG) | A_BOLD);
+      werase(mwin);
+      box(mwin, ACS_VLINE, ACS_HLINE);
+      mvwprintw(mwin, 0, 2, "Message %i:%s", msg->getNum(), subj);
    }
    
    for (int i=0; i<ysize-3; i++)
@@ -969,10 +960,10 @@ void TheFile::draw(bool all)
          sprintf(s, "%-*.*s", xsize-3, xsize-3, "");
       if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
       for (unsigned j=0; j<strlen(s); j++)
-         if (s[j] < tabsize) s[j] = ttable[s[j]];
-      mvwaddstr(win, i+2, 1, s);
+         if (s[j] < tabsize) s[j] = ttable[(unsigned)s[j]];
+      mvwaddstr(mwin, i+2, 1, s);
    }
-   wnoutrefresh(win);
+   wnoutrefresh(mwin);
    for (int i = 0; i < 5; i++) doupdate(); //must be done many times, don't know why
    delete[] subj;
 }
@@ -1074,7 +1065,7 @@ void TheFile::handle_event(Event *ev)
                   //convert charset
                   char *newl = strdup(line[i]);
                   for (unsigned u=0; u<strlen(newl); u++)
-                     if (newl[u] < tabsize) newl[u] = ttable[newl[u]];
+                     if (newl[u] < tabsize) newl[u] = ttable[(unsigned)newl[u]];
                   //insert toe ditor
                   comp_insert(newl);
                }
@@ -1140,23 +1131,21 @@ void TheFile::handle_event(Event *ev)
   
       if (toupper(ev->x) == 'R')
       {
-         WINDOW *win = (WINDOW *)mwin;
-         wbkgdset(win, ' ' | COLOR_PAIR(C_ERROR));
-         mvwprintw(win, ysize-2, 1, " Include original message in reply ?  ");
-         wmove(win, ysize-2, 38);
-         wbkgdset(win, ' ' | COLOR_PAIR(C_MSG));
-         wrefresh(win);
+         wbkgdset(mwin, ' ' | COLOR_PAIR(C_ERROR));
+         mvwprintw(mwin, ysize-2, 1, " Include original message in reply ?  ");
+         wmove(mwin, ysize-2, 38);
+         wbkgdset(mwin, ' ' | COLOR_PAIR(C_MSG));
+         wrefresh(mwin);
          wait_reply = true;
          comment = false;
       }
       else if (toupper(ev->x) == 'C')
       {
-         WINDOW *win = (WINDOW *)mwin;
-         wbkgdset(win, ' ' | COLOR_PAIR(C_ERROR));
-         mvwprintw(win, ysize-2, 1, " Include original message in comment ?  ");
-         wmove(win, ysize-2, 39);
-         wbkgdset(win, ' ' | COLOR_PAIR(C_MSG));
-         wrefresh(win);
+         wbkgdset(mwin, ' ' | COLOR_PAIR(C_ERROR));
+         mvwprintw(mwin, ysize-2, 1, " Include original message in comment ?  ");
+         wmove(mwin, ysize-2, 39);
+         wbkgdset(mwin, ' ' | COLOR_PAIR(C_MSG));
+         wrefresh(mwin);
          wait_reply = true;
          comment = true;
       }
@@ -1187,7 +1176,7 @@ void TheFile::handle_event(Event *ev)
             //convert charset
             char *newl = strdup(line[i]);
             for (unsigned u=0; u<strlen(newl); u++)
-               if (newl[u] < tabsize) newl[u] = ttable[newl[u]];
+               if (newl[u] < tabsize) newl[u] = ttable[(unsigned)newl[u]];
             //insert to editor
             comp_insert(newl, false);
          }
@@ -1206,8 +1195,7 @@ void TheFile::handle_event(Event *ev)
       else if (toupper(ev->x) == 'S')
       {
          wait_sname = true;
-         WINDOW *win = (WINDOW *)mwin;
-         iline = new InputLine(win, 2, ysize-1, xsize-2, xsize-16,
+         iline = new InputLine(mwin, 2, ysize-1, xsize-2, xsize-16,
                                "Save to file:", ibuffer, INPUT_ALL);
       }
       else if (toupper(ev->x) == 'X')
@@ -1215,8 +1203,7 @@ void TheFile::handle_event(Event *ev)
          if (attach > 1) //more than one attachment
          {
             wait_xnum = true;
-            WINDOW *win = (WINDOW *)mwin;
-            iline = new InputLine(win, 2, ysize-1, xsize-2, 5,
+            iline = new InputLine(mwin, 2, ysize-1, xsize-2, 5,
                                   "Attachment no. to save:", ibuffer, INPUT_NUM);
          }
          else if (attach == 1) extract_attach(1);
@@ -1235,13 +1222,12 @@ void TheFile::errormsg(const char *fmt, ...)
    vsprintf(buf, fmt, argptr);
    va_end(argptr);
    
-   WINDOW *win = (WINDOW *)mwin;
-   wbkgdset(win, ' ' | COLOR_PAIR(C_ERROR));
-   mvwprintw(win, ysize-2, 1, " %s ", buf);
-   wbkgdset(win, ' ' | COLOR_PAIR(ED_TEXT));
+   wbkgdset(mwin, ' ' | COLOR_PAIR(C_ERROR));
+   mvwprintw(mwin, ysize-2, 1, " %s ", buf);
+   wbkgdset(mwin, ' ' | COLOR_PAIR(ED_TEXT));
    err = true;
-   //wrefresh(win);
-   wnoutrefresh(win);
+   //wrefresh(mwin);
+   wnoutrefresh(mwin);
    for (int i = 0; i < 5; i++) doupdate(); //must be done many times, don't know why
 }
 

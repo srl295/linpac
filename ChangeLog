@@ -1,9 +1,22 @@
+<<<<<<< HEAD
 commit afb13a7
 Merge: df15d7a 3a1c4af
 Author: David Ranch <linpac@trinnet.net>
 Date:   2015-11-19
 
     Merge branch 'develop'
+=======
+commit 1c67d7c
+Author: David Ranch <linpac@trinnet.net>
+Date:   2015-11-19
+
+    Updated to 0.25 version for next release
+
+README
+configure.ac
+contrib/packaging/rpm/linpac.spec
+linpac.lsm
+>>>>>>> develop
 
 commit 3a1c4af
 Author: David Ranch <linpac@trinnet.net>

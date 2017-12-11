@@ -87,7 +87,6 @@ char *normalize_call(char *call)
 int get_one_message(FILE *fin, char **buf, int *bsize, char *title)
 {
   int eot;
-  int hd_length;
   int ch;
   char c;
   char ofset[7];
@@ -107,7 +106,7 @@ int get_one_message(FILE *fin, char **buf, int *bsize, char *title)
      fprintf(stderr, "getmsg: bad starting character (0x%x)\n", ch);
      return 2; /* format violated */
   }
-  hd_length = safe_fgetc(fin);
+  (void)safe_fgetc(fin); // read and discard header length
 
   lp_statline("Reading message");
 

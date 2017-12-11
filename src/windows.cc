@@ -398,7 +398,7 @@ void Window::outch(char ch, int typ)
   if (typ < 1 || typ > 4 || !enabled) return;
   int cp = typ;
   //try to convert character
-  if (ch < convcnt) ch = conv[ch];
+  if (ch < convcnt) ch = conv[(unsigned)ch];
   //interpret character
   switch (ch)
   {
@@ -608,6 +608,7 @@ void QSOWindow::handle_event(const Event &ev)
   if (act)
   {
     if (ev.type == EV_KEY_PRESS)
+    {
       if (!ctrlp)
         switch (ev.x)
         {
@@ -624,6 +625,7 @@ void QSOWindow::handle_event(const Event &ev)
           case 16:  ctrlp = true; break; //Ctrl-P
         }
       else ctrlp = false;
+    }
 
     if (ev.type == EV_CONN_REQ)
     {
@@ -762,6 +764,8 @@ MonWindow::MonWindow(int wx1, int wy1, int wx2, int wy2, int alt_y, char const *
   enabled = true;
   scroll = false;
   sounds = false;
+  convcnt = 0;
+  conv = NULL;
   colorset = false;
   alt_pos = false;
   ctrlp = false;
@@ -812,6 +816,7 @@ void MonWindow::handle_event(const Event &ev)
   if (act)
   {
     if (ev.type == EV_SELECT_CHN)
+    {
       if (ev.chn >= 0)
       {
         if ((ev.chn == 0 && !alt_pos) || (ev.chn != 0 && alt_pos))
@@ -825,8 +830,10 @@ void MonWindow::handle_event(const Event &ev)
         else redraw();
       }
       else act = false;
+    }
 
     if (ev.type == EV_KEY_PRESS)
+    {
       if (!ctrlp)
         switch (ev.x)
         {
@@ -843,6 +850,7 @@ void MonWindow::handle_event(const Event &ev)
           case 16: ctrlp = true; break; //Ctrl-P
         }
       else ctrlp = false;
+    }
   }
 
   if (ev.type == EV_NONE)
@@ -943,8 +951,10 @@ void MonWindow::next_mon_line()
      if (!dontshow)
      {
         if (header)
+        {
           if (!bconfig("mon_bin")) bin = binary(mon_line);
           else bin = false;
+        }
     
         if (!bin)
         {
@@ -1153,10 +1163,12 @@ void ChannelInfo::redraw(bool update)
   wbkgdset(win, ' ' | COLOR_PAIR(CI_NORM) | fgattr(CI_NORM));
   waddch(win, '\n');
   if (visible < MAX_CHN)
+  {
      if (achn <= visible)
        mvwaddch(win, 0, x2-x1-1, '>' | COLOR_PAIR(CI_NORM) | fgattr(CI_NORM));
      else
        mvwaddch(win, 0, x2-x1-1, '>' | COLOR_PAIR(CI_NORM) | fgattr(CI_NORM) | A_BLINK);
+  }
   if (update && act) wrefresh(win);
 }
 
@@ -1274,7 +1286,7 @@ void InfoLine::redraw(bool update)
                    chstat.sendq, chstat.recvq);
           }
         else
-          wprintw(win, "%54s", "Disconnected");
+          wprintw(win, "%54s", "CONNECTED");
       else
         wprintw(win, "%54s", "Disconnected");
     } else wprintw(win, "%58s", " ");

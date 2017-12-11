@@ -9,14 +9,15 @@
 
   mail_comp.cc - message composer interface
 */
+#include <ncurses.h>
 #include "mail_comp.h"
 #include "mail_edit.h"
 
 Composer *comp;
 
-void start_composer(void *parent, int wx1, int wy1, int wx2, int wy2, char *toaddr, char *subject)
+void start_composer(WINDOW *parent, int wx1, int wy1, int wx2, int wy2, char *toaddr, char *subject)
 {
-  comp = new Composer((WINDOW *)parent, wx1, wy1, wx2, wy2, toaddr, subject);
+  comp = new Composer(parent, wx1, wy1, wx2, wy2, toaddr, subject);
 }
 
 void comp_insert(char *s, bool quote)

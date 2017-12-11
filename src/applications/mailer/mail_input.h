@@ -35,15 +35,16 @@ class InputLine : public screen_obj
     char *buf;          //input buffer
     int imode;          //input mode
 
-    void *old_focus_window;
+    WINDOW *old_focus_window;
     screen_obj *old_focused;
 
   public:
     int crx;            //cusror position
 
-    InputLine(void *parent, int wx, int wy, int flen, unsigned textlen,
+    InputLine(WINDOW *parent, int wx, int wy, int flen, unsigned textlen,
               char const *prompt, char *buffer, int mode = INPUT_ALL);
     void handle_event(Event *ev);
+    void newch(char ch);
     void draw(bool all = false);
     virtual ~InputLine() {};
 };

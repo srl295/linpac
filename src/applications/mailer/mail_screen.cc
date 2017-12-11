@@ -1,5 +1,6 @@
 /*
   LinPac Mailer
+  (c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2016
   (c) 1998 - 1999 by Radek Burget OK2JBG (xburge01@stud.fee.vutbr.cz)
 
   This program is free software; you can redistribute it and/or
@@ -17,7 +18,7 @@
 bool act;
 bool stop;
 int maxx, maxy;
-void *main_window, *focus_window;
+WINDOW *main_window, *focus_window;
 screen_obj *focused = NULL;
 screen_obj * message_handler[16];
 
@@ -66,24 +67,21 @@ void init_main_screen()
 
 void redraw()
 {
-   WINDOW *win = reinterpret_cast<WINDOW *>(main_window);
-   win->_clear = TRUE;
-   redrawwin(win);
-   wrefresh(win);
+   main_window->_clear = TRUE;
+   redrawwin(main_window);
+   wrefresh(main_window);
    /*if (focus_window != NULL)
    {
-     WINDOW *win = reinterpret_cast<WINDOW *>(focus_window);
-     win->_clear = TRUE;
-     redrawwin(win);
+     focus_window->_clear = TRUE;
+     redrawwin(focus_window);
    }*/
 }
 
 void help(char const *s)
 {
-  WINDOW *win = reinterpret_cast<WINDOW *>(main_window);
   int ct = CENTER(strlen(s))-1;
-  mvwprintw(win, maxy-1, 1, "%*s%s%*s", ct, "", s, maxx-strlen(s)-ct-1, "");
-  wrefresh(win);
+  mvwprintw(main_window, maxy-1, 1, "%*s%s%*s", ct, "", s, maxx-strlen(s)-ct-1, "");
+  wrefresh(main_window);
 }
 
 void load_table(int n)
@@ -99,10 +97,10 @@ void load_table(int n)
   }
 }
 
-int safe_wrefresh(void *win)
+int safe_wrefresh(WINDOW *win)
 {
   //event_handling_off();
-  int r = wrefresh((WINDOW *)win);
+  int r = wrefresh(win);
   //event_handling_on();
   return r;
 }
@@ -115,13 +113,12 @@ void Main_scr::handle_event(Event *ev)
 
 void Main_scr::draw(bool all)
 {
-  WINDOW *win = reinterpret_cast<WINDOW *>(main_window);
-  wbkgdset(win, ' ' | COLOR_PAIR(C_BACK));
-  werase(win);
-  box(win, ACS_VLINE, ACS_HLINE);
-  mvwaddstr(win, 2, CENTER(26), "LinPac Packet Radio Mailer");
-  mvwaddstr(win, 3, CENTER(26), "(c) 1998 - 2001  by OK2JBG");
-  wrefresh(win);
+  wbkgdset(main_window, ' ' | COLOR_PAIR(C_BACK));
+  werase(main_window);
+  box(main_window, ACS_VLINE, ACS_HLINE);
+  mvwaddstr(main_window, 2, CENTER(26), "LinPac Packet Radio Mailer");
+  mvwaddstr(main_window, 3, CENTER(26), "(c) 1998 - 2016  by KI6ZHD");
+  wrefresh(main_window);
 }
 
 WINDOW *msgwin;
@@ -131,9 +128,8 @@ void Main_scr::show_message(char *text)
   if (!blocked)
   {
     blocked = true;
-    WINDOW *win = reinterpret_cast<WINDOW *>(focus_window);
     int len = strlen(text) + 4;
-    msgwin = subwin(win, 5, len, 15, CENTER(len));
+    msgwin = subwin(focus_window, 5, len, 15, CENTER(len));
     wbkgdset(msgwin, ' ' | COLOR_PAIR(C_BACK));
     werase(msgwin);
     box(msgwin, ACS_VLINE, ACS_HLINE);

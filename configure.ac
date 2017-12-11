@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Prelude
-AC_INIT([LinPac], [0.24], [linpac@trinnet.net] , , [http://linpac.sourceforge.net/])
+AC_INIT([LinPac], [0.25], [linpac@trinnet.net] , , [http://linpac.sourceforge.net/])
 AC_PREREQ([2.63])
 AC_CONFIG_SRCDIR([src/linpac.cc])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -62,13 +62,20 @@ AC_TRY_COMPILE([#include <sys/socket.h>
 # Checks for library functions
 AC_CHECK_LIB([ncurses], [main], , [AC_MSG_ERROR([ncurses library not found !])])
 
+#Add specific tinfo checks for distros that are missing pkgconfig files for Ncurses - PClinux (mandriva)
+AC_CHECK_LIB(tinfo, tgetent, USE_TERMCAP_LIB=-ltinfo,
+       AC_CHECK_LIB(termcap, tgetent, USE_TERMCAP_LIB=-ltermcap,
+               AC_MSG_ERROR([[Linpac requires ncurses library.]])))
+
+
+
 # Definitions
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([NO_SOCKLEN_T], [Socket length type])
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([VERINFO], [Version string])
 # TODO: move VERINFO to a more prominate location or eliminated it
-AC_DEFINE([VERINFO], ["Development snapshot 080714"])
+AC_DEFINE([VERINFO], ["Development snapshot 121017"])
 
 # Package Options
 # TODO: make sure this is the up-to-date method and that it works right

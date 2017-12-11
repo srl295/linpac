@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <axmail.h>
+#include <ncurses.h>
 
 #include "lpapp.h"
 #include "mail_edit.h"
@@ -27,11 +28,17 @@
 
 #define LINE_LEN 200
 #define ADDR_LEN 64
-#define SCREEN_LINES (x2-x1-2)
+#define ADDR_FMT "%-64.64s"
+#define SUBJ_LEN 78
+#define SUBJ_FMT "%-78.78s"
+#define ENC_LEN 32
+#define ENC_FMT "%-32.32s"
+#define HEADER_FMT(hdr,fmt) ("%-7.7s : " fmt) , hdr
 
 #define TAB_SIZE 8
 
 #define SYSLINES 3
+#define SCREEN_LINES (x2-x1-2)
 
 //uncoment this to make BS to skip to previous line when pressed at the
 //begining of line
@@ -203,6 +210,20 @@ void Editor::handle_event(Event *ev)
              default:
                    if (ev->x <= 255) newch(ev->x);
           }
+       wmove(win, cry, crx);
+       wrefresh(win);
+   }
+
+   if (ev->type==EV_KEY_PRESS_MULTI)
+   {
+        if (!ev->y)
+        {
+            // Treat this the same as if we received multiple EV_KEY_PRESS events
+            // where each event is guaranteed to be only a printable character.
+            char *buffer = (char *)ev->data;
+            for (unsigned ix = 0; ix < strlen(buffer); ix++)
+                newch(buffer[ix]);
+        }
        wmove(win, cry, crx);
        wrefresh(win);
    }
@@ -451,7 +472,7 @@ void Editor::convert_charset(char *s)
    char *p = s;
    while (*p)
    {
-     if (*p < convcnt) *p = conv[*p];
+     if (*p < convcnt) *p = conv[(unsigned)*p];
      p++;
    }
 }
@@ -493,8 +514,8 @@ Composer::Composer(WINDOW *parent, int wx1, int wy1, int wx2, int wy2, char *toa
    }
    else strcpy(to, "");
 
-   subj = new char[LINE_LEN];
-   if (subject != NULL) strncpy(subj, subject, LINE_LEN-1);
+   subj = new char[SUBJ_LEN];
+   if (subject != NULL) strncpy(subj, subject, SUBJ_LEN-1);
                    else strcpy(subj, "");
  
    //win = subwin(parent, y2-y1+1, x2-x1+1, y1, x1);
@@ -512,7 +533,7 @@ Composer::Composer(WINDOW *parent, int wx1, int wy1, int wx2, int wy2, char *toa
    ed = new Editor(win, x1+1, y1+SYSLINES+3, x2-1, y2-1, maxlines);
    load_texts();
  
-   old_focus_window = (WINDOW *) focus_window;
+   old_focus_window = focus_window;
    focus_window = win;
    old_focused = focused;
    focused = this;
@@ -616,8 +637,10 @@ void Composer::handle_event(Event *ev)
         else ed->errormsg("Cannot open file");
         delete[] name;
      }
+     return;
   }
-  else if (ev->type == EV_KEY_PRESS)
+
+  if (ev->type == EV_KEY_PRESS)
   {
     ed->clear_error();
     if (!ev->y) switch (ev->x)
@@ -709,11 +732,36 @@ void Composer::handle_event(Event *ev)
                       if (toupper(ev->x) == 'P' ||
                           toupper(ev->x) == 'B') type = toupper(ev->x);
                     if (cry == 2)
-                      if (strlen(to)<ADDR_LEN-1) strncat(subj, &c, 1);
+                      if (strlen(subj)<SUBJ_LEN-1) strncat(subj, &c, 1);
                   }
                 break;
                     
     }
+  }
+
+  if (ev->type == EV_KEY_PRESS_MULTI)
+  {
+    // Only triggered by pasting, so here we need only support the To and Subject
+    // fields, plus the editor.
+    ed->clear_error();
+    if (cry > SYSLINES) // editor
+        ed->handle_event(ev);
+    else if (cry == 0 || cry == 2) // To or Subject
+    {
+      // Treat this the same as if we received multiple EV_KEY_PRESS events
+      // where each event is guaranteed to be only a printable character.
+      char *buffer = (char *)ev->data;
+      char *target = (cry == 0 ? to : subj);
+      unsigned target_len = (cry == 0 ? ADDR_LEN : SUBJ_LEN);
+      for (unsigned ix = 0; ix < strlen(buffer); ix++)
+      {
+        if (strlen(target)<target_len-1) strncat(target, &buffer[ix], 1);
+      }
+    }
+  }
+
+  if (ev->type == EV_KEY_PRESS || ev->type == EV_KEY_PRESS_MULTI)
+  {
     if (cry <= SYSLINES) draw_header();
     if (cry == 0) {crx = strlen(to); wmove(win, 1, 12+crx);}
     if (cry == 1) {crx = 0; wmove(win, 2, 12);}
@@ -725,13 +773,13 @@ void Composer::handle_event(Event *ev)
 
 void Composer::draw_header()
 {
-  mvwprintw(win, 1, 2, "To      : %-40.40s", to);
-  mvwprintw(win, 2, 2, "Type    : %c", type);
-  mvwprintw(win, 3, 2, "Subject : %-40.40s", subj);
+  mvwprintw(win, 1, 2, HEADER_FMT("To",ADDR_FMT), to);
+  mvwprintw(win, 2, 2, HEADER_FMT("Type","%c"), type);
+  mvwprintw(win, 3, 2, HEADER_FMT("Subject",SUBJ_FMT), subj);
   if (ttabnum == -1)
-    mvwprintw(win, 4, 2, "Encode  : <no encoding>");
+    mvwprintw(win, 4, 2, HEADER_FMT("Encode","<no encoding>"));
   else
-    mvwprintw(win, 4, 2, "Encode  : %-40.40s", tables[ttabnum]);
+    mvwprintw(win, 4, 2, HEADER_FMT("Encode",ENC_FMT), tables[ttabnum]);
 }
 
 void Composer::draw(bool all)
@@ -831,7 +879,7 @@ bool Composer::send_message()
    if (ttabnum > -1) load_table(ttabnum);
    //translate subject
    for (unsigned i = 0; i < strlen(subj); i++)
-       if (subj[i] < ttabsize) subj[i] = ttable[subj[i]];
+       if (subj[i] < ttabsize) subj[i] = ttable[(unsigned)subj[i]];
    
    //get source callsign
    char *mycall = strdup(call_call(lp_chn_call(lp_channel())));
@@ -881,7 +929,7 @@ bool Composer::send_message()
       if (ed->line[i].editable)
       {
          for (unsigned i = 0; i < strlen(s); i++)
-            if (s[i] < ttabsize) s[i] = ttable[s[i]];
+            if (s[i] < ttabsize) s[i] = ttable[(unsigned)s[i]];
          fprintf(f, "%s\n", s);
       }
    }

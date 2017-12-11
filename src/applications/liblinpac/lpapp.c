@@ -31,8 +31,11 @@
 /* Path to AXPORTS */
 #define AXPORTS "/etc/ax25/axports"
 
-/* Number of waiting cycles for creating the event gate */
-#define WAIT_CYCLES 64
+/* Delay time while waiting for event gate, in nsecs */
+#define GATE_WAIT_DELAY 10*1000*1000
+
+/* How long to wait for app startup, in secs */
+#define MAX_GATE_WAIT 2
 
 /* LinPac TCP port */
 #define API_PORT 0x4c50
@@ -232,8 +235,9 @@ int lp_start_appl()
    Event ev;
    struct sockaddr_in addr;
    struct hostent *host;
-   int cnt = WAIT_CYCLES;   /* Number of waiting cycles for creating
-                               the event gate */
+   struct timespec delay;
+   time_t wait_start;
+   long waited;
    setlocale(LC_ALL, "");   /* use locale */
    setbuf(stdout, NULL);    /* linpac does the buffering for us */
    app_pid = getpid();
@@ -279,17 +283,18 @@ int lp_start_appl()
    ev.type = EV_NONE; ev.data = NULL;
  
    /* Wait for the gate */
+   delay.tv_sec = 0;
+   delay.tv_nsec = GATE_WAIT_DELAY;
+   wait_start = time(NULL);
    do
    {
       /* LinPac will signal the remote application before creating the gate */
       if (lp_get_event(&ev) && ev.type == EV_APP_STREMOTE && ev.x == app_pid)
-      {
-          cnt = WAIT_CYCLES;
           app_remote = 1;
-      }
-      cnt--; /* wait cycles */
-   } while ((ev.type != EV_GATE_FINISHED || ev.x != app_pid) && cnt > 0);
-   if (cnt <= 0) { close(sock); return 0; }/* timeout */
+      nanosleep(&delay, NULL);  /* ignore any interruptions */
+      waited = time(NULL) - wait_start;
+   } while ((ev.type != EV_GATE_FINISHED || ev.x != app_pid) && waited < MAX_GATE_WAIT);
+   if (waited >= MAX_GATE_WAIT) { close(sock); return 0; }/* timeout */
    app_chn = ev.chn; /* connection established */
 
    /* close sockets on exit */

@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type"
  content="text/html; charset=iso-8859-1">
              
-  <meta name="Author" content="Radek Burget">
+  <meta name="Author" content="David Ranch">
   <title>LinPac User Manual</title>
 </head>
   <body>
@@ -16,8 +16,8 @@
 <hr width="100%"></h1>
   </center>
       
-<center>Version 0.16   
-<p>(c) 1998 - 2002 by Radek Burget OK2JBG</p>
+<center>Version 0.25
+<p>(c) 1998 - 2017 by David Ranch KI6ZHD</p>
   </center>
       
 <p><br>
@@ -85,38 +85,75 @@ expanded and/or completely reconfigured.
    
 <h2> 2 First configuration</h2>
    When linpac is started for the first time, it automaticaly creates the 
-directory called <tt>LinPac</tt> in your home directory. This directory contains 
-your personal LinPac configuration. When creating this directory LinPac asks 
-for basic information and prepares a useable configuration for you.   
-<p>LinPac functions are based on the very simple interpreted language (actually 
- it's not a language, it's something like the batch files in DOS). In the 
-LinPac home directory there is the subdirectory 'macro', that contains all 
-the scripts written in this language, let's call them macros. Each macro can
-be run in LinPac and it implements some action. The simplest case of the
-macro is normal text file, that is just printed to the screen (or sent to
-the peer) when executed. The language is described in <a href="#POS6">chapter 
-6</a>. </p>
+directory called <tt>LinPac</tt> in the running user's home directory. This 
+directory will contain your personal LinPac configuration settings. After 
+creating this directory, LinPac asks for basic callsign, port and other 
+information and prepares a useable configuration for you.  An example setup
+dialog is as shows where we are using the bogus call "n0call" logging into
+the local BBS "n0ary-1":
+<p>
+$ linpac
+
+Hello dear user. You seem to run LinPac for the first time.
+LinPac has to create a directory in your home directory for storing
+your personal configuration.
+
+For creating your personal configuration please answer following questions:
+
+Your callsign:
+n0call
+
+Enter your home BBS callsign with SSID :
+n0ary-1
+
+Enter the name of port to connect N0ARY-1
+d710
+
+Enter the digipeaters used to connect N0ARY-1 or press enter
+when no digipeaters are used:
+
+
+Enter the full hierarchical address of N0ARY-1
+(e.g. #MOR.CZE.EU)
+#NCA.CA.USA.NOAM
+
+Thank you, N0CALL
+Please wait a moment for creating your personal configuration
+Installation done.
+Press ENTER to run LinPac
+</p>
+<p>The above information is then stored in the <tt>$HOME/LinPac/macro/init.mac</tt> file as
+various 'functions'.  These functions are based on the very simple interpreted 
+language (actually it's not a language but something like the batch files in 
+DOS). In the LinPac/macro directory, it contains all the scripts written in this 
+language. The init.mac macro is loaded at start of loading Linpac which contains 
+the commands to setup the callsigns and other settings. You can modify this file 
+to change the initial configuration of LinPac.  Other macros can be run in LinPac 
+desired or required.  The simplest case of the macro is normal text file that is 
+just printed to the screen (or sent to the remote peer) when executed. The language 
+is described in <a href="#POS6">chapter 6</a>. </p>
    
-<p>There is a macro called <tt>init.mac</tt> in the <tt>macro</tt> directory. 
- This macro is executed each time LinPac is started and contains the commands 
- to setup the callsigns and other settings. You can modify this file to change
- the initial configuration of LinPac. </p>
+<p>You may also want to review/change following macro files: </p>
    
-<p>You may also want to change following files: </p>
-   
-<p><b>ctext.mac</b> - this file is executed when the peer connects and should
+<p>
+  <b>info.mac</b> - contains the information about your system 
+<b>ctext.mac</b> - this file is executed when the peer connects and should
  contain the greeting text <br>
   <b>quit.mac</b> - this is called when user enters the Quit command (end 
 of connection). It should print some farewell and disconnect. <br>
-  <b>info.mac</b> - contains the information about your system </p>
+</p>
    
-<p>After this you should be able to make your first connection. </p>
+<p>After this you should be able to make your first connection. 
+</p>
    
 <p><a name="POS3"></a> </p>
    
 <h2> 3 LinPac controls</h2>
-   After running LinPac the main screen apears. In the standard configuraion 
- it's divided to five parts (described from top of the screen to bottom): 
+   After automatically running the LinPac setup routing, the main screen should apear. 
+If you see a segmentation fault, please see <a href="https://sourceforge.net/p/linpac/bugs/24/">
+Linux AX.25 issues with long predictable network interface names</a> for a work around.
+Moving on, in Linpac's main interface in the standard configuraion, the screen is divided 
+to five parts (described from top of the screen to bottom): 
   
 <ul>
    <li> <b>QSO window</b>: this window contains the text that came from the
@@ -478,8 +515,8 @@ i/o character conversion. <br>
  add the argument <tt>-c &lt;callsign&gt;</tt>. </p>
    
 <p>Examples: <br>
-  <tt>:Name John</tt> <br>
-  <tt>:Name -c OK2JBG -l JN89HF Radek</tt> <br>
+  <tt>:Name David</tt> <br>
+  <tt>:Name -c KI6ZHD -l CM97ai David</tt> <br>
   <tt>:Name -i</tt> </p>
    
 <p><a name="POS5_3"></a> </p>
@@ -830,6 +867,7 @@ doesn't try to connect <i>ax25spyd</i> at all. </p>
 </ul>
    <a name="POS10"></a>   
 <h2> 10 Copying</h2>
+   LinPac is Copyright (c) 2002-2016 bu David Ranch KI6ZHD 
    LinPac is Copyright (c) 1998-2002 by Radek Burget, OK2JBG   
 <p>This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1274,12 +1312,12 @@ parts using <b>7plus</b> and creates a separate message for each part. When
 <p> </p>
    
 <hr width="100%">   
-<div align="left"><i><font size="-1">Last update: 29.7.2002</font></i>  
+<div align="left"><i><font size="-1">Last update: 11/5/2017</font></i>  
  <br>
 </div>
    
 <div align="left"><i><font size="-1">Please report any mistakes to <a
- href="mailto:radkovo@centrum.cz">radkovo@centrum.cz</a></font></i>    <br>
+ href="mailto:linpac@trinnet.net">linpac@trinnet.net</a></font></i>    <br>
  </div>
   <br>
 </body>

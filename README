@@ -1,6 +1,6 @@
 
-LinPac version 0.24 (stable release)
-Copyright (c) 2015 by David Ranch (KI6ZHD) 
+LinPac version 0.25 (stable release)
+Copyright (c) 2017 by David Ranch (KI6ZHD) 
 
 Linpac is a modular console-oriented packet radio terminal for Linux with a 
 built-in messaging client.  Using Linux's native AX.25 network stack, it
@@ -22,12 +22,15 @@ Current contributors:
   - David Ranch (KI6ZHD)
        Packet radio mail: KI6ZHD@N0ARY.#NCA.CA.USA.NOAM
 
+  - Martin Cooper (KD6YAM) - Polling load reduction; mail bug fixes; warning cleanups
   - Jerry Dunmire (KA6HLD) - Auto-tools
   - Steven Loomis (K6SPI)  - Misc patches
 
 
-Many thanks to the original author of Linpac:
-Radek Burget OK2JBG ( radkovo@centrum.cz )
+Many thanks to the original author of Linpac for creating this flexible
+and valuable package for Linux:
+
+   Radek Burget OK2JBG ( radkovo@centrum.cz )
 
 
 QUICK INSTALATION FROM A RELEASE PACKAGE
@@ -41,7 +44,7 @@ this directory. If the ./configure script is not present, then see the
   ---------
   If you plan to use Linpac for recieving and sending your packet mail via a
   remote BBS system (not required), you must install the ax25mail-utils 
-  package first before first running Linpac. This package can be found
+  package first BEFORE first running Linpac. This package can be found
   at http://ax25mail.sf.net
 
 
@@ -51,7 +54,7 @@ Before compilation of Linpac, you must have these other packages installed:
         their own repositories, they are usually very old and lack several
         important fixes.  You can read more about these improvements here:
 
-           https://code.google.com/p/linuxax25/wiki/Ax25AppsDiffs
+           https://github.com/ve7fet/linuxax25
 
 
    Dependencies:
@@ -66,26 +69,48 @@ Before compilation of Linpac, you must have these other packages installed:
         I recommend all users install or build the AX.25 stack from 
         this alternative provider for now:
 
-           https://code.google.com/p/linuxax25/source/browse/#svn%2Fdownloads
+           https://github.com/ve7fet/linuxax25
 
 
 Once you have installed the above dependencies, please run:
 
               ./configure
 
-NOTE:  If the "configure" prompt isn't present, you probably got the sources
-       from Git. If so, run the following:
+NOTE:  If the "configure" prompt isn't present, you probably got your source
+       code from Git. If so, run the following:
 
               autoreconf --install
               ./configure
 
-       If autoreconf doesn't run, you need to install the Auto-tools:
 
-          Deb-based: 
+       If autoreconf doesn't run, it probably means you need to install Autotools:
+
+          deb-based: 
                          sudo apt-get install automake autoconf
 
           rpm-based
                          yum install automake autoconf
+
+
+       If "autoreconf --install" fails with:
+ 
+          src/applications/liblinpac/Makefile.am:4: error: Libtool library used but 'LIBTOOL' is undefined
+          src/applications/liblinpac/Makefile.am:4:   The usual way to define 'LIBTOOL' is to add 'LT_INIT'
+          src/applications/liblinpac/Makefile.am:4:   to 'configure.ac' and run 'aclocal' and 'autoconf' again.
+          src/applications/liblinpac/Makefile.am:4:   If 'LT_INIT' is in 'configure.ac', make sure
+          src/applications/liblinpac/Makefile.am:4:   its definition is in aclocal's search path.
+
+       Do the following:
+
+          deb-based: 
+             sudo apt-get install libtool
+             libtoolize 
+             autoreconf --install
+
+          rpm-based: 
+             sudo yum install libtool
+             libtoolize 
+             autoreconf --install
 
 
 The default installation destination directory prefix is /usr/local/*.  If you 
@@ -151,11 +176,46 @@ such as:
 
 KNOWN PROBLEMS
 ~~~~~~~~~~~~~~
+
+  - Signifincant issue with AX.25 and Raspbian Stretch
+
+    I have confirmed that with Raspian Stretch, there is some sort of conflict with
+    it's newly enabled predictable network interface names. What are those? If you
+    run the command "ifconfig" or "ip addr", you will no longer see Ethernet
+    interfaces with names like "eth0" but instead, you'll see something like
+    "enxb827eb5f05". How's that for catchy? For known reasons to the AX.25 kernel
+    maintainers, in the sa_data kernel data structure, both the stock Raspbian AX.25
+    .debs and the 3rd party VE7FET ax.25 debs will give errors like the following when
+    ANY network interface name is longer than 13 characters:
+
+      SIOCGIFHWADDR: No such device
+
+    Programs like beacon will fail to start. Linpac will also crash upon start with
+
+      /usr/bin/linpac: line 181:  9811 Segmentation fault   $PKG_BINDIR/linpac $*
+
+    Fortunately, if you disable predictable network interface names, things work fine.
+    To do this, do the following steps:
+
+      sudo vi /boot/cmdline.txt
+
+        #append the following to the end of the one line in this file
+        net.ifnames=0 biosdevname=0
+
+    Reboot your Raspberry Pi and things will work from there on out. Btw, if Linpac
+    crashed on you, your terminal might be screwed up and not working properly.
+
+    To fix that, run the commands:
+
+      stty sane
+      rm -f rm /var/lock/LinPac.0
+
+
   
-  The --enable-LINKSTATIC configuration option does not work.
+  - The --enable-LINKSTATIC configuration option does not work.
 
   Please see the linpac-todo.txt file in this source package as well as see 
-  http://linpac.sf.net for actual problems and their solution.
+  http://linpac.sf.net for other possible problems and their solutions.
 
 
 NOTES FOR HACKING with the Source code

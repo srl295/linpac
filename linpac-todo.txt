@@ -1,5 +1,6 @@
 
 Linpac: Prioritized Goals
+12/10/17
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -9,96 +10,155 @@ linpac@trinnet.net
 All items are in priority for their respective catagories : All help to get
 various items resolved is highly encouraged and appreciated!
 
+Index:
+------
 
+Priority 1 issues
+   Packaging
+   Compiling and Install
+   Performance issues
+   UI
+   Mail
+   Defaults
+   Documentation
 
-Changes:
---------
-09/17/15 - Added issue when enabling and using the shell feature
-09/16/15 - Added mheard truncation issue
-         - fixed ax25tools packaging dependency
-07/19/15 - added a bad message example
-06/19/15 - Added an issue when ax25mail-utils isn't installed
-05/30/15 - Added a messaging bug report where the same ID gets written twice
-12/06/14 - Bug in parsing /etc/ax25/axports
-09/07/14 - Noted issues with logging timestamps
-08/03/13 - Some additional cleanup before commiting to Git
-         - Added missing make install tricks for a valid install 
-         - Added that Alt-X doesn't work
-06/17/14 - P3: Support outgoing connections
-04/08/14 - P3: Minimize files being copied to user's homedir
-02/12/14 - P3: broken :help on console-0
-11/17/13 - P3: wrap and :d disconnect
-08/09/13 - P2: Added date stamp to initial connections
-07/19/13 - P1: compose full CPU load
-06/24/13 - P2: Added shell request for //Bell
-         - P2 - Packaging: Added note about mheardd running and file perms
-         - P3: UI compression indicator
-06/03/13 - added P1 linpac message overwriting bug
-05/08/13 - cleaned up and prioritized
+Priority 2 issues
+   Packaging
+   UI
+   Mail
+   Help
+   Documentation
+   Website
+   security
+   Operation
 
+Priority 3 - Future features
+   Connectivity
+   UI
+   Mail
+   Sound
+   Backend
+   Documentation
+
+P4 - Long term requests
+   Java version
+
+Issues Resolved
+
+Errata
 
 --------------------------------------------------------------------------------
 
-
 P1 - Packaging:
 ---------------
+All issues resolved - rpm and deb (via checkinstall) work fine
 
-  - 10/24/12 - RPM spec file is broken (dranch can help with this)
-  
-           # rpm -ql LinPac
-           (contains no files)
 
 P1 - Compiling and Install
 ---------------
 
-   - 08/03/14: make install is not creating /var/ax25/mail - be sure
+   - 08/03/14: BUG: make install is not creating /var/ax25/mail - be sure
          to integrate all configuration hacks as detailed in 
          http://www.trinityos.com/HAM/CentosDigitalModes/hampacketizing-centos.html#11a.linpacconfig
 
+P1 - Performance issues
+-----------------------
+    01/31/13 - ENHANCEMENT: MOSTLY FIXED: Linpac hovers at 25% CPU utilization when idle - some sort of 
+               polling issue?
+               4788 root      20   0  114m 3420 1656 R 23.6  0.1   1240:44 linpac
+                                                       ^^^^
+       - 08/01/14 - Initial concept code is available from K6SPI
+       - 12/10/17 - First pass fix commited from KD6YAM using a combination of usleep 
+                    statements with bypasses for cut/paste performance increases.
+                    Additional tuning might be possible here.  Long term solution here is 
+                    difficult due to the original design of Linpac and might NOT be
+                    worth completely refactoring the code.
+                    * Keeping this issue open for now
 
 P1 - UI   
 ---------------
+    - 12/10/17 - BUG: When creating an initial outgoing connection, Linpac shows CONNECTED.  Linpac
+      currently doesn't have a "CONNECTING" state
 
-    - 09/16/15 - The output of //mheard begins to show the output of the ax.25 program's
-      mheard in the opposite order (oldest first) but truncates the output.  Linpac should
-      show newest first and limit the output to say the last 15 stations
+    - 09/30/17 - BUG: Segmentation Fault: If the Linux ax.25 stack is started up but isn't properly configured
+      where say the command "call vhfdrop n0call" will return with "call: no AX.25 port data configured",
+      a properly configured Linpac will give the following segmentation fault.  This needs to be trapped.
+      --
+      #0  0x0805c1c6 in Window::outch (this=0x9e6f618, ch=13 '\r', typ=3) at windows.cc:401 cp = 3
+      #1  0x0805d843 in MonWindow::next_mon_line (this=0x9e6f618) at windows.cc:951
+              p = 0x0
+              src = "\000\000\000\000\vHw\267\022\u357f\234\367\346\t"
+      #2  0x0805dbd0 in MonWindow::handle_event (this=0x9e6f618, ev=...) at windows.cc:861
+              i = 37
+              buf = "listen: no AX.25 port data configured\n\000\000XM\a\b@\035\353\t\000\252\356N&\000\000\000'\000\000\000\364\u357f\301.9\033\032\215R\000\002\000\000\000p\354h\000\000\360q\267\214\u357f\000\000\000\000\377\377\377\377d\310p\267\204\u357f\000\000\000\000\000\000\000\000\020\000\000\000\204\u357f-\225\n\000\000\000\000\000\f\354\316Y\001\000\000\000\002\000\000\000`~\345\t\000\000\000\000\200{\345\t\f\354\316Y:\225\n\000\000\000\000\000\001", '\000' <repeats 12 times>, "\252\356N`\214\346\t\270\203\346\t\251\307p\267\000Pt\267\001\000\000\000\240\205\346\t\000Pt\267"...
+              rc = <optimized out>
+      #3  0x080592fe in Obj_man::send_all (this=0x8074de0 <mgr>, ev=...) at event.cc:255
+              i = 8
+      #4  0x080596dd in Obj_man::do_step (this=0x8074de0 <mgr>) at event.cc:292
+              noev = {type = 0, chn = 0, x = 134524462, y = 0, ch = -88 '\250', data = 0x0}
+      #5  0x0804a40d in main (argc=1, argv=0xbf95e6d4) at linpac.cc:448
+      --
 
-    - 12/06/14 - If say another callsigns appears in the /etc/ax25/axports
+    - 12/06/14 - BUG: If say another callsigns appears in the /etc/ax25/axports
       file ABOVE the one in use, linpac's unproto feature no longer TXs but
       connected sessions still work
 
-    - 10/16/12 - CONV (converse) feature crashes Linpac when used.  Might
+    - 10/16/12 - BUG: CONV (converse) feature crashes Linpac when used.  Might
       require two people to be connected
         - 09/18/12 - when exiting :conv mode, linpac segfaults
 
-    - change last sysop activity to be shown in hours not seconds
+    - ENHACEMENT: change last sysop activity to be shown in days/hours not seconds
 
-    - when remote user issues //B, send back text saying it's paging
-      me.  On jim's box, he doesn't see the paging line - aka not active
+    - BUG: (could be old) when remote user issues //B, send back text saying it's paging
+      me.  On Jim's box, he doesn't see the paging line - aka not active
       if (active) lp_appl_result("Ringing (PC speaker only)...")
-      Is this a related issue with OSS vs. ALSA vs PulseAudio?
+        Is this a related issue with OSS vs. ALSA vs PulseAudio?
 
-    - Prompting: remote user gets "LinPac: Unknown command (SP). Try :help."
+    - BUG: Prompting: remote user gets "LinPac: Unknown command (SP). Try :help."
       yet :help is only valid for local console users!
 
-    - Alt-X doesn't exit Linpac as the documentation says it should - KJ6LNH
+    - 10/01/17 - BUG: An incorrectly configured Alt when used with Alt-X then ENTER 
+      creates a Segmentation fault on Linpac from an OSX terminal.
+      --> 12/10/17: Should be resolved now but leaving OPEN as we need confirmation from 
+                    a Mac user
+
+    - 11/17/13 - BUG: If a :d is at the end of a line in connected mode and it then
+              wraps, it should NOT count as a disconnect command
+
+    - 08/05/12 - BUG: while in F10 mode, issuing a :help transmits all text over the air.
+      Should be shown only locally
 
 
 P1 - Mail
----------------
+---------
 
-    - 08/03/14 - Linpac only supports email relaying and doesn't fully support
-           local-only messaging.  Messages can be left for the local operator but
-           no other remote callsign.  Would like to at least offer a simple interface
-           for all remote callsigns like say a Kantronics KPC3+ TNC.
+    - 11/06/17 - BUG: //sp command without a destination callsign doesn't fully open
+                 a messge and doesn't tell the user to use "/ex" to terminate the
+                 session:
+                 --
+                 //sp
+                 Last message number is 428
+                 Enter subject of PRIVATE MESSAGE (max 80 characters)
+                 HI David, Dan here
+                 My message via QMSBBS
+                 --
 
-            - Do not have to rely on another system (FBB, etc)
-            - This should NOT use any local SMTP MTA (postfix, sendmail, etc)
+                 vs. say:
+                 --
+                 //SP KI6ZHD
+                 Last message number is 427
+                 Enter subject of PRIVATE MESSAGE (max 80 characters)
 
-    - 05/07/13 - Fix $HOME/Linpac/mail/messages.local to properly report
+                 It's working!
+            -->  Enter message for KI6ZHD@K6FB.#NCA.CA.USA.NOAM
+            -->  End with /EX or (Ctrl-Z) in first colum
+                 --
+
+
+    - 05/07/13 - ENHANCEMENT: Fix $HOME/Linpac/mail/messages.local to properly report
                  remote sender
 
-    - 06/02/13 - closing previous messages
+    - 06/02/13 - BUG: closing previous messages
           looks like if you connected, did //sp and after entering the subject, your
           connection dropped, linpac will leave left the message open. The next connect 
           where the user started a second message, same thing happened, and when the 
@@ -125,8 +185,13 @@ P1 - Mail
                 End with /EX or (Ctrl-Z) in first column
                 --
 
+    - BUG: (duplicate?) When using //sp (private, 100% CPU load, remote user sent
+      a blank space (not sure), message was cancedlled but then
+      100% CPU on ./bin/compose p KI6ZHD.  Also happens if
+      someone is disconnected while composing a message
 
-    - 05/30/15 - probably related to the above 06/02/13 messaging bug where a
+
+    - 05/30/15 - BUG: probably related to the above 06/02/13 messaging bug where a
                  previous message wasn't closed, I just left a message and
                  when exiting it, I saw:
 
@@ -138,17 +203,16 @@ P1 - Mail
                  the previous message?  Did it just append stuff to it?  Unclear 
                  but important to understand what's happening
 
-    - 08/24/12 
-      - When you run :mail, it only shows the last message by
+    - 08/24/12 - ENHANCEMENT: When you run :mail, it only shows the last message by
         default on the top-most line.  If the local user pushes up arrow cursor key many
         times, Linpac will scroll back and show all the other messages.  Change behavior to 
         show newest msg at top and older below (maybe make order a preference)
 
-    - In the mail view, H for header doesn't work
+    - BUG: In the mail view, H for header doesn't work
       - when viewing msg, 
       - ESC doesn't work but L does
 
-      - can't use control-x to delete individual messages
+    - BUG: can't use control-x to delete individual messages
         "Message 15 doesn't exist"
 
          - when you delete messages by marking various messages and then
@@ -160,38 +224,35 @@ P1 - Mail
          *- have to manually delete files from $HOME/mail/ and then
             update the messages.local index file
 
-    - the "d" command doesn't work but :getmsg 1 does work
+    - BUG: the "d" command doesn't work but :getmsg 1 does work
 
-    - when using //sp (private, 100% CPU load, remote user sent
-      a blank space (not sure), message was cancedlled but then
-      100% CPU on ./bin/compose p KI6ZHD.  Also happens if
-      someone is disconnected while composing a message
-
-    - If ax25mail-utils isn't installed and a user issues :mail, the program
+    - BUG: If ax25mail-utils isn't installed and a user issues :mail, the program
       complains with:  
 
       	"./bin/ail: error while loading sharedlibraries: liblinpac.so.6: cannot
 	open shared object file: No such file or directory"
 
-      Linpac should trap the missing library and instead state:
+        Linpac should trap the missing library and instead state:
 
-        "Sorry, mail won't work as it seems you haven't installed
-	ax25mail-utils"
+          "Sorry, mail won't work as it seems you haven't installed
+          ax25mail-utils"
 
 
 P1 - Defaults
-            - edit the /usr/local/share/linpac/macro/help.mac as root and insert
-              the following lines to support case-insensitive commands
-
-            //sp <address> [<subject>] - write a Private message to user [optional
-            //subject]
-            //sb <address> [<subject>] - write a Bulletin message to everyone [optional
-            //subject]
+-------------
+All resolved
 
 
 P1 - Documentation
-    - the syntax for mail forwarding as shown in the manual vs. 
+------------------
+    - BUG: the TXT version of the documentation is not getting updates from the HTML version.
+      The makefile doesn't seem to include any export 
+
+    - BUG: the syntax for mail forwarding as shown in the manual vs. 
       the home.mac are opposite.  Which is right?
+
+    - 12/10/17 - ENHACEMENT: Update alternative language macro files to be identical to 
+      macro/help.mac
 
 
 ==========================================================================
@@ -201,130 +262,137 @@ Priority 2 - Wanted Items (needed but not critical)
 -------------------------------------------------------------------------------
 
 P2 - Packaging
-     - Seems that //MHeard requires mheardd to be running to work.  
-     - Linpac should check if Mheardd is running and if not, it should give a warning like:
-       "Warning: mheardd not running.  Please notify sysop" 
-
-     - The permissions of the /var/ax25/mheard/mheard.dat file need to be ok 
+--------------
+     - BUG: The permissions of the /var/ax25/mheard/mheard.dat file need to be ok 
        (chmod 666), if they aren't, have Linpac check and warn
 
+     - 12/10/17 - ENHANCEMENT: Integrate lptelnet-0.03 into Linpac release
+
+
 P2 - UI
+-------
+    - BUG: Seems that //MHeard requires mheardd to be running to work.  Linpac should check if 
+      Mheardd is running and if not, it should give a warning like:
+      "Warning: mheardd not running.  Please notify sysop" 
 
-     - 08/09/13 - Add the timestamp to any initial incoming connection 
+    - 09/16/15 - ENHANCEMENT: The output of //mheard begins to show the output of the ax.25 program's
+      mheard in the opposite order (oldest first) but truncates the output.  Linpac should
+      show newest first and limit the output to say the last 15 stations
 
-     - 09/25/12 - Make all // commands case insensitive
+     - 08/09/13 - ENHANCEMENT: Add the timestamp to any initial incoming connection 
 
-     - Improve Ncurses SIGWINCH handling for screen resizing (esp. wide)
+     - BUG: STILL PRESENT? - Improve Ncurses SIGWINCH handling for screen resizing (esp. wide)
        Could be creating the 25% CPU usage issue
 
-     - Add support that when the //Bell command is issued, run a 
-       specific shell script to do things like SMS notify, etc
+     - ENHANCEMENT: Add support that when the //Bell command is issued, run a 
+       specific shell script to do things like SMS notify, etc.  Add example in contrib/
 
-     - 09/17/15 - If the SHell command is enabled (disabled by default), 
+     - 09/17/15 - BUG: If the SHell command is enabled (disabled by default), 
        color-enabled prompts are sent to the remote station which creates 
        all kinds of ugly ANSI characters on their side.  Exporting a new 
        PS1 prompt doesn't help.  Need another way of fixing this
 
 
-P2 - Performance issues
-
-    01/31/13 - Linpac hovers at 25% CPU utilization when idle - some sort of 
-               polling issue?
-               4788 root      20   0  114m 3420 1656 R 23.6  0.1   1240:44 linpac
-                                                       ^^^^
-               - 08/01/14 - Initial concept code is available from K6SPI
-
 P2 - Mail
-    09/09/12 - issuing the command //sp (all lower case) without a callsign
+---------
+    - 08/03/14 - ENHANCEMENT: Linpac only supports email relaying and doesn't fully support
+           local-only messaging.  Messages can be left for the local operator but
+           no other remote callsign.  Would like to at least offer a simple interface
+           for all remote callsigns like say a Kantronics KPC3+ TNC.
+            - Do not have to rely on another system (FBB, etc)
+            - This should NOT use any local SMTP MTA (postfix, sendmail, etc)
+
+    - 09/09/12 - BUG: issuing the command //sp (all lower case) without a callsign
               is accepted yet it doesn't say where the message going 
               ("Enter message for @K6FB.#NCA.CA.USA.NOAM") but it 
               does route to ki6zhd.  Why?
 
-   - add callsign/date/time to :mail viewer (maybe based upon the
+   - ENHANCEMENT: add callsign/date/time to :mail viewer (maybe based upon the
      file timestamp?)
 
-
-    - Show "l" as back for previous screen
+   - ENHACEMENT: Show "l" as back for previous screen  (not sure what this issue is)
 
 
 P2 - Help 
-    - In help view, ESC doesn't work
+---------
+    - BUG: In help view, ESC doesn't work (could be a screen thing as double-escape works ok)
 
 
 P2 - Documentation
-    - manual doesn't talk about DEF_RCMD 
-    - Using the F10 key 
+------------------
+    - ENHACEMENT: Linpac manual doesn't talk about DEF_RCMD in init.mac
+
+    - ENHANCEMENT in docs for using the F10 Unproto interface
       - give example of the power of ax25spyd vs. listen
       - Use the pageup/pagedown keys to see all previous RX traffic
       - Use the mouse scroll wheel to scroll up/down on previous TX
         traffic
 
 
-P2 - Website: 
-     08/03/12 - Update the website, post new version, fix all broken links, 
+P2 - Website:
+-------------
+     08/03/12 - ENHANCEMENT: Update the SF website, post new version, fix all broken links, 
                 etc. - dranch can help with this once we have a new release
 
-   - Create a source repo on SF and post code to accept contributions
 
-P2 - security
-
-     /usr/share/linpac/bin/bell might need to be SUID root (4755) to ring the 
+P2 - Security
+-------------
+     - ENHANCEMENT: /usr/share/linpac/bin/bell might need to be SUID root (4755) to ring the 
      bell as non-root users - some research shows this is a fundamental limitation
-     of Linux.  Is this true?
+     of Linux.  Is this true? - Offer ALSA based sound options : KJ6NKR has one solution
+     working today
+
 
 P2 - Operation
-
-     Minimize full copy of Linpac config, macro, etc. files into the user
-     directory.  Have Linpac support a prefernce for changed files in the
-     user's homedir, if not, default to the /usr/share baseline files
+--------------
+     - ENHANCEMENT: Minimize full copy of Linpac config, macro, etc. files into the user
+     directory.  Have Linpac support a preference for using only ALTERED files 
+     from the user's homedir, if not, default to the /usr/share baseline files.
+     Similar to how Svxlink works
 
 ==========================================================================
 ==========================================================================
 
 Priority 3 - Future features
 -------------------------------------------------------------------------------
-P3 - Connectivity
 
-   06/17/14 - Cannot make outgoing connections from a Linpac station
+P3 - Connectivity
+-----------------
+
+   06/17/14 - ENHANCEMENT: Cannot make outgoing connections from a Linpac station
               when already connected to it:
               //c k6ks-1
               LinPac: Channel already connected
 
-   11/17/13 - If a :d is at the end of a line in connected mode and it then
-              wraps, it should NOT count as a disconnect command
-
-   01/21/13 - add support for connections via netrom interfaces and not just 
+   01/21/13 - ENHANCEMENT: add support for connections via netrom interfaces and not just 
               ax25 interfaces as defined in axports
 
+
 P3 - UI
+-------
+
+   - 09/25/12 - ENHANCEMENT: Make all // commands case insensitive - can work around this with doubling up
+       all commands in bin/commands but this seems to be sloppy
 
    02/12/14
-   - :help on the F1 console doesn't work - seems to be intermittant and
+   - BUG: :help on the F1 console doesn't work - seems to be intermittant and
      when I came back later, the help was on the screen.  Maybe it's unique
      to F1 as that's the primary F-key per the user config?
+     12/10/17 - Is this still happening?
 
-   08/05/12 
 
-   - while in F10 mode, issuing a :help transmits all text over the air.
-     Should be shown only locally
-
-   - When compression is enabled per channel, the UI should indicate that
+   - 08/05/12: ENHANCEMENT: When compression is enabled per channel, the UI should indicate that
      compression is enabled in that channel
 
-   - Add a configurable scrollback buffer (larger) via init.mac
+   - 08/05/12: ENHANCEMENT: Add a configurable scrollback buffer (larger) via init.mac
 
-   - Add a sysop paging feature to execute a shell script
-     example script will send an email (which can then be an SMS)
-     dranch already has such a script that is run from cron.  We can
-     add it into the contrib area until this feature is integrated
-
-   - change default ax.25 listen startup to include timestamps
+   - 08/05/12: ENHANCEMENT: change default ax.25 listen startup to include timestamps
      Maybe this is a change in "listen" or axspyd?
 
-   - add a prompt when a linpac command completes (configurable?)
+   - 08/05/12: ENHANCEMENT: add a prompt when a linpac command completes (configurable?)
      - what is this about.. can't remember
 
-   - 08/07/12 - Support multiple digi paths for the last batch of lines
+   - 08/07/12 - ENHANCEMENT: Support multiple digi paths for the last batch of lines
         - If variables like UNDEST2, UNDEST3, UNDEST4 are defined: 
            Option #1 - send last text entered in F10 or with :UNPROTO to each 
                        of the paths with a configurable delay.  Alternatively, 
@@ -337,77 +405,84 @@ P3 - UI
                        digipeat as expected
 
    - 09/01/12 - When you connect to a remote station, the F key label changes
-        to reflect the new machine.  When you disconnect and revert
-        to the previous station, it doesn't change back
+        to reflect the remote callsign name.  When you disconnect and revert
+        to the previous station, it doesn't change back 
+        - not sure what this is about
 
-     - running :init from the main program seems to render the text and
+   - BUG: running :init from the main program seems to render the text and
        read sections in alternating places if you run :init multiple
        times.  Something is wrong
 
+
 P3 - Mail
-   - Ulistd Mail never sends for relaying
+---------
+   - BUG: Ulistd Mail never sends for relaying
 
-   - Add support for KPC TNCs for mail forwarding
-
-P3 - Sound
-     - Update sound support to either shell scripts or native
-       PulseAudio and Alsa in addition to the PC speaker
 
 P3 - Backend
-     - Logging that goes into ~/Linpac/log 
+------------
+   - ENHACEMENT: Logging that goes into ~/Linpac/log 
          #1 - the connection of a station isn't going to the right file
               depending on what SSID is assigned to each F-key
          #2 - UTC time seems to be off; log file gets updated (ATIME) but
               nothing written to the log when making an outgoing connection
 
+
 P3 - Documentation
+------------------
 
 ==========================================================================
 ==========================================================================
 
 P4 - Long term requests
 
+P4 - UI 
+-------
+
    - get the Java UI version working
 
 
 ==========================================================================
-Completed!
+Issues Resolved:
 ==========================================================================
 
 P1 - Packaging:
 ---------------
-
-   * Resolved by Jerry Dunmire, KA6HLD
-   - Change official version of code from 0.17pre3 to 0.17pre4 - I tried getting
+   - RESOLVED: Change official version of code from 0.17pre3 to 0.17pre4 - I tried getting
      this to work but ever time I tried, it would break
+     * Resolved by Jerry Dunmire, KA6HLD
 
-     when 0.17pre3, the Makefile.in file leaves top_builddir = .
-     when 0.17pre4, 
-        - configure passes once but is run again,
-        - second run runs 
-            aclocal                                                                                                
-            automake --foreign --include-deps Makefile
+       when 0.17pre3, the Makefile.in file leaves top_builddir = .
+       when 0.17pre4, 
+          - configure passes once but is run again,
+          - second run runs 
+              aclocal                                                                                                
+              automake --foreign --include-deps Makefile
 
-     shows:
+       shows:
 
-     /bin/sh ./config.status --recheck                                                                              
-     running /bin/sh ./configure  --includedir=/usr/include/c++/3.4.6
-     CPPFLAGS=-I/usr/include/c++/3.4.6/backward  --no-create --no-recursion                                                                                       
-     checking for a BSD-compatible install... /usr/bin/install -c                                                   
-     checking whether build environment is sane... yes                                                              
-     /root/rpmbuild/BUILD/LinPac-0.17pre4/missing: Unknown `--run' option                                           
-     Try `/root/rpmbuild/BUILD/LinPac-0.17pre4/missing --help' for more information                                 
-     configure: WARNING: `missing' script is too old or missing 
-     cd . \                                                                                                         
-               && CONFIG_FILES=Makefile CONFIG_HEADERS= /bin/sh ./config.status          
-        - the Makefile.in i left to @top_builddir@
+       /bin/sh ./config.status --recheck                                                                              
+       running /bin/sh ./configure  --includedir=/usr/include/c++/3.4.6
+       CPPFLAGS=-I/usr/include/c++/3.4.6/backward  --no-create --no-recursion                                                                                       
+       checking for a BSD-compatible install... /usr/bin/install -c                                                   
+       checking whether build environment is sane... yes                                                              
+       /root/rpmbuild/BUILD/LinPac-0.17pre4/missing: Unknown `--run' option                                           
+       Try `/root/rpmbuild/BUILD/LinPac-0.17pre4/missing --help' for more information                                 
+       configure: WARNING: `missing' script is too old or missing 
+       cd . \                                                                                                         
+                 && CONFIG_FILES=Makefile CONFIG_HEADERS= /bin/sh ./config.status          
+          - the Makefile.in i left to @top_builddir@
+
+  - RESOLVED: 10/24/12 - RPM spec file is broken (dranch can help with this)
+  
+           # rpm -ql LinPac
+           (contains no files)
 
 
 P1 - Compiling:
 ---------------
 
-   * Resolved by David Ranch, KI6ZHD
-   - Remove the requirement for the compat-gcc-libs RPM for Linpac and for
+   * Resolved: Remove the requirement for the compat-gcc-libs RPM for Linpac and for
      Ax-mail (sub-package for Linpac as found on sf.net):
 
         ./configure --includedir=/usr/include/c++/3.4.6
@@ -452,17 +527,72 @@ P1 - Compiling:
 
      Neither of these fixes worked for dranch.
 
+
+P1 - UI:
+--------
+
+   - RESOLVED: Alt-X doesn't exit Linpac as the documentation says it should - KJ6LNH
+
+
+P1 - Defaults
+-------------
+    - RESOLVED: edit the /usr/local/share/linpac/macro/help.mac as root and insert
+      the following lines to support case-insensitive commands
+
+            //sp <address> [<subject>] - write a Private message to user [optional
+            //subject]
+            //sb <address> [<subject>] - write a Bulletin message to everyone [optional
+            //subject]
    -----------------------------------------------------------------------------
 
 P2 - Packging 
 -------------
 
-   09/16/15 - RPM should require Mheard 
+   09/16/15 - RESOLVED: RPM should require ax25-tools package for Mheard binary
 
-   * Resolved by David Ranch, KI6ZHD
-   - Integrate various dranch patches that I have already authored
+   - RESOLVED: Integrate various dranch patches that I have already authored
      (digipeat path length, use console beep vs. obsolete 
      OSS /dev/dsp)
 
      See http://www.trinityos.com/HAM/CentosDigitalModes/usr/src/redhat/SOURCES/linpac*
+
+
+P2 - Website:
+-------------
+   - RESOLVED: Create a source repo on SF and post code to accept contributions
+
+
+==========================================================================
+Errata:
+==========================================================================
+12/10/17 - Cleaned up various items; tagged each one with BUG/ENHANCEMENT/etc
+         - Moved various items around to higher/lower priorities/resolved
+         - Notable changes: CPU loading issue has been notably improve (but not 100% done)
+             Alt-X works now, 
+11/06/17 - Added new issue when using //sp without specifying a destination callsign
+11/05/17 - Export html documentation to txt
+10/01/17 - Wrong Alt-X creates a segfault
+09/30/17 - Added a segmentation fault entry when using a misconfigured ax.25 stack
+09/17/15 - Added issue when enabling and using the shell feature
+09/16/15 - Added mheard truncation issue
+         - fixed ax25tools packaging dependency
+07/19/15 - added a bad message example
+06/19/15 - Added an issue when ax25mail-utils isn't installed
+05/30/15 - Added a messaging bug report where the same ID gets written twice
+12/06/14 - Bug in parsing /etc/ax25/axports
+09/07/14 - Noted issues with logging timestamps
+08/03/13 - Some additional cleanup before commiting to Git
+         - Added missing make install tricks for a valid install 
+         - Added that Alt-X doesn't work
+06/17/14 - P3: Support outgoing connections
+04/08/14 - P3: Minimize files being copied to user's homedir
+02/12/14 - P3: broken :help on console-0
+11/17/13 - P3: wrap and :d disconnect
+08/09/13 - P2: Added date stamp to initial connections
+07/19/13 - P1: compose full CPU load
+06/24/13 - P2: Added shell request for //Bell
+         - P2 - Packaging: Added note about mheardd running and file perms
+         - P3: UI compression indicator
+06/03/13 - added P1 linpac message overwriting bug
+05/08/13 - cleaned up and prioritized
 

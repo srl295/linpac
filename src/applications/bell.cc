@@ -49,7 +49,7 @@ void wait(int micros)
 
 int main(int argc, char **argv)
 {
-  int dsp;
+  //int dsp;
   int i;
   int active;
 

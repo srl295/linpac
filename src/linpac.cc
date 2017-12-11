@@ -1,5 +1,6 @@
 /*==========================================================================
    LinPac: Packet Radio Terminal for Linux
+   (c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2016
    (c) Radek Burget OK2JBG (radkovo@centrum.cz) 1998 - 2002
 
    This program is free software; you can redistribute it and/or
@@ -404,7 +405,7 @@ int main(int argc, char **argv)
   //signal(SIGSEGV, sigsegv_handler);
   setlocale(LC_ALL, "");
   #ifndef DAEMON_ONLY_MODE
-  printf("LinPac version %s (%s) by OK2JBG\n\n", VERSION, __DATE__);
+  printf("LinPac version %s (%s) by KI6ZHD\n\n", VERSION, __DATE__);
   #endif
 
   //init environment variables
@@ -439,13 +440,19 @@ int main(int argc, char **argv)
     if (!daemon_start(1))
       printf("LinPac: cannot become a daemon - aborting\n");
 
-  Message(1, "Alt-X to exit.");
+  Message(0, "Alt-X to exit.");
+
+  //main loop delay time
+  struct timespec delay;
+  delay.tv_sec = 0;
+  delay.tv_nsec = 10000000L;
 
   //start main loop
   mgr.quit = false;
   while (mgr.quit == false)
   {
      mgr.do_step();
+     nanosleep(&delay, NULL); //ignore any interruptions
   }
 
   Error(0, "LinPac going down (quit)");

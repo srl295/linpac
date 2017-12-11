@@ -14,16 +14,16 @@
 class HelpWindow : public screen_obj
 {
   private:
-    void *mwin;
+    WINDOW *mwin;
     int x, y, xsize, ysize;
     int page;
     int max_pages;
 
-    void *old_focus_window;
+    WINDOW *old_focus_window;
     screen_obj *old_focused;
 
   public:
-    HelpWindow(void *pwin, int height, int width, int wy, int wx);
+    HelpWindow(WINDOW *pwin, int height, int width, int wy, int wx);
     void show();
     virtual void handle_event(Event *);
     virtual void draw(bool all = false);
