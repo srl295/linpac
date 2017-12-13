@@ -1,6 +1,6 @@
 
 Linpac: Prioritized Goals
-12/11/17
+12/13/17
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -371,6 +371,11 @@ P2 - Operation
 Priority 3 - Future features
 -------------------------------------------------------------------------------
 
+P3 - Compiling / Installing
+
+   12/13/17 - BUG - The make install section of Linpac cannot deal with spaces
+              in the path.  See https://sourceforge.net/p/linpac/discussion/54078/thread/def02431/?limit=25
+
 P3 - Connectivity
 -----------------
 
@@ -580,6 +585,8 @@ P2 - Website:
 ==========================================================================
 Errata:
 ==========================================================================
+12/13/17 - Noted that the install section of make cannot handle spaces in the
+           path
 12/11/17 - Noted that mail app has a lot of base linpac code in it
 12/10/17 - Cleaned up various items; tagged each one with BUG/ENHANCEMENT/etc
          - Moved various items around to higher/lower priorities/resolved
