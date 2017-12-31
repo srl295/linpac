@@ -87,6 +87,9 @@ P1 - Performance issues
 
 P1 - UI   
 ---------------
+    - 12/30/17 - If the axport that Linpac is configured to use isn't up when starting Linpac, Linpac
+      will crash
+
     - 12/10/17 - BUG: When creating an initial outgoing connection, Linpac shows CONNECTED.  Linpac
       currently doesn't have a "CONNECTING" state
 
