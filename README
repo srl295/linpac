@@ -1,8 +1,8 @@
 
 LinPac version 0.26 (stable release)
-Copyright (c) 2017 by David Ranch (KI6ZHD) 
+Copyright (c) 2018 by David Ranch (KI6ZHD) 
 
-Linpac is a modular console-oriented packet radio terminal for Linux with a 
+Linpac is a modular, Ncurses console-oriented AX.25 packet radio terminal with a 
 built-in messaging client.  Using Linux's native AX.25 network stack, it
 can support eight concurrent connected sessions (QSOs) as well as send
 UNPROTO packets (UI) to any preconfigured ax25 digi path.  Local messaging 
