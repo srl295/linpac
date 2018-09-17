@@ -1,6 +1,6 @@
 
 Linpac: Prioritized Goals
-12/13/17
+09/17/18
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -267,6 +267,9 @@ P1 - Documentation
     - 12/10/17 - ENHACEMENT: Update alternative language macro files to be identical to 
       macro/help.mac
 
+    - CLARIFICATION: 09/17/18: For some reason the command MONPort <port_specification>
+      does not like "-" in the port names like pitnc-packet and pitnc-aprs. Renaming the 
+      ports to be PACKET APRS This solved the problem!  
 
 ==========================================================================
 Priority 2 - Wanted Items (needed but not critical)
