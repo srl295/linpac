@@ -1,6 +1,6 @@
 
 Linpac: Prioritized Goals
-09/17/18
+09/18/18
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -270,6 +270,10 @@ P1 - Documentation
     - CLARIFICATION: 09/17/18: For some reason the command MONPort <port_specification>
       does not like "-" in the port names like pitnc-packet and pitnc-aprs. Renaming the 
       ports to be PACKET APRS This solved the problem!  
+
+    - 9/17/18: captured startup issues as found in hampacketizing-centos.html#11b.linpacconfig
+      For example, "socket: Operation not permitted" for listen not being SUID root or 
+      running ax25spyd.
 
 ==========================================================================
 Priority 2 - Wanted Items (needed but not critical)
