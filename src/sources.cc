@@ -70,6 +70,29 @@ char *strevent(const Event &ev)
 }
 #endif
 
+// Process info (only the required subset)
+struct procinfo {
+  int pid;
+  char comm[16];
+  char state;
+  int ppid;
+};
+
+void getprocinfo(int pid, procinfo *pi) {
+  char buffer[BUFSIZ];
+
+  pi->pid = 0; // in case reading proc info fails
+  sprintf(buffer, "/proc/%d/stat", pid);
+  FILE *pf = fopen(buffer, "r");
+  if (pf) {
+    size_t size = fread(buffer, sizeof(char), sizeof(buffer), pf);
+    if (size > 0) {
+      sscanf(buffer, "%d %16s %c %d",
+        &pi->pid, pi->comm, &pi->state, &pi->ppid);
+    }
+    fclose(pf);
+  }
+}
 
 //--------------------------------------------------------------------------
 // Class Ax25io
@@ -1306,37 +1329,74 @@ bool EventGate::own_handle_event(const Event &ev)
       bool cont = true;
       std::vector <tapp>::iterator it;
       for (it = pids->begin(); it < pids->end(); it++)
+      {
          if (it->pid == ev.x)
          {
-            if (it->gate) //another gate exists
-            {
-               #ifdef GATE_DEBUG
-               fprintf(stderr, "Pre-created gate found\n");
-               #endif
-               it->gate->set_sock(dup(sock));
-               parent_gate->change_child(this, it->gate);
-               it->gate->accept_request();
-               it->gate = NULL; //the gate is no more waiting
-               pid = it->pid;
-               chn = it->chn;
-               remote = it->remote;
-               //sock = -1; //stop listening
-               //emit(0, EV_REMOVE_OBJ, oid, this); //cancel this gate
-               end_work("Pre-created gate found");
-               cont = false;
-            }
-            else //pre-created gate doesn't exist more
-            {
-               #ifdef GATE_DEBUG
-               fprintf(stderr, "No gate exists\n");
-               #endif
-               chn = it->chn;
-               pid = it->pid;
-               remote = it->remote;
-            }
             fnd = true;
             break;
          }
+      }
+
+      // On some systems (Debian-based), when a forked child runs execlp() to
+      // run an external program, the external program does not have the same
+      // pid as the forked child. To detect this and use the pre-created gate,
+      // check for a tapp created for the parent process, if that parent is a
+      // shell, and adjust the pids to work with that tapp / gate.
+      if (!fnd)
+      {
+        procinfo pi;
+
+        getprocinfo(ev.x, &pi);
+        if (pi.pid == ev.x) // sanity check
+          for (it = pids->begin(); it < pids->end(); it++)
+            if (it->pid == pi.ppid)
+            {
+              // Check that the parent is a shell
+              getprocinfo(pi.ppid, &pi);
+              if (strncmp(pi.comm, "(sh)", 4) == 0)
+              {
+                // Found the pre-created tapp; adjust pids to match
+                #ifdef GATE_DEBUG
+                fprintf(stderr, "Matching tapp found\n");
+                #endif
+                it->pid = ev.x;
+                if (it->gate)
+                  it->gate->set_pid(ev.x);
+                fnd = true;
+                break;
+              }
+            }
+      }
+
+      if (fnd)
+      {
+        if (it->gate) //another gate exists
+        {
+           #ifdef GATE_DEBUG
+           fprintf(stderr, "Pre-created gate found\n");
+           #endif
+           it->gate->set_sock(dup(sock));
+           parent_gate->change_child(this, it->gate);
+           it->gate->accept_request();
+           it->gate = NULL; //the gate is no more waiting
+           pid = it->pid;
+           chn = it->chn;
+           remote = it->remote;
+           //sock = -1; //stop listening
+           //emit(0, EV_REMOVE_OBJ, oid, this); //cancel this gate
+           end_work("Pre-created gate found");
+           cont = false;
+        }
+        else //pre-created gate doesn't exist more
+        {
+           #ifdef GATE_DEBUG
+           fprintf(stderr, "No gate exists\n");
+           #endif
+           chn = it->chn;
+           pid = it->pid;
+           remote = it->remote;
+        }
+      }
 
       //applications not executed by LinPac
       if (!fnd) { pid = ev.x; chn = 0; remote = false; }
