@@ -1,6 +1,6 @@
 
 Linpac: Prioritized Goals
-09/18/18
+11/10/18
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -87,6 +87,9 @@ P1 - Performance issues
 
 P1 - UI   
 ---------------
+    - RESOLVED - 11/10/18 - when running some linpac modules such as :mail or yput file transfers,
+      many users would see the local error "LinPac is not running" 
+
     - 12/30/17 - If the axport that Linpac is configured to use isn't up when starting Linpac, Linpac
       will crash
 
