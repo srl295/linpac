@@ -75,7 +75,7 @@ AH_TEMPLATE([NO_SOCKLEN_T], [Socket length type])
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([VERINFO], [Version string])
 # TODO: move VERINFO to a more prominate location or eliminated it
-AC_DEFINE([VERINFO], ["Development snapshot 111018"])
+AC_DEFINE([VERINFO], ["Development snapshot 020219"])
 
 # Package Options
 # TODO: make sure this is the up-to-date method and that it works right
