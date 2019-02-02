@@ -1,5 +1,6 @@
 /*
   Simple message composer for LinPac
+  (c) 2014-2019 by David Ranch (KI6ZHD)
   (c) 1998-2001 by Radek Burget (OK2JBG)
 
   Usage: compose [p|b] dest_addr [subject] [source_file]
@@ -254,8 +255,8 @@ int main(int argc, char **argv)
     
     if (subj == NULL)
     {
-       if (mode == 'p') printf("Enter subject of PRIVATE MESSAGE (max 80 characters)\n");
-                   else printf("Enter subject of BULLETIN (max 80 characters)\n");
+        if (mode == 'p') printf("Enter subject of PRIVATE MESSAGE (max 80 characters) -- or hit ENTER with no text to cancel\n");
+                   else printf("Enter subject of BULLETIN (max 80 characters) -- or hit ENTER with no text to cancel\n");
        safe_fgets(title, 80, stdin);
     } else strncpy(title, subj, 80);
     striplf(title);
