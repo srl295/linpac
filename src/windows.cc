@@ -1,17 +1,17 @@
 /*==========================================================================
    LinPac: Packet Radio Terminal for Linux
+   (c) David Ranch  KI6ZHD                              2007 - 2019
    (c) Radek Burget OK2JBG (xburge01@stud.fee.vutbr.cz) 1998 - 2001
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version
    2 of the license, or (at your option) any later version.
-
    windows.h
 
    This module contains objects for terminal output windows
 
-   Last update 29.10.2001
+   Last update 10.02.2019
   =========================================================================*/
 #include "windows.h"
 #include <errno.h>
@@ -42,7 +42,8 @@
 int act_col = COL_NUM;
 
 //Allocate a new color pair or use an old pair when present
-int alloc_pair(short f, short b)
+//   Name chanced from alloc_pair due to a duplicate named function from Ncurses 6.x
+int alloc_color_pair(short f, short b)
 {
   short ff, bb;
   int i, j=0;
@@ -72,7 +73,7 @@ void putline(WINDOW *win, int y, TLine &lin, bool inv)
     int b = lin[i].typ / 16;
     bool bright = (f > 8);
     if (f > 8) f -= 8;
-    cp = alloc_pair(f, b);
+    cp = alloc_color_pair(f, b);
     if (bright)
       if (inv) mvwaddch(win, y, i, lin[i].ch | COLOR_PAIR(cp) | A_BOLD | WA_REVERSE);
           else mvwaddch(win, y, i, lin[i].ch | COLOR_PAIR(cp) | A_BOLD);
@@ -427,8 +428,8 @@ void Window::outch(char ch, int typ)
                 if (colorset && (cp != 4)) //color mode - alloc colors
                 {
                   f = fg; b = bg;
-                  if (fg > 7) atr = COLOR_PAIR(alloc_pair(f - 8, b)) | A_BOLD;
-                         else atr = COLOR_PAIR(alloc_pair(f, b));
+                  if (fg > 7) atr = COLOR_PAIR(alloc_color_pair(f - 8, b)) | A_BOLD;
+                         else atr = COLOR_PAIR(alloc_color_pair(f, b));
                 }
                 else //normal mode - use appropriate colorpair
                 {
