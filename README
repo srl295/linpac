@@ -1,6 +1,6 @@
 
 LinPac version 0.26 (stable release)
-Copyright (c) 2018 by David Ranch (KI6ZHD) 
+Copyright (c) 2019 by David Ranch (KI6ZHD) 
 
 Linpac is a modular, Ncurses console-oriented AX.25 packet radio terminal with a 
 built-in messaging client.  Using Linux's native AX.25 network stack, it
@@ -22,7 +22,7 @@ Current contributors:
   - David Ranch (KI6ZHD)
        Packet radio mail: KI6ZHD@N0ARY.#NCA.CA.USA.NOAM
 
-  - Martin Cooper (KD6YAM) - Polling load reduction; mail bug fixes; warning cleanups
+  - Martin Cooper (KD6YAM) - Polling load reduction; mail bug fixes; many warning cleanups
   - Jerry Dunmire (KA6HLD) - Auto-tools
   - Steven Loomis (K6SPI)  - Misc patches
 
