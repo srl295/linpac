@@ -273,6 +273,9 @@ User manual
    the name of the translation table file to be used (without the extension
    .ctt).
 
+   Note that LinPac does NOT support multi-byte encodings such as UTF-8
+   or other Unicode encodings.
+
    Current encoding can be switched using the :TRanslate command separately
    for each channel. To specify the default encoding for each user you can
    add the line
