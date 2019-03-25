@@ -472,7 +472,11 @@ void Editor::convert_charset(char *s)
    char *p = s;
    while (*p)
    {
-     if (*p < convcnt) *p = conv[(unsigned)*p];
+     //Convert character via code page if present. Index must be cast to
+     //unsigned to correctly handle characters / bytes in which the top bit
+     //(0x80) is set.
+     unsigned char ix = (unsigned char) *p;
+     if (ix < convcnt) *p = conv[ix];
      p++;
    }
 }

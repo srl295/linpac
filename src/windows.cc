@@ -398,8 +398,11 @@ void Window::outch(char ch, int typ)
 {
   if (typ < 1 || typ > 4 || !enabled) return;
   int cp = typ;
-  //try to convert character
-  if (ch < convcnt) ch = conv[(unsigned)ch];
+  //Convert character via code page if present. Index must be cast to
+  //unsigned to correctly handle characters / bytes in which the top bit
+  //(0x80) is set.
+  unsigned char ix = (unsigned char) ch;
+  if (ix < convcnt) ch = conv[ix];
   //interpret character
   switch (ch)
   {
