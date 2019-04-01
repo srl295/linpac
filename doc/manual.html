@@ -85,7 +85,7 @@ expanded and/or completely reconfigured.
    
 <h2> 2 First configuration</h2>
    When linpac is started for the first time, it automaticaly creates the 
-directory called <tt>LinPac</tt> in the running user's home directory. This 
+directory called <code>LinPac</code> in the running user's home directory. This 
 directory will contain your personal LinPac configuration settings. After 
 creating this directory, LinPac asks for basic callsign, port and other 
 information and prepares a useable configuration for you.  An example setup
@@ -122,7 +122,7 @@ Please wait a moment for creating your personal configuration
 Installation done.
 Press ENTER to run LinPac
 </p>
-<p>The above information is then stored in the <tt>$HOME/LinPac/macro/init.mac</tt> file as
+<p>The above information is then stored in the <code>$HOME/LinPac/macro/init.mac</code> file as
 various 'functions'.  These functions are based on the very simple interpreted 
 language (actually it's not a language but something like the batch files in 
 DOS). In the LinPac/macro directory, it contains all the scripts written in this 
@@ -215,17 +215,17 @@ rest is optional. Some commands require some extra arguments. The arguments
 you want to enter the argument containing more than one word, the argument 
  must be entered in quotation marks.   
 <p>Example: <br>
-  <tt>:color red blue</tt> - calls the 'color' command with two arguments 
+  <code>:color red blue</code> - calls the 'color' command with two arguments 
 - 'red' and 'blue' <br>
-  <tt>:color 'light red'</tt> or <br>
-  <tt>:color "light red"</tt> - calls the 'color' command with one argument 
+  <code>:color 'light red'</code> or <br>
+  <code>:color "light red"</code> - calls the 'color' command with one argument 
  'light red' </p>
    
 <p>Most of the command work on the currently selected channel. If you want 
  to execute the command on some other channel, you can enter the number of
  the channel this way: </p>
    
-<p><tt>:connect@5 OK0PAB</tt> </p>
+<p><code>:connect@5 OK0PAB</code> </p>
    
 <p>In this case the 'connect' command is executed on channel 5. </p>
    
@@ -235,44 +235,44 @@ you want to enter the argument containing more than one word, the argument
 <p><a name="POS3_3"></a> </p>
    
 <h3> 3.3 Initiating the connection</h3>
-   To initiate the connection the <tt>:Connect </tt>command is used. Just 
+   To initiate the connection the <code>:Connect </code>command is used. Just 
 switch to the channel you want to use by pressing <b>F1</b> - <b>F8 </b>and 
 enter the following command:   
-<p><tt>:connect <i>CALLSIGN</i></tt> </p>
+<p><code>:connect <i>CALLSIGN</i></code> </p>
    
 <p>Replace the <i>CALLSIGN</i> with the real callsign of the station you want
 to connect. The command can be abbteviated to the first leter only. Example:
  </p>
    
-<p><tt>:c OK0PAB</tt> </p>
+<p><code>:c OK0PAB</code> </p>
    
 <p>This command will initiate the connecting sequence to OK0PAB. For closing
-the connection, you can use the <tt>:Disconnect</tt> command by entering<br>
+the connection, you can use the <code>:Disconnect</code> command by entering<br>
 </p>
-<p><tt>:d<br>
-</tt></p>
+<p><code>:d<br>
+</code></p>
 <p> When your  system has multiple radio ports, you can specify its name
 before  the callsign like this: </p>
    
-<p><tt>:c 2:OK0PAB</tt> </p>
+<p><code>:c 2:OK0PAB</code> </p>
    
 <p>This command will try to connect OK0PAB via port 2. When no port name is
 used, the default one is considered. At the begining the default port is
-the first port in the <tt>/etc/axports</tt> (your system AX.25 port configuration
-file). If you want to change the default port, just use the command <tt>:port</tt>.
+the first port in the <code>/etc/axports</code> (your system AX.25 port configuration
+file). If you want to change the default port, just use the command <code>:port</code>.
 </p>
    
-<p><tt>:port 2</tt> </p>
+<p><code>:port 2</code> </p>
    
 <p>This will change the default port name to '2'. In some cases it is useful
 to set another default port for some selected channels. For this the variable
-<tt>CHN_PORT</tt> can be used (see <a href="#POS4">chapter 4</a>). When set,
+<code>CHN_PORT</code> can be used (see <a href="#POS4">chapter 4</a>). When set,
 the content of this variable&nbsp; overrides the default port selection for
 the particular channel. For example, when you set the variable for channel
 4 using<br>
 </p>
-<p><tt>:set CHN_PORT@4 1<br>
-</tt></p>
+<p><code>:set CHN_PORT@4 1<br>
+</code></p>
 <p>the port '1' will be used as the default one for the channel 4. For other
 channels, the previously set default port will be used.<br>
 </p>
@@ -285,25 +285,25 @@ transfer and using file transfers protocols YAPP and Autobin. LinPac will
 automaticaly start to receive the file when the peer begins to send using 
 the YAPP or Autobin protocols. The 7+ files are automaticaly saved too. When 
 you want to save the incomming text you have to use the command   
-<p><tt>:Write &lt;<i>filename</i>&gt;</tt> </p>
+<p><code>:Write &lt;<i>filename</i>&gt;</code> </p>
    
 <p>The incomming text will be saved until you stop the saving using </p>
    
-<p><tt>:Write off</tt> </p>
+<p><code>:Write off</code> </p>
    
-<p>For receiving the plain binary file corresponding command <tt>:WBin</tt> 
+<p>For receiving the plain binary file corresponding command <code>:WBin</code> 
  can be used. This way of transferring binary files is not recommended, use 
  the autobin or yapp protocol instead. </p>
    
 <p>There are following commands available for sending files: </p>
    
-<p><tt>:rprg &lt;<i>filename</i>&gt;</tt> - sends the file using the Autobin 
+<p><code>:rprg &lt;<i>filename</i>&gt;</code> - sends the file using the Autobin 
  protocol <br>
-  <tt>:yput &lt;<i>filename</i>&gt;</tt> - sends the file using the YAPP
+  <code>:yput &lt;<i>filename</i>&gt;</code> - sends the file using the YAPP
 protocol  <br>
-  <tt>:rbin &lt;<i>filename</i>&gt;</tt> - sends the binary file (no protocol 
+  <code>:rbin &lt;<i>filename</i>&gt;</code> - sends the binary file (no protocol 
  - not recommended) <br>
-  <tt>:read &lt;<i>filename</i>&gt;</tt> - semds the text file </p>
+  <code>:read &lt;<i>filename</i>&gt;</code> - semds the text file </p>
    
 <p><a name="POS3_5"></a> </p>
    
@@ -311,12 +311,12 @@ protocol  <br>
    LinPac allows the remote user to enter the commands. For remote control 
 all LinPac commands are available but there can be (and should be) some restrictions
  for each user.   
-<p>The remote command must start with the <tt>//</tt> sequence. For example 
- if some connected users sends you a text '<tt>//info</tt>' your terminal 
+<p>The remote command must start with the <code>//</code> sequence. For example 
+ if some connected users sends you a text '<code>//info</code>' your terminal 
 will send back the station information. </p>
    
-<p>The remote commands can be disabled using the command <tt>:remote off</tt> 
- and enabled by <tt>:remote on</tt>. You can also specify only some commands 
+<p>The remote commands can be disabled using the command <code>:remote off</code> 
+ and enabled by <code>:remote on</code>. You can also specify only some commands 
  to be available for remote users. The default list of available remote commands
  is defined in the <b>init.mac</b> file (the DEF_RCMD line). There is also
  the posibility to enable various commands for each user. This is described
@@ -330,14 +330,14 @@ will send back the station information. </p>
  for example for some of standard ISO encodings may be incompatible with another
 one using a traditional encoding. To solve this LinPac allows to translate
 the input and output of each channel using a translation table. The translation
-tables are stored in files <tt>*.ctt</tt> in the LinPac home directory. 
+tables are stored in files <code>*.ctt</code> in the LinPac home directory. 
  
-<p>All known encodings have to be defined in the file called <tt>encodings</tt> 
+<p>All known encodings have to be defined in the file called <code>encodings</code> 
  in the LinPac home directory. This file contains a single line for each encoding
 that specifies its <i>alias</i> (name which will identify the encoding in
 LinPac), <i>encoding name</i> (an official name such as iso-8859-1) and optionaly
 the name of the <i>translation table file</i> to be used (without the extension
-<tt>.ctt</tt>). </p>
+<code>.ctt</code>). </p>
 
 <p>Note that LinPac does <em>not</em> support multi-byte encodings such as UTF-8
 or other Unicode encodings.</p>
@@ -346,7 +346,7 @@ or other Unicode encodings.</p>
  for each channel. To specify the default encoding for each user you can
 add  the line </p>
    
-<p><tt>ENC=&lt;alias&gt;</tt> </p>
+<p><code>ENC=&lt;alias&gt;</code> </p>
    
 <p>to the appropriate record in station database (station database is described 
  in <a href="#POS5">chapter 5</a>). When no encoding is specified for the 
@@ -366,17 +366,17 @@ transferred text. When switched on, the sender does the compression of all
 data before sending them to the other station and the recipient has to decompress 
 the data after receiving them. This makes the communication more reliable 
 and reduces the load of the radio link.   
-<p>The line compression in LinPac is activated using the <tt>:comp</tt> command.
- The compression is switched on using <tt>:comp on</tt> and switched off
-using  <tt>:comp off</tt>. To ensure that the compression is activated or
+<p>The line compression in LinPac is activated using the <code>:comp</code> command.
+ The compression is switched on using <code>:comp on</code> and switched off
+using  <code>:comp off</code>. To ensure that the compression is activated or
 deactivated  on both ends of the link simultaneously LinPac sends the remote
-command <tt>:comp  1</tt> or <tt>:comp 0</tt> to the other station automaticaly.
-The arguments  1 and 0 have the same effect as the <tt>on</tt> and <tt>off,</tt>
+command <code>:comp  1</code> or <code>:comp 0</code> to the other station automaticaly.
+The arguments  1 and 0 have the same effect as the <code>on</code> and <code>off,</code>
 but they  don't cause sending any command to the other station. </p>
    
-<p>In case that the remote system doesn't support the <tt>:comp</tt> command 
+<p>In case that the remote system doesn't support the <code>:comp</code> command 
  it's necessary to switch on the compression on the remote system manually 
- and then use the<tt>:comp 1</tt> command in LinPac. </p>
+ and then use the<code>:comp 1</code> command in LinPac. </p>
    
 <p><a name="POS4"></a> </p>
    
@@ -384,26 +384,26 @@ but they  don't cause sending any command to the other station. </p>
    Each channel has its own set of variables. Some of the variables are used 
  to store the configuration data. User can create and remove the variables 
  and change the values of existing variables using following commands:   
-<p><tt>:set &lt;<i>variable</i>&gt; &lt;<i>value</i>&gt;</tt> - sets the
+<p><code>:set &lt;<i>variable</i>&gt; &lt;<i>value</i>&gt;</code> - sets the
 value of the variable. If the variable doesn't exist, new one is created.
  <br>
-  <tt>:get &lt;<i>variable</i>&gt;</tt> - prints the value of the variable 
+  <code>:get &lt;<i>variable</i>&gt;</code> - prints the value of the variable 
 <br>
-  <tt>:unset &lt;<i>variable</i>&gt;</tt> - removes the variable </p>
+  <code>:unset &lt;<i>variable</i>&gt;</code> - removes the variable </p>
    
 <p>Some examples: <br>
-  <tt>:set NAME John</tt> <br>
-  <tt>:set WHOLE_NAME 'John Big'</tt> <br>
-  <tt>:get NAME</tt> <br>
-  <tt>:unset NAME</tt> </p>
+  <code>:set NAME John</code> <br>
+  <code>:set WHOLE_NAME 'John Big'</code> <br>
+  <code>:get NAME</code> <br>
+  <code>:unset NAME</code> </p>
    
 <p>The name of the variable can contain the specification of the channel. 
- For example the variable <tt>NAME@5</tt> is the variable '<tt>NAME</tt>' 
+ For example the variable <code>NAME@5</code> is the variable '<code>NAME</code>' 
 defined on channel 5. </p>
    
-<p>When LinPac founds the character '<tt>%</tt>' followed by the name of variable,
+<p>When LinPac founds the character '<code>%</code>' followed by the name of variable,
 automaticaly replaces this text with the value of the variable. Considering
-previous example the text <tt>%NAME</tt> will be replaced with John. </p>
+previous example the text <code>%NAME</code> will be replaced with John. </p>
    
 <p><a name="POS4_1"></a> </p>
    
@@ -412,47 +412,47 @@ previous example the text <tt>%NAME</tt> will be replaced with John. </p>
  value. Their value is set and changed directly by LinPac and this variables 
  can be used to add some actual information to the text. The list follows: 
   
-<p><tt>%V</tt> - LinPac version (e.g. 0.02) <br>
-  <tt>%C</tt> - The callsign of connected station <br>
-  <tt>%N</tt> - The name of connected station (when known), else is replaced 
+<p><code>%V</code> - LinPac version (e.g. 0.02) <br>
+  <code>%C</code> - The callsign of connected station <br>
+  <code>%N</code> - The name of connected station (when known), else is replaced 
  by the contents of %U macro <br>
-  <tt>%Y</tt>- Channel callsign (mycall) <br>
-  <tt>%K</tt>- Current channel number <br>
-  <tt>%T</tt> - Current time <br>
-  <tt>%D</tt> - Current date <br>
-  <tt>%B</tt> - Audible bell <br>
-  <tt>%Z</tt> - Current time zone <br>
-  <tt>%U</tt> - The text used when the name is unknown. This can contain
+  <code>%Y</code>- Channel callsign (mycall) <br>
+  <code>%K</code>- Current channel number <br>
+  <code>%T</code> - Current time <br>
+  <code>%D</code> - Current date <br>
+  <code>%B</code> - Audible bell <br>
+  <code>%Z</code> - Current time zone <br>
+  <code>%U</code> - The text used when the name is unknown. This can contain
 other  macros (typicaly %C). <br>
-  <tt>%P</tt>- The port number <br>
-  <tt>%M</tt>- The number of connected users <br>
-  <tt>%A</tt>- The time since the last operator activity <br>
-  <tt>%_</tt>- End of line (CR) <br>
-  <tt>%&lt;</tt>- Contents of the last line received, this is cleared by
+  <code>%P</code>- The port number <br>
+  <code>%M</code>- The number of connected users <br>
+  <code>%A</code>- The time since the last operator activity <br>
+  <code>%_</code>- End of line (CR) <br>
+  <code>%&lt;</code>- Contents of the last line received, this is cleared by
 reading  <br>
-  <tt>%#<i>number</i></tt> - Replaced by a character with an ASCII value
+  <code>%#<i>number</i></code> - Replaced by a character with an ASCII value
 &lt;number&gt;  (e.g. %#27 means ESC) <br>
-  <tt>%(<i>command</i>)</tt> - Replaced by the command result. <br>
-  <tt>%[<i>expression</i>]</tt> - Replaced by the result of mathematical
+  <code>%(<i>command</i>)</code> - Replaced by the command result. <br>
+  <code>%[<i>expression</i>]</code> - Replaced by the result of mathematical
 expression  </p>
    
 <p>Variables for use in macros only: </p>
    
-<p><tt>%R</tt> - the number of macro arguments (up to 9) <br>
-  <tt>%0</tt> - the name of the macro <br>
-  <tt>%1</tt> - <tt>%9</tt> - macro arguments </p>
+<p><code>%R</code> - the number of macro arguments (up to 9) <br>
+  <code>%0</code> - the name of the macro <br>
+  <code>%1</code> - <code>%9</code> - macro arguments </p>
    
 <p>For example try to write following text in the editor and press enter: 
  </p>
    
-<p><tt>The time is %T and the date is %D.</tt> </p>
+<p><code>The time is %T and the date is %D.</code> </p>
    
 <p><a name="POS5"></a> </p>
    
 <h2> 5 Station database</h2>
    The station database holds various information about known stations. All 
- the information is stored in the '<tt>station.data</tt>' file and can be 
-changed using the normal text editor or using the LinPac :<tt>Name </tt>command. 
+ the information is stored in the '<code>station.data</code>' file and can be 
+changed using the normal text editor or using the LinPac :<code>Name </code>command. 
   
 <p><a name="POS5_1"></a> </p>
    
@@ -460,16 +460,16 @@ changed using the normal text editor or using the LinPac :<tt>Name </tt>command.
    The information about each station is written in the paragraph starting 
 with the station callsign in the square brackets. Each line in the paragraph 
 contains one defininion like   
-<p><tt>&lt;item_name&gt;=&lt;value&gt;</tt> </p>
+<p><code>&lt;item_name&gt;=&lt;value&gt;</code> </p>
    
 <p>The typical station information can look like this: </p>
    
-<p><tt>[OK0NMA]</tt> <br>
-  <tt>NAME=PC/FlexNet Brno</tt> <br>
-  <tt>TYPE=FLEXNET</tt> <br>
-  <tt>LOC=JN89HE</tt> <br>
-  <tt>QRG=144.8125 MHz</tt> <br>
-  <tt>SYSNUM=85946</tt> </p>
+<p><code>[OK0NMA]</code> <br>
+  <code>NAME=PC/FlexNet Brno</code> <br>
+  <code>TYPE=FLEXNET</code> <br>
+  <code>LOC=JN89HE</code> <br>
+  <code>QRG=144.8125 MHz</code> <br>
+  <code>SYSNUM=85946</code> </p>
    
 <p>There are no mandatory items, the user can add various items depending 
  on what information he wants to store. Current LinPac distribution uses following
@@ -485,13 +485,13 @@ are recomended, but you can add any other type. </p>
    
 <p><b>LANG</b> - The language to communicate with the station. This is currently
  supported by the macros only. When this item is set, LinPac will try to
-find  the macro in the directory <tt>macro/&lt;LANG&gt;/</tt>. </p>
+find  the macro in the directory <code>macro/&lt;LANG&gt;/</code>. </p>
    
 <p><b>NICKNAME</b> - The nickname of operator. </p>
    
 <p>The standard LinPac configuration also uses this item names: </p>
    
-<p><b>TERM</b> - What type of terminal is used. If '<tt>ansi</tt>' is set,
+<p><b>TERM</b> - What type of terminal is used. If '<code>ansi</code>' is set,
 LinPac switches to the ansi-color mode after connecting this station. <br>
   <b>ENC</b> - The character encoding. Used to automaticaly switch to the 
 i/o character conversion. <br>
@@ -503,31 +503,31 @@ i/o character conversion. <br>
 <p><a name="POS5_2"></a> </p>
    
 <h3> 5.2 The 'Name' command</h3>
-   The <tt>:Name</tt> command is used to modify the station database. Running 
+   The <code>:Name</code> command is used to modify the station database. Running 
  the command without arguments results printing the name of currently connected 
  station. The arguments are used to modify the data:   
-<p><tt>&lt;name&gt;</tt> - modify the NAME item <br>
-  <tt>-l &lt;locator&gt;</tt> - modify the LOC item <br>
-  <tt>-t &lt;type&gt;</tt> - TYPE <br>
-  <tt>-L &lt;language&gt;</tt> - LANG <br>
-  <tt>-n &lt;nickname&gt;</tt> - NICKNAME <br>
-  <tt>-s &lt;item&gt;=&lt;value&gt;</tt> - modify other item </p>
+<p><code>&lt;name&gt;</code> - modify the NAME item <br>
+  <code>-l &lt;locator&gt;</code> - modify the LOC item <br>
+  <code>-t &lt;type&gt;</code> - TYPE <br>
+  <code>-L &lt;language&gt;</code> - LANG <br>
+  <code>-n &lt;nickname&gt;</code> - NICKNAME <br>
+  <code>-s &lt;item&gt;=&lt;value&gt;</code> - modify other item </p>
    
-<p>The command '<tt>Name -i</tt>' prints all information about the station. 
+<p>The command '<code>Name -i</code>' prints all information about the station. 
  When you need to change the information about other than connected station 
- add the argument <tt>-c &lt;callsign&gt;</tt>. </p>
+ add the argument <code>-c &lt;callsign&gt;</code>. </p>
    
 <p>Examples: <br>
-  <tt>:Name David</tt> <br>
-  <tt>:Name -c KI6ZHD -l CM97ai David</tt> <br>
-  <tt>:Name -i</tt> </p>
+  <code>:Name David</code> <br>
+  <code>:Name -c KI6ZHD -l CM97ai David</code> <br>
+  <code>:Name -i</code> </p>
    
 <p><a name="POS5_3"></a> </p>
    
 <h3> 5.3 Using the database</h3>
    After any connection establishes, LinPac reads the information about the 
  connected station from the database and creates the set of variables with 
- names <tt>STN_&lt;<i>database_item_name</i>&gt;</tt> containing the values 
+ names <code>STN_&lt;<i>database_item_name</i>&gt;</code> containing the values 
  of the items. This variables can be used in macros as described below. 
  
 <p><a name="POS6"></a> </p>
@@ -537,7 +537,7 @@ i/o character conversion. <br>
 <h3> 6.1 Creating macros</h3>
    The macro is a LinPac command that is created using the macro language 
 and uses other LinPac commands to perform some action. The macro can be defined
- by creating the file <tt>macro/&lt;<i>command_name</i>&gt;.mac</tt>. It's
+ by creating the file <code>macro/&lt;<i>command_name</i>&gt;.mac</code>. It's
  possible to define the abbreviated form of the command, this is described 
  in <a href="#POS7">chapter 7</a>. There are two ways to define a macro: 
  
@@ -551,16 +551,16 @@ using the IF ~ ELSE ~ ENDIF commands or for including some other commands.
    
 <p><b><i>b) Command macros</i></b> <br>
   A command macro must start with the line <br>
-  <tt>:MACRO &lt;name&gt;</tt> <br>
+  <code>:MACRO &lt;name&gt;</code> <br>
   Each line of a command macro is interpreted as a command (doesn't start 
 with the colon and doesn't need to start at the begining of line). The text 
 output is provided by the 'echo' command. This way is more synoptical and 
-allows including the comments that must start with the sequence '<tt>;;</tt>' 
+allows including the comments that must start with the sequence '<code>;;</code>' 
 and end with the end of line. </p>
    
 <p>The macro is called with its name. When the first arguments starts with 
  the '@' symbol the macro is executed from the specified label. For example 
- the command <tt>:convers @SEND</tt> will execute the macro '<b>convers.mac</b>' 
+ the command <code>:convers @SEND</code> will execute the macro '<b>convers.mac</b>' 
  from the label 'SEND' (see next chapter to see how to define the label). 
 </p>
    
@@ -616,32 +616,32 @@ nickname is not defined.
 <p><b><i>a) The solution using the text macro</i></b> (the comments are actually
  not allowed in the text macros, they are here for explanation only) </p>
    
-<p><tt>:if %(exist STN_NICKNAME) == 1 ;; when NICKNAME is defined</tt> <br>
-  <tt>Hello %STN_NICKNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- ;; greet with the nickname</tt> <br>
-  <tt>:else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- ;; else (not defined)</tt> <br>
-  <tt>Hello %N !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- ;; greet with the name</tt> <br>
-  <tt>:endif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- ;;(following commands are always executed)</tt> <br>
-  <tt>You have connected to %Y at %T. ;; Say your callsign and current time</tt> 
+<p><code>:if %(exist STN_NICKNAME) == 1 ;; when NICKNAME is defined</code> <br>
+  <code>Hello %STN_NICKNAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ;; greet with the nickname</code> <br>
+  <code>:else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ;; else (not defined)</code> <br>
+  <code>Hello %N !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ;; greet with the name</code> <br>
+  <code>:endif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ;;(following commands are always executed)</code> <br>
+  <code>You have connected to %Y at %T. ;; Say your callsign and current time</code> 
  </p>
    
 <p><b><i>b) The solution using the command macro</i></b> </p>
    
-<p><tt>:macro GREETING ;; start the command macro</tt> <br>
-  <tt>if %(exist STN_NICKNAME) == 1 ;; when NICKNAME is defined</tt> <br>
-  <tt>echo Hello %STN_NICKNAME&nbsp;&nbsp;&nbsp;&nbsp; ;; greet with the
-nickname</tt>  <br>
-  <tt>else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- ;; else (not defined)</tt> <br>
-  <tt>echo Hello %N !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- ;; greet with the name</tt> <br>
-  <tt>endif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- ;; (following commands are always executed)</tt> <br>
-  <tt>echo You have connected to %Y at %T. ;; Say your callsign and current 
- time</tt> </p>
+<p><code>:macro GREETING ;; start the command macro</code> <br>
+  <code>if %(exist STN_NICKNAME) == 1 ;; when NICKNAME is defined</code> <br>
+  <code>echo Hello %STN_NICKNAME&nbsp;&nbsp;&nbsp;&nbsp; ;; greet with the
+nickname</code>  <br>
+  <code>else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ;; else (not defined)</code> <br>
+  <code>echo Hello %N !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ;; greet with the name</code> <br>
+  <code>endif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ;; (following commands are always executed)</code> <br>
+  <code>echo You have connected to %Y at %T. ;; Say your callsign and current 
+ time</code> </p>
    
 <p><a name="POS6_3"></a> </p>
    
@@ -675,9 +675,9 @@ to sign the end of the connection and clears the list of allowed remote commands
 <h2> 7 Creating new commands</h2>
    New command can be represented by the macro or by the external program 
 (standard linux program or special LinPac application). Macros are placed 
-in the <tt>$LINPACDIR/macro</tt> directory and external programs are placed 
-int the <tt>$LINPACDIR/bin</tt> directory. In both of this directories is 
-the file '<tt>commands</tt>' that contains the list of commands in that directory. 
+in the <code>$LINPACDIR/macro</code> directory and external programs are placed 
+int the <code>$LINPACDIR/bin</code> directory. In both of this directories is 
+the file '<code>commands</code>' that contains the list of commands in that directory. 
 You should specify here the name of the file, the name of the command in LinPac
 (use capital letters to specify the mandatory part of the command). It's
 not necessary to include the macros here, if you don't want to define the
@@ -725,11 +725,11 @@ better  error detection and is able to resume previously interrupted transfer</l
 for  following systems: F6FBB BBS (VE2BLY C_FILTER), BAYBOX, TNOS (numeric
 MD5).  Each station which requests the login password must have an entry
 in the station database containing at least following fields:   
-<p><tt>TYPE=&lt;<i>station_type</i>&gt;</tt> (FBB, BAYBOX or TNOS) <br>
-  <tt>LOGINPW=&lt;<i>login_password</i>&gt;</tt> <br>
-  <tt>PWPROMPT=&lt;<i>BBS_prompt</i>&gt;</tt> </p>
+<p><code>TYPE=&lt;<i>station_type</i>&gt;</code> (FBB, BAYBOX or TNOS) <br>
+  <code>LOGINPW=&lt;<i>login_password</i>&gt;</code> <br>
+  <code>PWPROMPT=&lt;<i>BBS_prompt</i>&gt;</code> </p>
    
-<p><i><tt>BBS_prompt</tt></i> is the text which the BBS sends when requesting 
+<p><i><code>BBS_prompt</code></i> is the text which the BBS sends when requesting 
  the authorization. Usually it looks like 'Password&gt;' or 'OK0XYZ&gt;'. 
 </p>
    
@@ -739,9 +739,9 @@ in the station database containing at least following fields:
  TheNet-like system), THENET and BAYBOX. Each station you want authorize
 to  must have anentry in the station database. For password generation following 
  fields must be set:   
-<p><tt>TYPE=&lt;<i>station_type</i>&gt;</tt> <br>
-  <tt>PWD=&lt;<i>your_password</i>&gt; or</tt> <br>
-  <tt>SYSNUM=&lt;<i>magic_number</i>&gt;</tt> </p>
+<p><code>TYPE=&lt;<i>station_type</i>&gt;</code> <br>
+  <code>PWD=&lt;<i>your_password</i>&gt; or</code> <br>
+  <code>SYSNUM=&lt;<i>magic_number</i>&gt;</code> </p>
    
 <p>Known station types are: </p>
    
@@ -759,28 +759,28 @@ the SYSNUM  field mustn't be used.</li>
 </ul>
    In case of <b>FBB</b> the authorization algorithm can be choosed by setting 
  the <b>MD</b> field in the station database: <br>
-  <tt>MD=5</tt> - this value will select the MD5 algorithm <br>
-  <tt>MD=2</tt> - this value will select the MD2 algorithm   
+  <code>MD=5</code> - this value will select the MD5 algorithm <br>
+  <code>MD=2</code> - this value will select the MD2 algorithm   
 <p>When no value is set, MD2 algorithm is used. </p>
    
 <p>After connecting to the station you want authorize to the authorization 
- sequence begins with the <tt>:PW</tt> command. LinPac will send the authorization 
+ sequence begins with the <code>:PW</code> command. LinPac will send the authorization 
  command to the station and tries to answer the authorization request using 
  your password. If the password is correct, authorization should finish succesfuly. 
  </p>
    
 <p>The PW command accepts following parametres: </p>
    
-<p><tt>:PW [&lt;<i>command</i>&gt; [&lt;<i>system</i>&gt; [&lt;<i>password</i>&gt;]]]</tt> 
+<p><code>:PW [&lt;<i>command</i>&gt; [&lt;<i>system</i>&gt; [&lt;<i>password</i>&gt;]]]</code> 
  </p>
    
 <p>where <br>
-  <tt>&lt;<i>command</i>&gt;</tt> is the command to be send to the remote 
+  <code>&lt;<i>command</i>&gt;</code> is the command to be send to the remote 
 station to start authorization sequence (<i>sys</i> by default) <br>
-  <tt>&lt;<i>system</i>&gt;</tt> is one of the above-mentioned supported
+  <code>&lt;<i>system</i>&gt;</code> is one of the above-mentioned supported
 systems,  this system is used instead of the one specified in station database
 <br>
-  <tt>&lt;<i>password</i>&gt;</tt> is the password that will be used instead 
+  <code>&lt;<i>password</i>&gt;</code> is the password that will be used instead 
  of the one specified in the station database </p>
    
 <p>It's recommended to create simple macros for frequently used authorizations 
@@ -793,50 +793,50 @@ systems,  this system is used instead of the one specified in station database
 For the proper function of this utilities following variables must be created 
  in channel 0:   
 <p><b>HOME_BBS</b> - The AX.25 path to the home BBS including the port name.
- For example <tt>kiss:OK0PAB OK0NMA</tt> is the BBS <tt>OK0PAB</tt> which
-can be connected on port <tt>kiss</tt> via the node <tt>OK0NMA</tt>. <br>
+ For example <code>kiss:OK0PAB OK0NMA</code> is the BBS <code>OK0PAB</code> which
+can be connected on port <code>kiss</code> via the node <code>OK0NMA</code>. <br>
   <b>HOME_ADDR</b> - The full hierarchical address of the BBS. For example 
-<tt>OK0PAB.#MOR.CZE.EU</tt>.  </p>
+<code>OK0PAB.#MOR.CZE.EU</code>.  </p>
    
-<p>For setting the variable the <tt>:SET</tt> command can be used. For example: 
+<p>For setting the variable the <code>:SET</code> command can be used. For example: 
  </p>
    
-<p><tt>:set HOME_BBS@0 "kiss:OK0PAB OK0NMA"</tt> </p>
+<p><code>:set HOME_BBS@0 "kiss:OK0PAB OK0NMA"</code> </p>
    
-<p>The reccomended place to set this variables is the startup macro <tt>init.mac</tt>. 
+<p>The reccomended place to set this variables is the startup macro <code>init.mac</code>. 
  The default version of this macro contains an example of setting this variables. 
  After setting this variables following commands are available: </p>
    
-<p><tt>:GETMSG &lt;<i>message_number</i>&gt; [&lt;<i>message_number</i>&gt;
- ...]</tt> <br>
-  Reads specified messages from the BBS and stores them into <tt>/var/ax25/mail/&lt;<i>BBS_callsign</i>&gt;/&lt;<i>message_number</i>&gt;</tt>. 
+<p><code>:GETMSG &lt;<i>message_number</i>&gt; [&lt;<i>message_number</i>&gt;
+ ...]</code> <br>
+  Reads specified messages from the BBS and stores them into <code>/var/ax25/mail/&lt;<i>BBS_callsign</i>&gt;/&lt;<i>message_number</i>&gt;</code>. 
  The directory for the BBS must be created before using this command (use 
 capital letters for the BBS callsgin). When the message number starts with 
 the letter <b>'p'</b>, the message is considered as a personal one and it's 
 killed automaticaly after download. You can specify the kill command by setting 
-the <tt>KILLPERS</tt> variable in channel 0 using the <b>#</b> character for
-the number of message (e.g. <tt>:set KILLPERS@0 "kill #"</tt>). When this
-variable is not set, the default command <tt>K #</tt> is used. </p>
+the <code>KILLPERS</code> variable in channel 0 using the <b>#</b> character for
+the number of message (e.g. <code>:set KILLPERS@0 "kill #"</code>). When this
+variable is not set, the default command <code>K #</code> is used. </p>
    
-<p><tt>:SP &lt;<i>address</i>&gt;</tt> or <tt>:SB &lt;<i>address</i>&gt;</tt> 
+<p><code>:SP &lt;<i>address</i>&gt;</code> or <code>:SB &lt;<i>address</i>&gt;</code> 
  <br>
   This commands can be used for creating new private message or the bulletin. 
  The usage is the same as at the FBB BBS. </p>
    
-<p><tt>:FORWARD</tt> <br>
+<p><code>:FORWARD</code> <br>
   Transfers all new messages to the BBS. </p>
    
-<p><tt>:DELMSG &lt;<i>message_number</i>&gt;</tt> <br>
+<p><code>:DELMSG &lt;<i>message_number</i>&gt;</code> <br>
   Marks the message for delete. </p>
    
-<p><tt>:PACK</tt> <br>
+<p><code>:PACK</code> <br>
   Deletes all marked messages. </p>
    
 <p><a name="POS8_4"></a> </p>
    
 <h3> 8.4 Mail client</h3>
    This application allows full screen message editing and browsing. It provides 
- the frontend to mail exchange utilities. Mail client is started by the <tt>:MAIL</tt> 
+ the frontend to mail exchange utilities. Mail client is started by the <code>:MAIL</code> 
  command. After the program is started the <b>H</b> key shows the operating 
  instructions.   
 <p><a name="POS8_5"></a> </p>
@@ -846,8 +846,8 @@ variable is not set, the default command <tt>K #</tt> is used. </p>
 cexit.mac scripts (at the begining and at the end of each connection). It 
 creates the file in the 'log' directory for each callsign and writes here 
 the time when the connections were started and finished and the QRG. The QRG
-is taken from the <tt>QRG</tt> field of the station entry in station database.
-If the station has no QRG defined, the value from the <tt>QRG@0</tt> variable
+is taken from the <code>QRG</code> field of the station entry in station database.
+If the station has no QRG defined, the value from the <code>QRG@0</code> variable
 is taken.   
 <p><a name="POS9"></a> </p>
    
@@ -865,7 +865,7 @@ doesn't try to connect <i>ax25spyd</i> at all. </p>
  in the background. </p>
        
   <p><b>-p &lt;string&gt;</b> : specify the arguments for the <i>listen</i> 
- program. Default value is <tt>ar8</tt>.</p>
+ program. Default value is <code>ar8</code>.</p>
    
 </ul>
    <a name="POS10"></a>   
@@ -1046,7 +1046,7 @@ binary data is hidden and replaced with the &lt;Binary data&gt; information.
 <p><b>Port &lt;port_name&gt;</b> <br>
    Sets the default port for the Connect command. This is usually the first
    port defined in the /etc/ax25/axports file but can be overriden here.
-   This can be overriden for particular channels by setting the <tt>CHN_PORT</tt> 
+   This can be overriden for particular channels by setting the <code>CHN_PORT</code> 
    variable for the channel (see <a href="#POS3_3">chapter 3.3</a>).</p>
    
 <p><b>PRIVate [on|off]</b> <br>
@@ -1185,10 +1185,10 @@ no  subject is specified, the user is prompted for the subject. When filename
   Catch is the extended version of <b>WAtch</b> command. It scans one or
 more  data streams (-i = input stream, -o = output stream, -l = local info
 stream)  for the pattern. The pattern can contain <b>*</b> and <b>?</b> wildcards.
- The command can contain string <tt>$1</tt> .. <tt>$n</tt> which are replaced
- with the string corresponding to the n-th wildcard in the pattern. The <tt>$0</tt>
- string is replaced with the whole string that matches the pattern. See <tt>catch
- -h</tt> for extended parametres. </p>
+ The command can contain string <code>$1</code> .. <code>$n</code> which are replaced
+ with the string corresponding to the n-th wildcard in the pattern. The <code>$0</code>
+ string is replaced with the whole string that matches the pattern. See <code>catch
+ -h</code> for extended parametres. </p>
    
 <p><b>DELMSG &lt;message_number&gt;</b> <br>
   Mark the message for delete. </p>
@@ -1230,7 +1230,7 @@ these  channels is automatically redirected to the other channel. Stop with
   This command takes a binary file, splits the file to <i>num_messages</i> 
 parts using <b>7plus</b> and creates a separate message for each part. When 
 <i>num_messages</i> is not specified, the command tries to use <br>
-  the variable <tt>BLOCK7P@0</tt> which should contain the maximal size of
+  the variable <code>BLOCK7P@0</code> which should contain the maximal size of
  one block. If this variable is not set, blocks of 5 kB are created. </p>
    
 <p><b>WBin / RBin</b> <br>
