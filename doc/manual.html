@@ -91,7 +91,7 @@ creating this directory, LinPac asks for basic callsign, port and other
 information and prepares a useable configuration for you.  An example setup
 dialog is as shows where we are using the bogus call "n0call" logging into
 the local BBS "n0ary-1":
-<p>
+<pre>
 $ linpac
 
 Hello dear user. You seem to run LinPac for the first time.
@@ -121,7 +121,7 @@ Thank you, N0CALL
 Please wait a moment for creating your personal configuration
 Installation done.
 Press ENTER to run LinPac
-</p>
+</pre>
 <p>The above information is then stored in the <code>$HOME/LinPac/macro/init.mac</code> file as
 various 'functions'.  These functions are based on the very simple interpreted 
 language (actually it's not a language but something like the batch files in 
@@ -135,13 +135,13 @@ is described in <a href="#POS6">chapter 6</a>. </p>
    
 <p>You may also want to review/change following macro files: </p>
    
-<p>
-  <b>info.mac</b> - contains the information about your system 
-<b>ctext.mac</b> - this file is executed when the peer connects and should
- contain the greeting text <br>
-  <b>quit.mac</b> - this is called when user enters the Quit command (end 
-of connection). It should print some farewell and disconnect. <br>
-</p>
+<ul>
+  <li><b>info.mac</b> - contains information about your system</li>
+  <li><b>ctext.mac</b> - executed when the peer connects and should
+ contain the greeting text</li>
+  <li><b>quit.mac</b> - called when user enters the Quit command (end 
+of connection) and should print some farewell text and disconnect</li>
+</ul>
    
 <p>After this you should be able to make your first connection. 
 </p>
@@ -870,8 +870,8 @@ doesn't try to connect <i>ax25spyd</i> at all. </p>
 </ul>
    <a name="POS10"></a>   
 <h2> 10 Copying</h2>
-   LinPac is Copyright (c) 2002-2016 bu David Ranch KI6ZHD 
-   LinPac is Copyright (c) 1998-2002 by Radek Burget, OK2JBG   
+<p>LinPac is Copyright (c) 2002-2016 bu David Ranch KI6ZHD and
+             Copyright (c) 1998-2002 by Radek Burget, OK2JBG</p>
 <p>This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
  Software Foundation; </p>
@@ -899,40 +899,37 @@ Mass Ave, Cambridge, MA 02139, USA. </p>
  (e.g. autobin). Addresses for some commands: <br>
   &nbsp;   
 <table border="1" cellspacing="0" cellpadding="5">
-   <tbody>
-      <tr>
-   <td>               
-      <center><b>Action</b></center>
-   </td>
-    <td height="10">               
-      <center><b>Address for abor</b>t</center>
-   </td>
-   </tr>
+  <thead style="font-weight:bold; text-align: center;">
     <tr>
-   <td>autobin RX/TX</td>
-    <td><b>autobin</b> (or none)</td>
-   </tr>
+     <td>Action</td>
+     <td>Address for abort</td>
+    </tr>
+  </thead>
+  <tbody>
     <tr>
-   <td>yapp RX/TX</td>
-    <td><b>yapp</b> (or none)</td>
-   </tr>
+     <td>autobin RX/TX</td>
+     <td><b>autobin</b> (or none)</td>
+    </tr>
     <tr>
-   <td>7plus autosave</td>
-    <td><b>7plus</b> (or none)</td>
-   </tr>
+     <td>yapp RX/TX</td>
+     <td><b>yapp</b> (or none)</td>
+    </tr>
     <tr>
-   <td>read / RBin</td>
-    <td><b>read</b> (or none)</td>
-   </tr>
+     <td>7plus autosave</td>
+     <td><b>7plus</b> (or none)</td>
+    </tr>
     <tr>
-   <td>write / WBin</td>
-    <td><b>write</b> (or none)</td>
-   </tr>
+     <td>read / RBin</td>
+     <td><b>read</b> (or none)</td>
+    </tr>
     <tr>
-   <td>forward</td>
-    <td><b>forward</b> (mandatory)</td>
-   </tr>
-         
+     <td>write / WBin</td>
+     <td><b>write</b> (or none)</td>
+    </tr>
+    <tr>
+     <td>forward</td>
+     <td><b>forward</b> (mandatory)</td>
+    </tr>
   </tbody>  
 </table>
     </p>
@@ -1314,14 +1311,9 @@ parts using <b>7plus</b> and creates a separate message for each part. When
    
 <p> </p>
    
-<hr width="100%">   
-<div align="left"><i><font size="-1">Last update: 11/5/2017</font></i>  
- <br>
-</div>
-   
-<div align="left"><i><font size="-1">Please report any mistakes to <a
- href="mailto:linpac@trinnet.net">linpac@trinnet.net</a></font></i>    <br>
- </div>
-  <br>
+<hr>
+<p style="font-style:italic; font-size: -1;">Last update: 1 April 2019<br/>
+Please report any errors to <a
+ href="mailto:linpac@trinnet.net">linpac@trinnet.net</a></p>
 </body>
 </html>
