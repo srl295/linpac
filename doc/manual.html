@@ -149,11 +149,11 @@ of connection) and should print some farewell text and disconnect</li>
 <p><a name="POS3"></a> </p>
    
 <h2> 3 LinPac controls</h2>
-   After automatically running the LinPac setup routine, the main screen should appear. 
+<p>After automatically running the LinPac setup routine, the main screen should appear. 
 If you see a segmentation fault, please see <a href="https://sourceforge.net/p/linpac/bugs/24/">
 Linux AX.25 issues with long predictable network interface names</a> for a work around.
 Moving on, in Linpac's main interface in the standard configuraion, the screen is divided 
-into five parts (described from the top of the screen to the bottom): 
+into five parts (described from the top of the screen to the bottom):</p>
   
 <ul>
    <li> <b>QSO window</b>: this window contains the text that came from the
@@ -167,10 +167,12 @@ the  peer or the commands you want to execute</li>
     <li> <b>Monitor </b>: displays the traffic on your radio ports</li>
      
 </ul>
-   LinPac is mostly driven by commands. The commands are entered using the 
+
+<p>LinPac is mostly driven by commands. The commands are entered using the 
 editor and must start with a colon (':') in the first column. Lines that 
-don't begin with a colon are sent to the peer, if connected.
-<p>LinPac allows to make eight connections simultaneously. For each connection 
+don't begin with a colon are sent to the peer, if connected.</p>
+
+<p>LinPac allows up to eight connections to be made simultaneously. For each connection 
  one channel is used. You can switch between channels by pressing the F1 -
 F8 keys. Each has its own QSO window, status line and editor. The channel
  list and the monitor are common across all the channels. </p>
@@ -214,7 +216,8 @@ remainder of the command name is optional. Some commands require some extra
 arguments. The arguments are written after the command and are separated by
 one or more spaces. If you want to enter an argument containing more than
 one word, that argument must be entered in quotation marks.   
-<p>Examples: <br>
+<p>Examples:</p>
+<p>
   <code>:color red blue</code> - calls the 'color' command with two arguments 
 - 'red' and 'blue' <br>
   <code>:color 'light red'</code> or <br>
@@ -391,11 +394,13 @@ value of the variable. If the variable doesn't exist, a new one is created.
 <br>
   <code>:unset &lt;<i>variable</i>&gt;</code> - removes the variable </p>
    
-<p>Some examples: <br>
+<p>Some examples:</p>
+<p>
   <code>:set NAME John</code> <br>
   <code>:set WHOLE_NAME 'John Big'</code> <br>
   <code>:get NAME</code> <br>
-  <code>:unset NAME</code> </p>
+  <code>:unset NAME</code>
+</p>
    
 <p>The name of the variable can contain the specification of the channel. 
  For example the variable <code>NAME@5</code> is the variable '<code>NAME</code>' 
@@ -459,7 +464,7 @@ changed using the normal text editor or using the LinPac :<code>Name </code>comm
 <h3> 5.1 The station.data file format</h3>
    The information about each station is written in a paragraph starting 
 with the station callsign in square brackets. Each line in the paragraph 
-contains one defininion like   
+contains one definition like:
 <p><code>&lt;item_name&gt;=&lt;value&gt;</code> </p>
    
 <p>A typical station information paragraph might look like this: </p>
@@ -517,7 +522,8 @@ i/o character conversion. <br>
  When you need to change the information about a station other than the connected
  station, add the argument <code>-c &lt;callsign&gt;</code>. </p>
    
-<p>Examples: <br>
+<p>Examples: </p>
+<p>
   <code>:Name David</code> <br>
   <code>:Name -c KI6ZHD -l CM97ai David</code> <br>
   <code>:Name -i</code> </p>
@@ -673,7 +679,7 @@ to sign the end of the connection and clears the list of allowed remote commands
 <p><a name="POS7"></a> </p>
    
 <h2> 7 Creating new commands</h2>
-   A new command can be represented by a macro or by an external program 
+<p>A new command can be represented by a macro or by an external program 
 (standard linux program or special LinPac application). Macros are placed 
 in the <code>$LINPACDIR/macro</code> directory and external programs are placed 
 in the <code>$LINPACDIR/bin</code> directory. In both of these directories is 
@@ -681,9 +687,9 @@ the file '<code>commands</code>' that contains the list of commands in that dire
 You should specify here the name of the file, the name of the command in LinPac
 (use upper case to specify the mandatory part of the command). It's
 not necessary to include the macros here if you don't want to define the
-abbreviation. <br>
-  In case of external programs, it is also possibile to specify
- program flags. Currently the following flags are supported:   
+abbreviation. </p>
+<p>In case of external programs, it is also possibile to specify
+ program flags. Currently the following flags are supported:</p>
 <p>A - Ascii mode program. LinPac provides CR &lt;-&gt; LF conversion
 when communicating with this program. This is the default setting. <br>
   B - Binary mode. Disables the text conversions. <br>
@@ -703,14 +709,14 @@ always  sent out). <br>
 <h2> 8 Standard applications</h2>
    <a name="POS8_1"></a>   
 <h3> 8.1 File transfer protocols</h3>
-   At present LinPac supports two protocols for transferring files:   
+<p>At present LinPac supports two protocols for transferring files:</p>
 <ul>
    <li> <b>Autobin</b> - a simple protocol suitable for short files</li>
     <li> <b>YAPP</b> - a very sophisticated transfer protocol that provides 
 better  error detection and is able to resume a previously interrupted transfer</li>
      
 </ul>
-   Usage of these protocols is described in chapter <a href="#POS3_4">3.4</a>. 
+<p>Usage of these protocols is described in chapter <a href="#POS3_4">3.4</a>.</p>
   
 <p>LinPac can also automatically save incomming 7+ files. After saving all 
  parts of a file LinPac tries to call the '7plus' program to decode the file. 
@@ -757,8 +763,8 @@ number  and the PWD field must not be set. When the TheNet algorithm is used
 the SYSNUM field must not be used.</li>
      
 </ul>
-   In case of <b>FBB</b> the authorization algorithm can be chosen by setting 
- the <b>MD</b> field in the station database: <br>
+<p>In case of <b>FBB</b> the authorization algorithm can be chosen by setting 
+ the <b>MD</b> field in the station database: </p>
   <code>MD=5</code> - this value will select the MD5 algorithm <br>
   <code>MD=2</code> - this value will select the MD2 algorithm   
 <p>When no value is set, MD2 algorithm is used. </p>
@@ -774,14 +780,15 @@ the SYSNUM field must not be used.</li>
 <p><code>:PW [&lt;<i>command</i>&gt; [&lt;<i>system</i>&gt; [&lt;<i>password</i>&gt;]]]</code> 
  </p>
    
-<p>where <br>
-  <code>&lt;<i>command</i>&gt;</code> is the command to be sent to the remote 
-station to start the authorization sequence (<i>sys</i> by default) <br>
-  <code>&lt;<i>system</i>&gt;</code> is one of the above-mentioned supported
-systems; this system is used instead of the one specified in station database
-<br>
-  <code>&lt;<i>password</i>&gt;</code> is the password that will be used instead 
- of the one specified in the station database </p>
+<p>where </p>
+<ul>
+  <li><code>&lt;<i>command</i>&gt;</code> is the command to be sent to the remote 
+station to start the authorization sequence (<i>sys</i> by default)</li>
+  <li><code>&lt;<i>system</i>&gt;</code> is one of the above-mentioned supported
+systems; this system is used instead of the one specified in station database</li>
+  <li><code>&lt;<i>password</i>&gt;</code> is the password that will be used instead 
+ of the one specified in the station database</li>
+</ul>
    
 <p>It's recommended that you create simple macros for frequently used authorizations 
  that require special arguments to the PW command. </p>
@@ -789,15 +796,16 @@ systems; this system is used instead of the one specified in station database
 <p><a name="POS8_3"></a> </p>
    
 <h3> 8.3 Utilities for mail exchange</h3>
-   LinPac contains some utilities for exchanging mail with the F6FBB BBS. 
+<p>LinPac contains some utilities for exchanging mail with the F6FBB BBS. 
 For the proper function of these utilities, the following variables must be created 
- in channel 0:   
-<p><b>HOME_BBS</b> - The AX.25 path to the home BBS including the port name.
+ in channel 0:</p>
+<ul>
+  <li><b>HOME_BBS</b> - The AX.25 path to the home BBS including the port name.
  For example <code>kiss:OK0PAB OK0NMA</code> is the BBS <code>OK0PAB</code> which
-can be connected on port <code>kiss</code> via the node <code>OK0NMA</code>. <br>
-  <b>HOME_ADDR</b> - The full hierarchical address of the BBS. For example 
-<code>OK0PAB.#MOR.CZE.EU</code>.  </p>
-   
+can be connected on port <code>kiss</code> via the node <code>OK0NMA</code>.</li>
+  <li><b>HOME_ADDR</b> - The full hierarchical address of the BBS. For example 
+<code>OK0PAB.#MOR.CZE.EU</code>.</li>
+</ul>
 <p>To set the variable, the <code>:SET</code> command can be used. For example: 
  </p>
    
@@ -852,7 +860,7 @@ is taken.
 <p><a name="POS9"></a> </p>
    
 <h2> 9 Command line options</h2>
-   LinPac accepts following command line options:   
+<p>LinPac accepts following command line options:</p>
 <ul>
     <b>-m</b> : disable monitor. When this option is used, LinPac doesn't 
 create it's internal monitor objects and saves memory.       
@@ -870,7 +878,7 @@ doesn't try to connect <i>ax25spyd</i> at all. </p>
 </ul>
    <a name="POS10"></a>   
 <h2> 10 Copying</h2>
-<p>LinPac is Copyright (c) 2002-2016 bu David Ranch KI6ZHD and
+<p>LinPac is Copyright (c) 2002-2016 by David Ranch KI6ZHD and
              Copyright (c) 1998-2002 by Radek Burget, OK2JBG</p>
 <p>This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -895,8 +903,8 @@ doesn't try to connect <i>ax25spyd</i> at all. </p>
    <b><i>a) action commands</i></b>   
 <p><b>ABort [address]</b> <br>
   Cancels an action. Some commands are cancelled without specifying any address
- (e.g. autobin). Addresses for some commands: <br>
-  &nbsp;   
+ (e.g. autobin). Addresses for some commands:</p>
+
 <table border="1" cellspacing="0" cellpadding="5">
   <thead style="font-weight:bold; text-align: center;">
     <tr>
@@ -931,7 +939,6 @@ doesn't try to connect <i>ax25spyd</i> at all. </p>
     </tr>
   </tbody>  
 </table>
-    </p>
    
 <p>Most of the other commands don't need any address. </p>
    
