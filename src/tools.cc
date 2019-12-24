@@ -89,7 +89,7 @@ char *time_zone_name(int i)
 
 char *sys_info()
 {
-  static char s[128];
+  static char s[256];
   struct utsname info;
   uname(&info);
   sprintf(s, "%s %s / %s", info.sysname, info.release, info.machine);
