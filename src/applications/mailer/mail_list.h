@@ -38,6 +38,10 @@ class TheFile : public screen_obj
     WINDOW *old_focus_window;
     screen_obj *old_focused;
 
+    void wrap_line(char* str); // fit to screen width
+    void add_attachment_placeholder(char* line, int len); // for 7plus
+    char* filename_from_footer(char* footer); // for 7plus
+
   public:
     std::vector <char *> line;
 

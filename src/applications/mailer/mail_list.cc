@@ -44,20 +44,44 @@ bool isnum(char *s)
   return true;
 }
 
-char *outbuffer = NULL;
-
-char *extract(const char *start, const char *stop)
+//allocate and initialize a new string
+char* newstr(int len, const char *format, ...)
 {
-   if (outbuffer != NULL) delete[] outbuffer;
-   outbuffer = new char[(stop-start)+1];
-   int i = 0;
-   for (char *p = (char *)start; p < stop; p++)
-   {
-      outbuffer[i] = *p;
-      i++;
-   }
-   outbuffer[i] = '\0';
-   return outbuffer;
+    char* s = new char[len];
+    va_list arg;
+    int result;
+
+    va_start(arg, format);
+    result = vsprintf(s, format, arg);
+    va_end(arg);
+    if (result < 0)
+    {
+        delete[] s;
+        return NULL;
+    }
+    return s;
+}
+
+//expand tabs to align on tab-size boundaries
+char* expand_tabs(char* start, unsigned count)
+{
+    char* s = start;
+    unsigned tabCount = 0;
+    for (int i = 0; i < count; s++, i++)
+        if (*s == '\t') tabCount++;
+
+    char* expanded = new char[count + tabCount * TAB_SIZE + 1];
+    char* e = expanded;
+    s = start;
+    for (int i = 0; i < count; i++, s++)
+        if (*s == '\t')
+            for (int j = 0; j < TAB_SIZE - (e - expanded) % TAB_SIZE; j++)
+                *e++ = ' ';
+        else
+            *e++ = *s;
+    *e = '\0';
+
+    return expanded;
 }
 
 //=========================================================================
@@ -225,208 +249,197 @@ void TheFile::destroy_message()
 
 void TheFile::load_message(bool head)
 {
-   char *p1, *p2;
+   char *p;
 
    destroy_message();
    attach = 0;
-   p1 = msg->getBody();
+   p = msg->getBody();
 
-   if (p1)
-   {
-      char lastln[256];
-      strcpy(lastln, "");
+    // If there's no message body, we're done.
+    if (!p)
+    {
+        line.push_back(newstr(32, "Message %i is not present.", msg->getNum()));
+        return;
+    }
 
-      bool in7p = false;
-      char name7p[256];
+    bool in7p = false;
+    while (*p)
+    {
+        char* eol = strchr(p, '\n');
+        int len = eol ? eol - p : strlen(p);
 
-      while (*p1)
-      {
-         p2 = p1;
-         while (*p2 && *p2 != '\n') p2++; if (*p2) p2++;
-         
-         char *s = strdup(extract(p1, p2-1));
-  
-         //detect 7plus
-         if (strncmp(s, " go_7+.", 7) == 0 && !in7p)
-         {
+        // Handle embedded 7plus attachments
+        if (!in7p && strncmp(p, " go_7+.", 7) == 0)
             in7p = true;
-         }
-         if (strncmp(s, " stop_7+.", 9) == 0 && in7p)
-         {
-            //find name
-            strcpy(name7p, "");
-            char *p = strchr(s, '(');
-            if (p)
-            {
-               p++;
-               while (*p && *p != ')' && *p != '/' && strlen(p) < 255)
-               {
-                  char ch = tolower(*p);
-                  strncat(name7p, &ch, 1);
-                  p++;
-               }
-            }
-  
+        if (in7p && strncmp(p, " stop_7+.", 9) == 0)
+        {
+            add_attachment_placeholder(p, len);
             in7p = false;
-            attach++;
-            char msg[100];
-            sprintf(msg, "--- Message attachment no. %i", attach);
-            line.push_back(strdup(msg));
-            sprintf(msg, "--- This part of message is 7plus encoded (%.32s)", name7p);
-            line.push_back(strdup(msg));
-            sprintf(msg, "--- Press X to save this part of message");
-            line.push_back(strdup(msg));
-            delete[] s;
-            p1 = p2;
-            continue;
-         }
-       
-         if (!in7p)
-         {
-            //expand TABs
-            char ln[256];
-            strcpy(ln, lastln);
-            for (unsigned i=0; i<strlen(s); i++)
+        }
+        // Only process non-7plus content
+        else if (!in7p)
+        {
+            if (!len)
             {
-              if (s[i] == '\t')
-                do strcat(ln, " "); while (strlen(ln)%TAB_SIZE > 0);
-              else
-                strncat(ln, &s[i], 1);
+                // Blank line
+                char* empty = new char[1];
+                *empty = '\0';
+                line.push_back(empty);
             }
-     
-            //break too long lines
-            if (strncmp(s, "R:", 2) != 0)
+            else if (strncmp(p, "R:", 2) == 0)
             {
-               bool broken = false;
-               bool answer = false;
-               while ((int)strlen(ln) > xsize-3 && wrap)
-               {
-                  if (ln[0] == '>') answer = true;
-                  char *p = &(ln[xsize-4]);            //find the last space on line
-                  while (p > ln && !isspace(*p)) p--;
-                  if (p == ln) p = &(ln[xsize-3]);     //no spaces found
-                  *p = '\0';
-                  char *store = new char[strlen(ln)+1];//store the line
-                  strcpy(store, ln);
-                  line.push_back(store);
-                  p++;                                 //continue next part
-                  //strcpy(ln, p);
-                  memmove(ln, p, strlen(p)+1);
-                  broken = true;
-               }
-               if (broken && !answer)
-               {
-                  strcpy(lastln, ln);
-                  strcat(lastln, " ");
-               }
-               else
-               {
-                  char *store = new char[strlen(ln)+1];
-                  strcpy(store, ln);
-                  line.push_back(store);
-                  strcpy(lastln, "");
-               }
+                // Routing header
+                if (head) {
+                   char* header = new char[len+1];
+                   strncpy(header, p, len);
+                   header[len] = '\0';
+                   line.push_back(header);
+                }
             }
-            else if (head)
+            else
             {
-               char *store = new char[strlen(ln)+1];
-               strcpy(store, ln);
-               line.push_back(store);
+                // Normal message line
+                char* expanded = expand_tabs(p, len);
+                if (wrap)
+                    wrap_line(expanded);
+                else
+                    line.push_back(expanded);
             }
-         }
+        }
 
-         delete[] s;
-         p1 = p2; //next line
-      }
-   }
-   else
-   {
-      char *store = new char[32];
-      sprintf(store, "Message %i is not present.", msg->getNum());
-      line.push_back(store);
-   }
+        p += len;
+        if (eol) p++;
+    }
+}
+
+void TheFile::wrap_line(char* inLine)
+{
+    const int lineMax = xsize - 3;
+    int remaining = strlen(inLine);
+    char* p = inLine;
+
+    while (remaining > 0)
+    {
+        char* outLine = new char[lineMax+1];
+        if (remaining <= lineMax) {
+            strcpy(outLine, p);
+            line.push_back(outLine);
+            break;
+        }
+        char* last = p + lineMax;
+        if (*last != ' ' && *(last+1) != ' ')
+        {
+            // back up
+            while (*last != ' ' && last > p)
+                last--;
+        } else if (*last != ' ')
+            last++;
+        *(last) = '\0';
+        strcpy(outLine, p);
+        line.push_back(outLine);
+        remaining -= (last - p + 1);
+        p = last + 1;
+    }
+}
+
+void TheFile::add_attachment_placeholder(char* text, int len)
+{
+    char* name = filename_from_footer(text);
+
+    // Add placeholder
+    line.push_back(
+        newstr(80, "--- Message attachment no. %i", ++attach));
+    line.push_back(
+        newstr(80, "--- This part of message is 7plus encoded (%.32s)", name));
+    line.push_back(
+        newstr(80, "--- Press X to save this part of message"));
+
+    delete[] name;
+}
+
+// Extract file name from 7plus footer
+char* TheFile::filename_from_footer(char* footer)
+{
+    char* name = new char[32];
+    name[0] = '\0';
+
+    char* p = (char*)memchr(footer, '(', 32);
+    if (*p)
+    {
+        int i;
+        for (i = 0, p++; i < 32; i++, p++)
+        {
+            if (*p == '/' || *p == ')' || *p == '\0')
+                break;
+            name[i] = *p;
+        }
+        name[i] = '\0';
+    }
+    return name;
 }
 
 void TheFile::extract_attach(int num)
 {
-   char *p1, *p2;
+    char* p = msg->getBody();
 
-   p1 = msg->getBody();
+    // If there's no message body, we're done.
+    if (!p)
+    {
+        errormsg("Cannot open message file");
+        return;
+    }
 
-   if (p1)
-   {
-      char lastln[256];
-      strcpy(lastln, "");
+    bool in7p = false;
+    bool saving = false;
+    int att_count = 0;
 
-      bool in7p = false;
-      bool saving = false;
-      FILE *outf;
-      int atcnt = 0;
-      char name7p[256];
-      char *tmp = strdup("/tmp/lp_mail_ea.XXXXXX");
-      int tmpdesc = mkstemp(tmp);
-      close(tmpdesc);
-      //char *tmp = strdup(tmpnam(NULL));
+    FILE* outf;
+    char* tmpname = strdup("/tmp/lp_mail_ea.XXXXXX");
+    close(mkstemp(tmpname));
 
-      while (*p1)
-      {
-         p2 = p1;
-         while (*p2 && *p2 != '\n') p2++; if (*p2) p2++;
-         
-         char *s = strdup(extract(p1, p2-1));
+    while (*p)
+    {
+        char* eol = strchr(p, '\n');
+        int len = eol ? eol - p : strlen(p);
 
-         //detect 7plus
-         if (strncmp(s, " go_7+.", 7) == 0 && !in7p)
-         {
+        //detect 7plus
+        if (!in7p && strncmp(p, " go_7+.", 7) == 0)
+        {
             in7p = true;
-            atcnt++;
-            if (atcnt == num)
+            att_count++;
+            if (att_count == num)
             {
-               saving = true;
-               outf = fopen(tmp, "w");
-               if (!outf) errormsg("Cannot create temp file");
+                saving = true;
+                outf = fopen(tmpname, "w");
+                if (!outf) errormsg("Cannot create temp file");
             }
-         }
-  
-         if (in7p && saving && outf)
-         {
-            fprintf(outf, "%s\n", s);
-         }
+        }
+
+        if (in7p && saving && outf)
+            fprintf(outf, "%.*s\n", len, p);
          
-         if (strncmp(s, " stop_7+.", 9) == 0 && in7p)
-         {
-            //find name
-            strcpy(name7p, "");
-            char *p = strchr(s, '(');
-            if (p)
-            {
-               p++;
-               while (*p && *p != ')' && *p != '/' && strlen(p) < 255)
-               {
-                  char ch = tolower(*p);
-                  strncat(name7p, &ch, 1);
-                  p++;
-               }
-            }
-  
+        if (in7p && strncmp(p, " stop_7+.", 9) == 0)
+        {
             in7p = false;
   
             if (saving)
             {
-               fclose(outf);
-               char *name = save_file_path(name7p);
-               if (rename(tmp, name) == -1)
-                 errormsg("Cannot create %s", name);
-               else
-                 errormsg("Attachment saved to %s", name);
-               delete[] name;
-               saving = false;
+                fclose(outf);
+                char* name7p = filename_from_footer(p);
+                char *name = save_file_path(name7p);
+                if (rename(tmpname, name) == -1)
+                    errormsg("Cannot create %s", name);
+                else
+                    errormsg("Attachment saved to %s", name);
+                delete[] name;
+                delete[] name7p;
+                saving = false;
             }
          }
-         delete[] s;
-         p1 = p2; //next line
-      }
-   } else errormsg("Cannot open message file");
+
+        p += len;
+        if (eol) p++;
+    }
 }
 
 unsigned TheFile::max_len()
@@ -502,7 +515,7 @@ void Messages::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
    ysize = height;
    x = wx;
    y = wy;
- 
+fprintf(stderr, "init_screen w=%d, h=%d\n", width, height); 
    WINDOW *win = subwin(pwin, ysize, xsize, y, x);
    mwin = win;
    keypad(win, true);
