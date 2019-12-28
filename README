@@ -1,6 +1,6 @@
 
-LinPac version 0.26 (stable release)
-Copyright (c) 2019 by David Ranch (KI6ZHD) 
+LinPac version 0.27 (stable release)
+Copyright (c) 2019 by David Ranch (KI6ZHD)
 
 Linpac is a modular, Ncurses console-oriented AX.25 packet radio terminal with a 
 built-in messaging client.  Using Linux's native AX.25 network stack, it
@@ -14,7 +14,6 @@ operational but needs work.
 
 If you encounter any problems when compiling or using LinPac please go to
 http://linpac.sourceforge.net for support.
-
 
 
 Current contributors:
@@ -57,8 +56,8 @@ Before compilation of Linpac, you must have these other packages installed:
            https://github.com/ve7fet/linuxax25
 
 
-   Dependencies:
-   ~~~~~~~~~~~~
+   Required dependencies:
+   ~~~~~~~~~~~~~~~~~~~~~~
    Debian / Ubunutu package names:    libax25 ax25-apps libncurses5-dev
                  Optional install:    ax25-tools ax25-xtools ax25mail-utils
 
@@ -176,6 +175,17 @@ such as:
 
 KNOWN PROBLEMS
 ~~~~~~~~~~~~~~
+
+  - There are reported issues with Ncurses 6.1 (not 6.0) and Linpac where this buggy 6.1 version
+    is present in Raspbian Buster (10.1), Ubuntu 18.04, etc.  Examples include:
+
+       * in the monitor window, the first character is sometimes being cut off, but many times 
+         it's not cut off and looks fine.
+       * in the mail window, weird things are going on with the "background window"
+
+    A workaround for now is to run the following command before you run Linpac:
+
+       export TERM="simpleterm"
 
   - Signifincant issue with AX.25 and Raspbian Stretch
 
