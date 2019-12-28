@@ -1,7 +1,7 @@
 #Spec file for LinPac
 
 %define	name	linpac
-%define	version	0.26
+%define	version	0.27
 %define	release	1
 
 %define  debug_package %{nil}
@@ -75,6 +75,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun
 
 %changelog
+* Sat Dec 28 2019 David Ranch <dranch@trinnet.net>
+- New version 0.27
+- Address unicode characters in messages when Linpac doesn't specifically support unicode
+- Fixes for segfaults when long strings are used in the mail reader
 * Sun Dec 10 2017 David Ranch <dranch@trinnet.net>
 - New 0.26 version 
 * Fri Sep 18 2015 David Ranch <dranch@trinnet.net>
