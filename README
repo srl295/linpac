@@ -1,6 +1,6 @@
 
 LinPac version 0.27 (stable release)
-Copyright (c) 2019 by David Ranch (KI6ZHD)
+Copyright (c) 2020 by David Ranch (KI6ZHD) and Martin Cooper (KD6YAM)
 
 Linpac is a modular, Ncurses console-oriented AX.25 packet radio terminal with a 
 built-in messaging client.  Using Linux's native AX.25 network stack, it
@@ -187,6 +187,7 @@ KNOWN PROBLEMS
 
        export TERM="simpleterm"
 
+
   - Signifincant issue with AX.25 and Raspbian Stretch
 
     I have confirmed that with Raspian Stretch, there is some sort of conflict with
@@ -220,7 +221,6 @@ KNOWN PROBLEMS
       stty sane
       rm -f rm /var/lock/LinPac.0
 
-
   
   - The --enable-LINKSTATIC configuration option does not work.
 
@@ -230,9 +230,10 @@ KNOWN PROBLEMS
 
 NOTES FOR HACKING with the Source code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-A clean checkout from the GIT source repository is not ready to configure
-and compile. You will need the GNU autotools
-(https://en.wikipedia.org/wiki/GNU_build_system) to create the
+It's always recommended to start with the "develop" Git branch as it will
+always have the newest code.  From there, a clean checkout from the source 
+repository is not ready to configure and compile. You will need the GNU 
+autotools (https://en.wikipedia.org/wiki/GNU_build_system) to create the
 ./configure script and Makfile templates. Once the autotools are
 installed the full build procedure is:
 
