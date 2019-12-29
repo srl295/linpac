@@ -1,5 +1,6 @@
 /*
   LinPac Mailer
+  (c) 2014-2019 by David Ranch (KI6ZHD)
   (c) 1998 - 1999 by Radek Burget OK2JBG (xburge01@stud.fee.vutbr.cz)
 
   This program is free software; you can redistribute it and/or
@@ -30,11 +31,11 @@
 #define IL_TEXT 14 //input line
 
 #define HELP_LIST "(D)ownload selected, (F)ilter, toggle (I)ndex, (T)ranslate, (H)elp, (Q)uit"
-#define HELP_VIEW "(W)rap (T)ranslate (H)eader (R)eply (C)omment (S)ave E(x)port (F)wd (Q)uit"
+#define HELP_VIEW "(W)rap (T)ranslate (H)eader (R)eply (C)omment (S)ave E(x)port (F)wd (L)eave (Q)uit"
 #define HELP_EDIT "^X:send  ^A:abort  ^T:time  ^D:date  ^R:read file  ^F:attach  ^E:export"
 #define HELP_BOARDS1 "(A)dd new group, (D)elete group, TAB - switch, Enter - accept"
 #define HELP_BOARDS2 "(A)dd group, Space - select, * - invert, TAB - switch, Enter - accept"
-#define HELP_HELP "ESC - return, (Q)uit"
+#define HELP_HELP "ESC or (L)eave to return, (Q)uit"
 
 #define CENTER(xxx) ((maxx-(xxx)+1)/2)
 
