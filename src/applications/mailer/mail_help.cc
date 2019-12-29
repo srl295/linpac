@@ -1,5 +1,6 @@
 /*
   LinPac Mailer
+  (c) 2002 - 2020 by David Ranch KI6ZHD (linpac@trinnet.net)
   (c) 1998 - 1999 by Radek Burget OK2JBG (xburge01@stud.fee.vutbr.cz)
 
   This program is free software; you can redistribute it and/or
@@ -73,10 +74,10 @@ void HelpWindow::draw(bool all)
      mvwprintw(mwin,  5, 2, "Space ... select/unselect current");
      mvwprintw(mwin,  6, 2, "Enter ... view current message");
      mvwprintw(mwin,  7, 2, "Ctrl-X .. delete selected messages");
-     mvwprintw(mwin,  8, 2, "F ... select bulletins      P ... show/hide private messages");
-     mvwprintw(mwin,  9, 2, "T ... toggle translation    D ... download selected messages");
-     mvwprintw(mwin, 10, 2, "C ... compose new message   I ... toggle incomming/outgoing");
-     mvwprintw(mwin, 11, 2, "Q ... quit");
+     mvwprintw(mwin,  8, 2, "F ... select bulletins         P ... show/hide private messages");
+     mvwprintw(mwin,  9, 2, "T ... toggle translation       D ... download selected messages");
+     mvwprintw(mwin, 10, 2, "C ... compose new message      I ... toggle incomming/outgoing");
+     mvwprintw(mwin, 11, 2, "L ... leave the current menu   Q ... quit");
 
      wbkgdset(mwin, ' ' | COLOR_PAIR(C_UNSELECT) | A_BOLD);
      mvwprintw(mwin, 14, 2, "Bulletin selection window");
