@@ -1,3 +1,284 @@
+commit 395a21b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-12-28
+
+    updated the spec to reflect the new version and fixes
+
+contrib/packaging/rpm/linpac.spec
+
+commit e39703f
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-12-28
+
+    updated version, copyright date, known issues with Ncurses 6.1
+
+README
+
+commit aac05f3
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-12-28
+
+    new development version
+
+configure.ac
+
+commit 24e7faf
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-12-26
+
+    Fix buffer overflow when reading long lines
+    
+    A fixed length buffer was being used to read message lines, and any
+    line longer than this was causing a freeze or segfault. Allocate a
+    buffer instead, but only when necessary (e.g. expanding tabs). Also
+    eliminate use of strdup when memory is being freed with delete[].
+
+src/applications/mailer/mail_list.cc
+src/applications/mailer/mail_list.h
+
+commit 796fc5e
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-12-24
+
+    Fix possible buffer overflow in system info
+    
+    A compiler warning identified a possible overflow when retrieving
+    and subsequently formatting uname info. Increase buffer size to
+    allow for the maximum size of all strings.
+
+src/tools.cc
+
+commit bb70684
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-04-02
+
+    Regenerated text manual from updated HTML.
+
+doc/manual.txt
+
+commit 8bc009d
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-04-02
+
+    Minor changes to improve generated text.
+
+doc/manual.html
+
+commit 110326f
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-04-01
+
+    Minor updates and corrections.
+
+doc/manual.html
+
+commit 88d2c64
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-04-01
+
+    Fixes for language, typos, and the like.
+
+doc/manual.html
+
+commit 955c8c5
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-04-01
+
+    Fix and sanitize some HTML rendering.
+
+doc/manual.html
+
+commit d8a1d2a
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-04-01
+
+    Replace obsolete tt tag with code tag.
+
+doc/manual.html
+
+commit 4afa32c
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-03-25
+
+    Add a note about multi-byte encodings.
+    
+    The LinPac codebase assumes single byte character encodings, and as
+    such does not support Unicode in any form, including UTF-8.
+
+doc/manual.html
+doc/manual.txt
+
+commit fc06750
+Author: Martin Cooper <mfncooper@gmail.com>
+Date:   2019-03-25
+
+    Fix incorrect character conversion indexing.
+    
+    During character conversion (code page lookup), character codes with
+    the top bit set would be treated as negative values, causing incorrect
+    table size comparison and invalid table lookup. Changed the index to
+    an unsigned value to accommodate this.
+
+src/applications/mailer/mail_edit.cc
+src/editor.cc
+src/windows.cc
+
+commit 67014a9
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-02-10
+
+    updated README copyright date
+
+README
+
+commit 62b5fd8
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-02-10
+
+    new development version
+
+configure.ac
+
+commit 2c78bb5
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-02-10
+
+    renamed alloc_pair function to avoid conflict with new ncurses 6.0 function
+
+src/windows.cc
+
+commit f1acaac
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-02-02
+
+    new development version
+
+configure.ac
+
+commit e3a7d3a
+Author: David Ranch <linpac@trinnet.net>
+Date:   2019-02-02
+
+    Updated the message start header to include how to abort the message
+
+src/applications/compose.cc
+
+commit 39ab7e3
+Merge: 636e645 7ea1597
+Author: David Ranch <linpac@trinnet.net>
+Date:   2018-11-10
+
+    Merge branch 'develop' of ssh://git.code.sf.net/p/linpac/linpac into develop
+
+commit 636e645
+Author: David Ranch <linpac@trinnet.net>
+Date:   2018-11-10
+
+    noted a fix for 'LinPac is not running' errors
+
+linpac-todo.txt
+
+commit 33e7acd
+Author: David Ranch <linpac@trinnet.net>
+Date:   2018-11-10
+
+    Updated the development date
+
+configure.ac
+
+commit cf5002a
+Merge: 8b0e8b0 512162b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2018-11-10
+
+    Merge commit '512162b9cc1aa4f6515dbd3bcb703f0e66612cb3' into develop
+
+commit 7ea1597
+Merge: 8b0e8b0 512162b
+Author: David Ranch <allura@localhost>
+Date:   2018-11-11
+
+    Merge /u/mfncooper/linpac/ branch develop into develop
+    
+    https://sourceforge.net/p/linpac/linpac/merge-requests/9/
+
+commit 8b0e8b0
+Author: David Ranch <linpac@trinnet.net>
+Date:   2018-09-18
+
+    Reminder for doc fix for Operation not Permitted
+
+linpac-todo.txt
+
+commit 45dd5fb
+Author: David Ranch <linpac@trinnet.net>
+Date:   2018-09-17
+
+    added reminder about monitor port in manual.html
+
+linpac-todo.txt
+
+commit 512162b
+Author: Martin Cooper <mfncooper@users.sourceforge.net>
+Date:   2018-09-10
+
+    Fix bug in event gate when new process is created
+    
+    On some systems, when a forked child runs execlp() to run an external
+    program, the external program does not have the same pid as the forked
+    child. This caused a new event gate to be created that failed to
+    communicate properly with the parent.
+
+src/sources.cc
+
+commit 8620027
+Author: David Ranch <linpac@trinnet.net>
+Date:   2018-01-01
+
+    Updated the first paragraph a bit and the copyright date.. HNY
+
+README
+
+commit 1d7a83e
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-30
+
+    new startup failure if the axport isn't up before starting
+
+linpac-todo.txt
+
+commit 8f97f0b
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-13
+
+    new issues in make with spaces in the path
+
+linpac-todo.txt
+
+commit 81453ef
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-11
+
+    Added P2 issue of Mail app has a lot of duplicate linpac code
+
+linpac-todo.txt
+
+commit 02e0887
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-11
+
+    Added installer directory bug
+
+linpac-todo.txt
+
+commit 720d65e
+Author: David Ranch <linpac@trinnet.net>
+Date:   2017-12-10
+
+    Updated the Changelog to start 0.26
+
+ChangeLog
+
 commit 1c898b2
 Author: David Ranch <linpac@trinnet.net>
 Date:   2017-12-10
