@@ -515,7 +515,8 @@ void Messages::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
    ysize = height;
    x = wx;
    y = wy;
-fprintf(stderr, "init_screen w=%d, h=%d\n", width, height); 
+//DEBUG by KD6YAM
+//fprintf(stderr, "init_screen w=%d, h=%d\n", width, height); 
    WINDOW *win = subwin(pwin, ysize, xsize, y, x);
    mwin = win;
    keypad(win, true);
