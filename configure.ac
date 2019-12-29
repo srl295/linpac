@@ -73,9 +73,9 @@ AC_CHECK_LIB(tinfo, tgetent, USE_TERMCAP_LIB=-ltinfo,
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
 AH_TEMPLATE([NO_SOCKLEN_T], [Socket length type])
 AH_TEMPLATE([NEW_AX25], [AX.25 version])
-#AH_TEMPLATE([VERINFO], [Version string])
+AH_TEMPLATE([VERINFO], [Version string])
 # TODO: move VERINFO to a more prominate location or eliminated it
-#AC_DEFINE([VERINFO], ["Development snapshot 122819"])
+AC_DEFINE([VERINFO], [""])
 
 # Package Options
 # TODO: make sure this is the up-to-date method and that it works right
