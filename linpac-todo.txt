@@ -1,6 +1,6 @@
 
 Linpac: Prioritized Goals
-11/10/18
+12/29/19
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -43,7 +43,7 @@ Priority 3 - Future features
 P4 - Long term requests
    Java version
 
-Issues Resolved
+Resolved Issues and Enhancements
 
 Errata
 
@@ -226,7 +226,7 @@ P1 - Mail
 
     - BUG: In the mail view, H for header doesn't work
       - when viewing msg, 
-      - ESC doesn't work but L does
+      - ESC doesn't work with a single ESC but multiple-ESCs do or an L also works
 
     - BUG: can't use control-x to delete individual messages
         "Message 15 doesn't exist"
@@ -338,7 +338,6 @@ P2 - Mail
    - ENHANCEMENT: add callsign/date/time to :mail viewer (maybe based upon the
      file timestamp?)
 
-   - ENHACEMENT: Show "l" as back for previous screen  (not sure what this issue is)
 
 
 P2 - Help 
@@ -476,7 +475,7 @@ P4 - UI
 
 
 ==========================================================================
-Issues Resolved:
+Resolved Issues and Enhacements:
 ==========================================================================
 
 P1 - Packaging:
@@ -578,6 +577,11 @@ P1 - Defaults
             //subject]
    -----------------------------------------------------------------------------
 
+P2 - Mail
+---------
+   12/29/19 : ENHACEMENT: Show "l" as back for previous screen  (not sure what this issue is)
+
+
 P2 - Packging 
 -------------
 
@@ -598,6 +602,7 @@ P2 - Website:
 ==========================================================================
 Errata:
 ==========================================================================
+12/29/19 - Resolved P2-Mail : Show "l" as back for previous screen  (not sure what this issue is)
 12/13/17 - Noted that the install section of make cannot handle spaces in the
            path
 12/11/17 - Noted that mail app has a lot of base linpac code in it
