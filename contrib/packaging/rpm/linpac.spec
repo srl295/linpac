@@ -19,7 +19,7 @@ Packager: David Ranch (KI6ZHD) <dranch@trinnet.net>
 Distribution: RedHat Linux
 AutoReqProv: yes
 Provides: linpac
-Requires: libax25 ax25apps ax25tools ncurses-libs
+Requires: libax25 ax25apps ax25tools ncurses-libs perl
 BuildRequires: perl
 #This was required before all the vector fixes
 #BuildRequires: compat-gcc-34-c++
