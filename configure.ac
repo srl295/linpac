@@ -114,6 +114,7 @@ AC_CONFIG_FILES([Makefile \
 	  src/applications/lpapi/Makefile \
 	  src/applications/libaxmail/Makefile \
 	  src/applications/mailer/Makefile \
+	  src/applications/mailmsg/Makefile \
           src/applications/Makefile \
           inst/Makefile \
 	  plugins/Makefile])

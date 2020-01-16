@@ -1,10 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = liblinpac lpapi libaxmail mailer
+SUBDIRS = liblinpac lpapi libaxmail mailer mailmsg
 
-s_lzhuf = lzhuf.cc
-s_getmsg = getmsg.cc
-s_forward = forward.cc
 s_crc = crc.cc
 s_dostime = dostime.cc
 s_autobin = autobin.cc
@@ -28,7 +25,7 @@ s_join = join.c
 LDADD = ./liblinpac/liblinpac.la
 AM_LDFLAGS = @LINPACLINK@
 
-pkglibexec_PROGRAMS = autobin bell compose forward getmsg logbook lpbck \
+pkglibexec_PROGRAMS = autobin bell compose logbook lpbck \
                name rawio rtt save7pl testapp yapp flexpwd md2pwd \
                tnpwd md5pwd catch join
 
@@ -46,8 +43,6 @@ install-exec-hook:
 autobin_SOURCES = $(s_crc) $(s_autobin)
 bell_SOURCES = $(s_bell)
 compose_SOURCES = $(s_compose)
-forward_SOURCES = $(s_lzhuf) $(s_forward)
-getmsg_SOURCES = $(s_lzhuf) $(s_getmsg)
 logbook_SOURCES = $(s_logbook)
 lpbck_SOURCES = $(s_lpbck)
 name_SOURCES = $(s_name)
@@ -64,7 +59,7 @@ catch_SOURCES = $(s_catch)
 join_SOURCES = $(s_join)
 
 dist_pkgdata_DATA = commands
-dist_pkglibexec_SCRIPTS = mheard shell w kill_chn delmsg pack sendfile
+dist_pkglibexec_SCRIPTS = mheard shell w kill_chn pack sendfile
 
 EXTRA_DIST = crc.h doorbl.h dostime.h hash.h\
-             lpapp.h lpcalls.h lpwin.h lzhuf.h md2.h md5.h tevent.h version.h
+             lpapp.h lpcalls.h lpwin.h md2.h md5.h tevent.h version.h
