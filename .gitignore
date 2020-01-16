@@ -44,13 +44,13 @@ coverage_report
 /src/applications/catch
 /src/applications/compose
 /src/applications/flexpwd
-/src/applications/forward
-/src/applications/getmsg
 /src/applications/join
 /src/applications/logbook
 /src/applications/lpapi/lpapi
 /src/applications/lpbck
 /src/applications/mailer/mail
+/src/applications/mailmsg/forward
+/src/applications/mailmsg/getmsg
 /src/applications/md2pwd
 /src/applications/md5pwd
 /src/applications/name
