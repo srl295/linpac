@@ -20,25 +20,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
-#include "lzhuf.h"
 #include "lpapp.h"
-
-#define NUL 0
-#define SOH 1
-#define STX 2
-#define EOT 4
-
-#define PERSONAL //storing messages to home directory supported
+#include "bbs.h"
+#include "bbs_fbb.h"
+#include "bbs_pbbs.h"
 
 #define ABORT_ADDR "getmsg"
 
-#define MAILDIR "/var/ax25/mail"
-
-char *homebbs;
-char *mailhome;
-char home_call[64];
-int abort_all = 0;
-char kill_cmd[64]; //FBB command for killing messages
+BBS* bbs = NULL;
 
 //-----------------------------------------------------------------------
 
@@ -83,216 +72,6 @@ char *normalize_call(char *call)
 
 //---------------------------------------------------------------------
 
-/* read and store one message */
-int get_one_message(FILE *fin, char **buf, int *bsize, char *title)
-{
-  int eot;
-  int ch;
-  char c;
-  char ofset[7];
-  signed char sum, chksum;
-  int flen;
-  int i;
-  int bpoz;
-  int size;
-
-  size = 1;
-  *buf = (char *) malloc(sizeof(char) * size);
-  bpoz = 0;
-  
-  ch = safe_fgetc(fin);
-  if (ch != SOH)
-  {
-     fprintf(stderr, "getmsg: bad starting character (0x%x)\n", ch);
-     return 2; /* format violated */
-  }
-  (void)safe_fgetc(fin); // read and discard header length
-
-  lp_statline("Reading message");
-
-  /* read title */
-  strcpy(title, "");
-  do
-  {
-    ch = safe_fgetc(fin);
-    c = (char) ch;
-    if (ch != NUL) strncat(title, &c, 1);
-  } while (ch != NUL && !abort_all);
-
-  if (abort_all)
-  {
-    fprintf(stderr, "getmsg: aborted\n");
-    return 3;
-  }
-
-  lp_statline("Reading message: `%s'", title);
-
-  /* read ofset */
-  strcpy(ofset, "");
-  do
-  {
-    ch = safe_fgetc(fin);
-    c = (char) ch;
-    if (ch != NUL) strncat(ofset, &c, 1);
-  } while (ch != NUL && !abort_all);
-
-  if (abort_all)
-  {
-    fprintf(stderr, "getmsg: aborted\n");
-    return 3;
-  }
-
-  /* read data frames */
-  sum = 0;
-  eot = 0;
-  while (!eot)
-  {
-    ch = safe_fgetc(fin);
-    if (ch == STX) /* data frame */
-    {
-      flen = safe_fgetc(fin);
-      if (flen == 0) flen = 256;
-      if (bpoz+flen >= size) /* buffer exceeded -> expand */
-      {
-        size += flen;
-        *buf = (char *) realloc(*buf, sizeof(char) * size);
-      }
-
-      if (abort_all)
-      {
-        fprintf(stderr, "getmsg: aborted\n");
-        return 3;
-      }
-      /*fread(buf+bpoz, 1, flen, fin);
-      for (i=0; i<flen; i++)
-      {
-        sum += (int) (*buf)[bpoz];
-        bpoz++;
-      }*/
-      for (i=0; i<flen; i++)
-      {
-        ch = safe_fgetc(fin);
-        (*buf)[bpoz] = (char) ch; bpoz++;
-        sum += ch;
-        if (abort_all)
-        {
-          fprintf(stderr, "getmsg: aborted\n");
-          return 3;
-        }
-      }
-    }
-    else if (ch == EOT)/* end of transfer */
-    {
-      chksum = safe_fgetc(fin);
-      if (chksum + sum != 0 && !(chksum == -128 && sum == -128))
-      {
-        fprintf(stderr, "getmsg: Checksum error\n");
-        return 1;
-      }
-      eot = 1;
-    }
-    else
-    {
-      fprintf(stderr, "getmsg: Protocol violation (0x%x)\n", ch);
-      return 2;
-    }
-  }
-  *bsize = bpoz;
-  return 0;
-}
-
-/* save decompressed message (and convert to Unix text) */
-void save_msg(int num, bool pers, void *data, unsigned long length)
-{
-  char fname[256];
-
-  #ifdef PERSONAL
-  if (pers)
-    sprintf(fname, "%s/%s/%i", mailhome, home_call, num);
-  else
-    sprintf(fname, "%s/%s/%i", MAILDIR, home_call, num);
-  #else
-  sprintf(fname, "%s/%s/%i", MAILDIR, home_call, num);
-  #endif
-
-  FILE *f = fopen(fname, "w");
-  if (f != NULL)
-  {
-    unsigned long i;
-    char *p = reinterpret_cast<char *>(data);
-    for (i=0; i<length; i++, p++)
-      if (*p != '\r') putc(*p, f);
-    fclose(f);
-  }
-  else fprintf(stderr, "getmsg: cannot write to file %s\n", fname);
-}
-
-/* wait for prompt from BBS */
-void wait_prompt()
-{
-  int old_char=0, new_char=0;
-  do
-  {
-    old_char = new_char;
-    new_char = safe_fgetc(stdin);
-  } while ((old_char != '>' || new_char != '\r') && !abort_all);
-}
-
-/* connect BBS */
-void connect_bbs(char *addr)
-{
-   char cmd[255];
-   sprintf(cmd, "c %s", addr);
-   lp_wait_connect_prepare(lp_channel());
-   lp_emit_event(lp_channel(), EV_DO_COMMAND, 0, cmd);
- 
-   char *call = strchr(addr, ':');
-   if (call == NULL) call = addr; else call++;
-   lp_wait_connect(lp_channel(), call);
-   wait_prompt();
-}
-
-/* send LinPac tag */
-void send_tag()
-{
-   printf("[LinPac-%s-$]\r", LPAPP_VERSION);
-}
-
-/* disconnect BBS */
-void disc_bbs()
-{
-  lp_emit_event(lp_channel(), EV_DISC_LOC, 0, NULL);
-  lp_wait_event(lp_channel(), EV_DISC_LOC);
-}
-
-void stop_it()
-{
-  disc_bbs();
-}
-
-void send_request(int num)
-{
-  printf("F< %i\r", num);
-}
-
-void delete_message(int num)
-{
-  char pref[64];
-  char suf[64];
-  strcpy(pref, kill_cmd);
-  strcpy(suf, "");
-
-  char *p = strchr(pref, '#');
-  if (p != NULL)
-  {
-     *p = '\0';
-     p++;
-     strcpy(suf, p);
-     printf("%s%i%s\r", pref, num, suf);
-  }
-  else printf("%s\n", pref);
-}
-
 //Notify other applications about a message received
 void notify_others(int num)
 {
@@ -310,7 +89,7 @@ void my_handler(Event *ev)
   {
     case EV_ABORT: if (ev->chn == lp_channel() &&
                       (ev->data == NULL || strcasecmp((char *)ev->data, ABORT_ADDR) == 0))
-                        abort_all = 1;
+                        bbs->abort();
                    break;
     case EV_DISC_FM:
     case EV_DISC_TIME:
@@ -327,18 +106,15 @@ void my_handler(Event *ev)
   }
 }
 
-
 int main(int argc, char **argv)
 {
-  LZHufPacker pck;
-
   if (lp_start_appl())
   {
     //event_handling_off();
     lp_set_event_handler(my_handler);
     lp_syncio_on();
 
-    homebbs = lp_get_var(0, "HOME_BBS");
+    char* homebbs = lp_get_var(0, "HOME_BBS");
     if (homebbs == NULL)
     {
       printf("No HOME_BBS@0 specified\r");
@@ -351,10 +127,11 @@ int main(int argc, char **argv)
       printf("No HOME_ADDR@0 specified\r");
       return 1;
     }
+    char home_call[64];
     strcpy(home_call, homeaddr);
     normalize_call(home_call);
 
-    mailhome = lp_get_var(0, "MAIL_PATH");
+    char* mailhome = lp_get_var(0, "MAIL_PATH");
     if (mailhome == NULL)
     {
       printf("No MAIL_PATH@0 specified\r");
@@ -363,6 +140,7 @@ int main(int argc, char **argv)
 
     //Is some kill command set?
     char *killpers = lp_get_var(0, "KILLPERS");
+    char kill_cmd[64]; //BBS command for killing messages
     if (killpers != NULL)
        strncpy(kill_cmd, killpers, 63);
     else
@@ -374,20 +152,27 @@ int main(int argc, char **argv)
     }
     else
     {
-      char subj[256];
-      
+      char* bbs_type = lp_get_var(0, "HOME_TYPE");
+      if (strcmp(bbs_type, "PBBS") == 0)
+        bbs = new PBBS(homebbs, home_call, mailhome);
+      else
+        // Default is FBB for backwards compatibility
+        bbs = new FBB(homebbs, home_call, mailhome);
+
+      bbs->set_kill_cmd(kill_cmd);
+
       //send start info (collaboration with mailer)
-      char msg[32];
-      sprintf(msg, "getmsg: start");
-      lp_emit_event(lp_channel(), EV_APP_MESSAGE, 0, msg);
+      lp_emit_event(lp_channel(), EV_APP_MESSAGE, 0, (void*)"getmsg: start");
 
       lp_statline("getmsg: connecting BBS");
-      if (lp_chn_status(lp_channel()) == ST_DISC) connect_bbs(homebbs);
+      if (lp_chn_status(lp_channel()) == ST_DISC) bbs->connect_bbs(homebbs);
       lp_statline("getmsg: initializing transfer");
-      send_tag();
+      bbs->send_tag();
+      bbs->set_limit(stdin);
       
       for (int i=1; i<argc; i++)
       {
+        char subj[256];
         char *buf;
         int bsize;
         bool priv;
@@ -397,20 +182,18 @@ int main(int argc, char **argv)
         if (toupper(*p) == 'P') { priv = true; p++;} else priv = false;
         num = atoi(p);
         
-        wait_prompt();
-        send_request(num);
+        bbs->wait_prompt(stdin);
+        bbs->send_request(num);
         lp_disable_screen();
-        if (get_one_message(stdin, &buf, &bsize, subj) == 0)
+        if (bbs->get_one_message(stdin, &buf, &bsize, subj) == 0)
         {
-          unsigned long clen = ((buf[3]*256 + buf[2])*256 + buf[1])*256 + buf[0];
-          pck.Decode(clen, buf+4, bsize-4);
-          save_msg(num, priv, pck.GetData(), pck.GetLength());
+          bbs->save_msg(num, priv, buf, bsize);
           notify_others(num);
           lp_enable_screen();
           if (priv)
           {
-            wait_prompt();
-            delete_message(num);
+            bbs->wait_prompt(stdin);
+            bbs->delete_message(num);
           }
         }
         else
@@ -420,13 +203,12 @@ int main(int argc, char **argv)
           break;
         }
       }
-      wait_prompt();
-      disc_bbs();
-      sprintf(msg, "getmsg: done");
-      lp_emit_event(lp_channel(), EV_APP_MESSAGE, 0, msg);
+      bbs->wait_prompt(stdin);
+      bbs->disc_bbs();
+      lp_emit_event(lp_channel(), EV_APP_MESSAGE, 0, (void*)"getmsg: done");
     }
+    lp_remove_statline();
     lp_end_appl();
   }
   else printf("Linpac is not running\n");
 }
-
