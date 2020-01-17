@@ -58,10 +58,10 @@ Before compilation of Linpac, you must have these other packages installed:
 
    Required dependencies:
    ~~~~~~~~~~~~~~~~~~~~~~
-   Debian / Ubunutu package names:    libax25 ax25-apps libncurses5-dev
+   Debian / Ubunutu package names:    libax25 ax25-apps libncurses5-dev perl
                  Optional install:    ax25-tools ax25-xtools ax25mail-utils
 
-   Centos / Fedora package names:     libax25 ax25apps ncurses-libs
+   Centos / Fedora package names:     libax25 ax25apps ncurses-libs perl
                  Optional install:    ax25tools ax25mail-utils
 
 
