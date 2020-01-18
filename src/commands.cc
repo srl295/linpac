@@ -1499,6 +1499,15 @@ void Macro::index_conds()
   for (it = prg.begin(); it < prg.end(); it++, line++)
   {
     strcopy(s, *it, 256);
+    //Preserve blank lines, and thus line numbering
+    if (strlen(s) == 0)
+    {
+      char *newln = new char[1];
+      newln[0] = '\0';
+      newprg.push_back(newln);
+      destline++;
+      continue;
+    }
     //Read command name and parametres
     if (s[strlen(s)-1] == '\n') s[strlen(s)-1] = '\0';
     char *cmd = new char[strlen(s) +1];
