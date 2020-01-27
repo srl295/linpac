@@ -444,17 +444,9 @@ bool MessageIndex::addMessage(const Message &msg)
 
 int MessageIndex::msgNum(int num)
 {
-   int left, right, mid;
-   left = 0; right = messages.size() - 1; mid = (left + right) / 2;
-   if (right == -1) return -1;
-   while (messages[mid]->getNum() != num && left != right && left+1 != right)
-   {
-      mid = (left + right) / 2;
-      if (num < messages[mid]->getNum()) right = mid;
-      else left = mid;
-   }
-   if (messages[mid]->getNum() == num) return mid;
-   if (messages[right]->getNum() == num) return right;
+   for (int i = 0; i < messages.size(); i++)
+      if (messages[i]->getNum() == num)
+         return i;
    return -1;
 }
 
