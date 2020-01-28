@@ -29,20 +29,20 @@ char *current_bbs = NULL;    //current BBS callsign
 
 void axmail_init()
 {
-   if (list_path != NULL) delete[] list_path;
+   if (list_path != NULL) free(list_path);
    list_path = strdup("/var/ax25/ulistd");
-   if (bulletin_path != NULL) delete[] bulletin_path;
+   if (bulletin_path != NULL) free(bulletin_path);
    bulletin_path = strdup("/var/ax25/mail");
-   if (personal_path != NULL) delete[] personal_path;
+   if (personal_path != NULL) free(personal_path);
    char *p = getenv("HOME");
    if (p == NULL) personal_path = strdup(bulletin_path);
    else
    {
-      personal_path = new char[strlen(p)+20];
+      personal_path = (char*)malloc(strlen(p)+20);
       strcpy(personal_path, p);
       strcat(personal_path, "/LinPac/mail");
    }
-   if (outgoing_path != NULL) delete[] outgoing_path;
+   if (outgoing_path != NULL) free(outgoing_path);
    outgoing_path = strdup(personal_path);
 
    current_bbs = strdup("AXMAIL");
@@ -53,13 +53,13 @@ void axmail_init(const char *listPath,
                  const char *personalPath,
                  const char *outgoingPath)
 {
-   if (list_path != NULL) delete[] list_path;
+   if (list_path != NULL) free(list_path);
    list_path = strdup(listPath);
-   if (bulletin_path != NULL) delete[] bulletin_path;
+   if (bulletin_path != NULL) free(bulletin_path);
    bulletin_path = strdup(bulletinPath);
-   if (personal_path != NULL) delete[] personal_path;
+   if (personal_path != NULL) free(personal_path);
    personal_path = strdup(personalPath);
-   if (outgoing_path != NULL) delete[] outgoing_path;
+   if (outgoing_path != NULL) free(outgoing_path);
    outgoing_path = strdup(outgoingPath);
 
    current_bbs = strdup("AXMAIL");
@@ -67,11 +67,11 @@ void axmail_init(const char *listPath,
 
 void default_bbs(const char *call)
 {
-   if (current_bbs != NULL) delete[] current_bbs;
+   if (current_bbs != NULL) free(current_bbs);
    char *tmp = strdup(call);
    AXnormalize_call(tmp);
    current_bbs = strdup(AXcall_call(tmp));
-   delete[] tmp;
+   free(tmp);
 }
 
 char *AXstrdupl(const char *s)
@@ -199,12 +199,12 @@ Message::Message(long pnum, const char *pflags, int psize, const char *pdest,
    priv = (strchr(flags, 'P') != NULL);
    if (priv)
    {
-      path = new char[strlen(personal_path)+strlen(current_bbs)+20];
+      path = (char*)malloc(strlen(personal_path)+strlen(current_bbs)+20);
       sprintf(path, "%s/%s/%i", personal_path, current_bbs, num);
    }
    else
    {
-      path = new char[strlen(bulletin_path)+strlen(current_bbs)+20];
+      path = (char*)malloc(strlen(bulletin_path)+strlen(current_bbs)+20);
       sprintf(path, "%s/%s/%i", bulletin_path, current_bbs, num);
    }
    nothing[0] = '\0';
@@ -231,7 +231,7 @@ Message::Message(long pnum, const char *pflags, const char *pbid,
    text = NULL;
 
    priv = (strchr(flags, 'P') != NULL);
-   path = new char[strlen(outgoing_path)+20];
+   path = (char*)malloc(strlen(outgoing_path)+20);
    sprintf(path, "%s/%i", outgoing_path, num);
    nothing[0] = '\0';
 }
@@ -259,15 +259,15 @@ Message::Message(const Message &msg)
 
 Message::~Message()
 {
-   if (flags != NULL) delete[] flags;
-   if (dest != NULL) delete[] dest;
-   if (dpath != NULL) delete[] dpath;
-   if (src != NULL) delete[] src;
+   if (flags != NULL) free(flags);
+   if (dest != NULL) free(dest);
+   if (dpath != NULL) free(dpath);
+   if (src != NULL) free(src);
    if (date != NULL) delete date;
-   if (subject != NULL) delete[] subject;
-   if (bid != NULL) delete[] bid;
-   if (path != NULL) delete[] path;
-   if (text != NULL) delete[] text;
+   if (subject != NULL) free(subject);
+   if (bid != NULL) free(bid);
+   if (path != NULL) free(path);
+   if (text != NULL) free(text);
 }
 
 Message &Message::operator = (const Message &msg)
@@ -297,28 +297,28 @@ void Message::setBBS(const char *bbs_call)
    AXnormalize_call(tmp);
    char *call = strdup(AXcall_call(tmp));
 
-   if (path != NULL) delete[] path;
+   if (path != NULL) free(path);
    if (outgoing)
    {
-      path = new char[strlen(outgoing_path)+20];
+      path = (char*)malloc(strlen(outgoing_path)+20);
       sprintf(path, "%s/%i", outgoing_path, num);
    }
    else
    {
       if (priv)
       {
-         path = new char[strlen(personal_path)+strlen(call)+20];
+         path = (char*)malloc(strlen(personal_path)+strlen(call)+20);
          sprintf(path, "%s/%s/%i", personal_path, call, num);
       }
       else
       {
-         path = new char[strlen(bulletin_path)+strlen(call)+20];
+         path = (char*)malloc(strlen(bulletin_path)+strlen(call)+20);
          sprintf(path, "%s/%s/%i", bulletin_path, call, num);
       }
    }
 
-   delete[] tmp;
-   delete[] call;
+   free(tmp);
+   free(call);
 }
 
 void Message::update()
@@ -357,7 +357,7 @@ char *Message::getBody(bool reload)
 {
    if (reload || text == NULL)
    {
-      if (text != NULL) delete[] text;
+      if (text != NULL) free(text);
    
       FILE *f = fopen(path, "r");
       if (f)
@@ -374,7 +374,7 @@ char *Message::getBody(bool reload)
          fseek(f, 0, SEEK_END);
          long size = ftell(f);
          fseek(f, pos, SEEK_SET);
-         text = new char[size+1];
+         text = (char*)malloc(size+1);
          int n = fread(text, 1, size, f);
          text[n] = '\0';
          fclose(f);
@@ -507,7 +507,7 @@ IncommingIndex::IncommingIndex(const char *bbs_call)
    AXnormalize_call(tmp);
    call = strdup(AXcall_call(tmp));
 
-   path = new char[strlen(list_path)+strlen(call)+2];
+   path = (char*)malloc(strlen(list_path)+strlen(call)+2);
    sprintf(path, "%s/%s", list_path, call);
 
    lastnum = 0;
@@ -564,7 +564,7 @@ void IncommingIndex::reload()
         flags = strdup(P_extract(p, q));
         if (strcmp(flags, "#") == 0 || strcmp(flags, "!") == 0)
         {
-           delete[] flags;
+           free(flags);
            continue;
         }
 
@@ -595,12 +595,12 @@ void IncommingIndex::reload()
         newmsg->setBBS(call);
         messages.push_back(newmsg);
 
-        delete[] flags;
-        delete[] dest;
-        delete[] dpath;
-        delete[] src;
-        delete[] date;
-        delete[] subject;        
+        free(flags);
+        free(dest);
+        free(dpath);
+        free(src);
+        free(date);
+        free(subject);
      }
      fclose(list);
    }
@@ -660,7 +660,7 @@ OutgoingIndex::OutgoingIndex(const char *bbs_call)
    AXnormalize_call(tmp);
    call = strdup(AXcall_call(tmp));
 
-   path = new char[strlen(outgoing_path)+16];
+   path = (char*)malloc(strlen(outgoing_path)+16);
    sprintf(path, "%s/messages.local", outgoing_path);
 
    lastnum = 0;
@@ -735,12 +735,12 @@ void OutgoingIndex::reload()
          newmsg->setBBS(call);
          messages.push_back(newmsg);
  
-         delete[] flags;
-         delete[] bid;
-         delete[] src;
-         delete[] dest;
-         delete[] date;
-         delete[] subject;        
+         free(flags);
+         free(bid);
+         free(src);
+         free(dest);
+         free(date);
+         free(subject);        
       }
       fclose(list);
    }
