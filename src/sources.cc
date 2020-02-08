@@ -834,7 +834,11 @@ ExternCmd::ExternCmd(int ch, char *cmd, bool remote_cmd, int ret_hnd, char *flag
 
 ExternCmd::~ExternCmd()
 {
-   kill(pid, SIGTERM);
+   int res = kill(pid, SIGTERM);
+   #ifdef GATE_DEBUG
+   if (res == -1 && errno != ESRCH)
+      Error(errno, "ExternCmd(%i): kill failed\n", pid);
+   #endif
    close(pip_out[0]);
    close(pip_in[1]);
 }
@@ -979,6 +983,8 @@ EventGate::EventGate(int socknum, EventGate *parent, std::vector <tapp> *ppids)
 
   if (socknum == 0)
   {
+     sprintf(class_name, "EventGt0");
+
      pid = 0; //we are the base gate
      pids = new std::vector<tapp>;
      
@@ -1714,7 +1720,8 @@ void EventGate::change_child(EventGate *from, EventGate *to)
 void EventGate::end_work(char const *reason)
 {
   emit(0, EV_REMOVE_OBJ, oid, this);
-  close(sock);
+  if (sock != -1)
+    close(sock);
   while (!queue.empty()) queue.pop(); //discard all events
   if (parent_gate) parent_gate->child_finished(this);
   #ifdef GATE_DEBUG
