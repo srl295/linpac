@@ -1679,14 +1679,17 @@ void EventGate::child_finished(EventGate *child)
 {
    std::vector <EventGate *>::iterator it;
    maxdesc = 0;
-   for (it = children.begin(); it < children.end(); it++)
+   for (it = children.begin(); it < children.end(); )
       if (*it == child)
       {
          FD_CLR((*it)->get_sock(), &rfds);
          children.erase(it);
       }
       else
+      {
          if ((*it)->get_sock() > maxdesc) maxdesc = (*it)->get_sock();
+         it++;
+      }
 }
 
 void EventGate::change_child(EventGate *from, EventGate *to)
