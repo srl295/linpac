@@ -15,6 +15,6 @@ pkglibexec_PROGRAMS = forward getmsg
 forward_SOURCES = $(s_bbs) $(s_lzhuf) $(s_forward)
 getmsg_SOURCES = $(s_bbs) $(s_lzhuf) $(s_getmsg)
 
-dist_pkglibexec_SCRIPTS = delmsg
+dist_pkglibexec_SCRIPTS = delmsg getmail
 
 EXTRA_DIST = bbs.h bbs_fbb.h bbs_pbbs.h lzhuf.h

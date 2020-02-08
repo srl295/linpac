@@ -41,6 +41,7 @@ rawio	WBin	BR
 rawtx	RBin	BRP
 mail	MAIL	CL
 getmsg	GETMsg	BR
+getmail	GETMAil	A
 logbook LOGbook A
 kill_chn	KILL	A
 flexpwd	FLEXPWD	AR

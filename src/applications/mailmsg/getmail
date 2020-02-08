@@ -1,0 +1,73 @@
+#!/bin/bash
+###########################################################################
+# LinPac - packet radio terminal for Linux
+# (c) 2020 Martin Cooper
+#
+# This script provides an integrated BBS mail retrieval system.
+#
+# Usage: getmail [<bbs_call>]
+###########################################################################
+
+# Check that Linpac is running
+#
+LPAPI=lpapi
+$LPAPI 0
+if [ ! $? -eq 0 ]; then
+  echo "Linpac is not running"
+  exit 1
+fi
+
+# Check that axgetlist is available
+#
+AXGETLIST=`which axgetlist`
+if [ -z $AXGETLIST ]; then
+  echo "axgetlist is not available"
+  exit 1
+fi
+
+# Get BBS call from command line or init.mac
+#
+if [ "$#" -eq 1 ]; then
+  BBS_CALL=$1
+else
+  # Sleep for 1 second to allow earlier LPAPI call to complete. This works
+  # around a timing issue where Linpac is still working after the client
+  # believes everything has completed.
+  sleep 1
+  HOME_ADDR=`$LPAPI 0 get HOME_ADDR`
+  BBS_CALL=`echo $HOME_ADDR | tr "." "," | sed s/,.*//`
+fi
+if [ -z $BBS_CALL ]; then
+  echo "Usage: getmail [<bbs_call>]"
+  exit 1
+fi
+
+# Run axgetlist to get the TOC
+#
+$AXGETLIST -b $BBS_CALL
+if [ $? -ne 0 ]; then
+ echo "axgetlist failed"
+ exit 1
+fi
+
+# Determine which messages we don't yet have
+#
+TOGET=()
+TOC="/var/ax25/ulistd/${BBS_CALL}"
+MSGS="/var/ax25/mail/${BBS_CALL}"
+while read -r line
+do
+  read -ra COLS <<< "$line"
+  if [ ! -f "${MSGS}/${COLS[0]}" ]; then
+    TOGET+=( ${COLS[0]} )
+  fi
+done < "$TOC"
+
+# Invoke the Linpac getmsg command with the list
+#
+if [ "${#TOGET[@]}" -ne 0 ]; then
+  eval $LPAPI $LPCHN do "getmsg ${TOGET[@]}"
+fi
+
+# Note: No message to tell the user getmail is done, because getmsg is run
+# asynchronously, and will not complete until after this script has exited.
