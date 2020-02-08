@@ -721,7 +721,7 @@ void Messages::handle_event(Event *ev)
          focused = old_focused;
       }
   
-      if (toupper(ev->x) == 'D' && state == STATE_NORM) //Delete messages
+      if (toupper(ev->x) == 'D' && state == STATE_NORM) //Download messages
       {
          std::vector <Msg>::iterator it;
 
