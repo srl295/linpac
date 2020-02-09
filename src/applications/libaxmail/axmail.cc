@@ -397,14 +397,14 @@ void Message::setBody(const char *body)
 void MessageIndex::updateList()
 {
    std::vector <Message *>::iterator it;
-   for (it = messages.begin(); it < messages.end(); it++)
+   for (it = messages.begin(); it < messages.end(); )
    {
+      (*it)->update();
       if ((*it)->isDel())
       {
-         (*it)->update();
          delete *it;
          messages.erase(it);
-      } else (*it)->update();
+      } else it++;
    }
 }
 

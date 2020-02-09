@@ -1450,7 +1450,7 @@ void StatLines::handle_event(const Event &ev)
     case EV_REMOVE_STLINE:
       if (ev.chn == mychn)
       {
-        for (it = lines.begin(); it < lines.end(); it++)
+        for (it = lines.begin(); it != lines.end(); it++)
           if (it->id == ev.x) break;
         if (it != lines.end())
         {

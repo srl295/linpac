@@ -813,7 +813,7 @@ Cooker::~Cooker()
   {
     delete (*it)->args;
     delete *it;
-    tasks.erase(it);
   }
+  tasks.erase(tasks.begin(), tasks.end());
 }
 
