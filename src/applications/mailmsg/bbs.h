@@ -11,6 +11,14 @@
 #define MAILDIR "/var/ax25/mail"
 #define PERSONAL //storing messages to home directory supported
 
+// Message retrieval return codes
+#define MSG_RC_SUCCESS       0
+#define MSG_RC_BAD_CHECKSUM  1
+#define MSG_RC_BAD_FORMAT    2
+#define MSG_RC_ABORTED       3
+#define MSG_RC_NO_MEMORY     4
+#define MSG_RC_MISSING       5
+
 class BBS
 {
     public:

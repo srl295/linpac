@@ -52,7 +52,7 @@ int FBB::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
   if (ch != SOH)
   {
      fprintf(stderr, "getmsg: bad starting character (0x%x)\n", ch);
-     return 2; /* format violated */
+     return MSG_RC_BAD_FORMAT; /* format violated */
   }
   (void)safe_fgetc(fin); // read and discard header length
 
@@ -70,7 +70,7 @@ int FBB::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
   if (abort_all)
   {
     fprintf(stderr, "getmsg: aborted\n");
-    return 3;
+    return MSG_RC_ABORTED;
   }
 
   lp_statline("Reading message: `%s'", title);
@@ -87,7 +87,7 @@ int FBB::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
   if (abort_all)
   {
     fprintf(stderr, "getmsg: aborted\n");
-    return 3;
+    return MSG_RC_ABORTED;
   }
 
   /* read data frames */
@@ -109,7 +109,7 @@ int FBB::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
       if (abort_all)
       {
         fprintf(stderr, "getmsg: aborted\n");
-        return 3;
+        return MSG_RC_ABORTED;
       }
       /*fread(buf+bpoz, 1, flen, fin);
       for (i=0; i<flen; i++)
@@ -125,7 +125,7 @@ int FBB::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
         if (abort_all)
         {
           fprintf(stderr, "getmsg: aborted\n");
-          return 3;
+          return MSG_RC_ABORTED;
         }
       }
     }
@@ -135,18 +135,18 @@ int FBB::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
       if (chksum + sum != 0 && !(chksum == -128 && sum == -128))
       {
         fprintf(stderr, "getmsg: Checksum error\n");
-        return 1;
+        return MSG_RC_BAD_CHECKSUM;
       }
       eot = 1;
     }
     else
     {
       fprintf(stderr, "getmsg: Protocol violation (0x%x)\n", ch);
-      return 2;
+      return MSG_RC_BAD_FORMAT;
     }
   }
   *bsize = bpoz;
-  return 0;
+  return MSG_RC_SUCCESS;
 }
 
 /* save decompressed message (and convert to Unix text) */

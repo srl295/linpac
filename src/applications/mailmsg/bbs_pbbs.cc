@@ -39,7 +39,7 @@ int PBBS::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
     if (buffer == NULL)
     {
         fprintf(stderr, "getmsg: Out of memory\n");
-        return 1;
+        return MSG_RC_NO_MEMORY;
     }
     buffer[0] = '\0';
     buffer_remain--;
@@ -51,7 +51,7 @@ int PBBS::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
         if (abort_all)
         {
             fprintf(stderr, "getmsg: aborted\n");
-            return 3;
+            return MSG_RC_ABORTED;
         }
         line_len = strlen(line);
 
@@ -67,6 +67,10 @@ int PBBS::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
                 title[strlen(title) - 1] = '\0';  // remove trailing EOL
                 lp_statline("Reading message: `%s'", title);
             }
+            else if (strncmp(line, "MESSAGE # NOT FOUND", 19) == 0)
+            {
+                return MSG_RC_MISSING;
+            }
         }
         else
         {
@@ -80,7 +84,7 @@ int PBBS::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
                 if (buffer == NULL)
                 {
                     fprintf(stderr, "getmsg: Out of memory\n");
-                    return 1;
+                    return MSG_RC_NO_MEMORY;
                 }
                 buffer_size += buffer_inc;
                 buffer_remain += buffer_inc;
@@ -92,7 +96,7 @@ int PBBS::get_one_message(FILE *fin, char **buf, int *bsize, char *title)
 
     *buf = buffer;
     *bsize = buffer_size - buffer_remain;
-    return 0;
+    return MSG_RC_SUCCESS;
 }
 
 void PBBS::wait_prompt(FILE *fin)

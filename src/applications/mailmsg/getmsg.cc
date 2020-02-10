@@ -178,6 +178,7 @@ int main(int argc, char **argv)
         bool priv;
         int num;
         char *p = argv[i];
+        int rc;
 
         if (toupper(*p) == 'P') { priv = true; p++;} else priv = false;
         num = atoi(p);
@@ -185,7 +186,8 @@ int main(int argc, char **argv)
         bbs->wait_prompt(stdin);
         bbs->send_request(num);
         lp_disable_screen();
-        if (bbs->get_one_message(stdin, &buf, &bsize, subj) == 0)
+        rc = bbs->get_one_message(stdin, &buf, &bsize, subj);
+        if (rc == MSG_RC_SUCCESS)
         {
           bbs->save_msg(num, priv, buf, bsize);
           notify_others(num);
@@ -195,6 +197,12 @@ int main(int argc, char **argv)
             bbs->wait_prompt(stdin);
             bbs->delete_message(num);
           }
+        }
+        else if (rc == MSG_RC_MISSING)
+        {
+          lp_enable_screen();
+          printf("Message missing: %d\r", num);
+          // Continue retrieving other messages
         }
         else
         {
