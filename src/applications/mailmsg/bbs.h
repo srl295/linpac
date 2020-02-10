@@ -29,6 +29,7 @@ class BBS
         virtual void delete_message(int num);
         virtual void send_tag();
         virtual void set_limit(FILE *fin);
+        virtual void sign_off(FILE *fin);
 
         // Must be implemented by subclass
         virtual int get_one_message(FILE *fin, char **buf, int *bsize, char *title) = 0;

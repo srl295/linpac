@@ -17,6 +17,7 @@ class PBBS : public BBS {
         virtual void wait_prompt(FILE *fin);
         virtual void send_request(int num);
         virtual void set_limit(FILE *fin);
+        virtual void sign_off(FILE *fin);
 
     private:
         void read_line(char *s, int size, FILE *stream);

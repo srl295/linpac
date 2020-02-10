@@ -204,6 +204,7 @@ int main(int argc, char **argv)
         }
       }
       bbs->wait_prompt(stdin);
+      bbs->sign_off(stdin);
       bbs->disc_bbs();
       lp_emit_event(lp_channel(), EV_APP_MESSAGE, 0, (void*)"getmsg: done");
     }

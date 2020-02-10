@@ -115,6 +115,12 @@ void PBBS::set_limit(FILE *fin)
     at_prompt = false; // Force read of next prompt
 }
 
+void PBBS::sign_off(FILE *fin)
+{
+    wait_prompt(fin);
+    printf("B\r");
+}
+
 void PBBS::read_line(char *s, int size, FILE *stream)
 {
     const char EOL_IN = 0x0D;

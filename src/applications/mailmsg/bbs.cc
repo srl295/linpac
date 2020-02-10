@@ -84,6 +84,11 @@ void BBS::set_limit(FILE *fin)
     // Do nothing by default
 }
 
+void BBS::sign_off(FILE *fin)
+{
+    // Do nothing by default
+}
+
 void BBS::delete_message(int num)
 {
     char pref[64];
