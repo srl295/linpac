@@ -14,7 +14,7 @@
 #include "mail_input.h"
 #include <ncurses.h>
 
-extern char old_help[80]; //help text to be set back after editor finishes
+extern char old_help[90]; //help text to be set back after editor finishes
 
 //-------------------------------------------------------------------------
 // Edline - one editor line

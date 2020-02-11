@@ -51,7 +51,7 @@
 //uncomment this to add a path to yourself into each message
 //#define PATH_TO_OWN
 
-char old_help[80];
+char old_help[90];
 
 //convert string to uppercase
 char *strupr(char *s)

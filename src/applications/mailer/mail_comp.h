@@ -9,7 +9,7 @@
 
   mail_comp.h - message composer interface
 */
-extern char old_help[80]; //help text to be set back after editor finishes
+extern char old_help[90]; //help text to be set back after editor finishes
 
 void start_composer(WINDOW *parent, int wx1, int wy1, int wx2, int wy2, char *toaddr, char *subject);
 void comp_insert(char *s, bool quote = true);
