@@ -110,7 +110,7 @@ Messages::Messages(char *bbs_name, char *call, bool all)
 
    priv = all;
    slct = last_read();
-   pos = slct;
+   pos = slct; // Will be adjusted later, when window size is known
    viewer = NULL;
    state = STATE_NORM;
 }
@@ -515,8 +515,10 @@ void Messages::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
    ysize = height;
    x = wx;
    y = wy;
-//DEBUG by KD6YAM
-//fprintf(stderr, "init_screen w=%d, h=%d\n", width, height); 
+
+   // Calculate scroll position now that window height is known
+   calc_scroll_pos();
+
    WINDOW *win = subwin(pwin, ysize, xsize, y, x);
    mwin = win;
    keypad(win, true);
@@ -535,6 +537,25 @@ void Messages::init_screen(WINDOW *pwin, int height, int width, int wy, int wx)
    focused = this;
  
    help(HELP_LIST);
+}
+
+void Messages::calc_scroll_pos()
+{
+   // This could no doubt be made more "clever", but being explicit
+   // makes it much easier to follow and understand.
+
+   int height = ysize - 3;
+   int half = (height + 1) / 2;
+   int count = msg.size();
+
+   if (count <= height) // All messages fit in the window
+      pos = 0;
+   else if (slct < half) // Selected message is near the top
+      pos = 0;
+   else if (slct > count - half - 1) // Selected message is near the bottom
+      pos = count - height;
+   else // Selected message is somewhere in the middle of the list
+      pos = slct - half + 1;
 }
 
 void Messages::draw_line(int i)
@@ -629,7 +650,7 @@ void Messages::handle_event(Event *ev)
       if (blister != NULL) {delete blister; blister = NULL;}
       reload(priv);
       slct = last_read();
-      pos = slct;
+      calc_scroll_pos();
       blist_returned = false;
       //draw(true);
    }
@@ -841,7 +862,7 @@ void Messages::handle_event(Event *ev)
             ndx->checkPresence();
             load_list(priv);
             slct = last_read();
-            pos = slct;
+            calc_scroll_pos();
             if (act) draw(true);
          }
          if (folder == FOLDER_OUTGOING)
@@ -852,7 +873,7 @@ void Messages::handle_event(Event *ev)
             ndx->checkPresence();
             load_list(true);
             slct = last_read();
-            pos = slct;
+            calc_scroll_pos();
             if (act) draw(true);
          }      
       }

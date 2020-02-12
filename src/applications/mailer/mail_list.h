@@ -89,6 +89,7 @@ class Messages : public screen_obj
   
       void clear_msgs();
       void load_list(bool all);  //re-filter messages
+      void calc_scroll_pos();
   
    public:
       //NOTE: in function arguments 'index' means index of the message
