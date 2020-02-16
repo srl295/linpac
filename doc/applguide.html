@@ -2,29 +2,28 @@
 <html>
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.17 i586) [Netscape]">
-   <title>LinPac Extrenal Application Programming Guide</title>
+   <title>LinPac External Application Programming Guide</title>
 </head>
 <body>
 
+<h1><center>LinPac - Packet Radio Terminal for Linux</center></h1>
+<hr>
 <center>
-<h1>
-LinPac - Packet Radio Terminal for Linux&nbsp;
-<hr WIDTH="100%"></h1></center>
+<p>Version 0.27</p>
+<p>
+(c) Martin Cooper KD6YAM 2020<br>
+(c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2016<br>
+(c) 1998 - 2001 by Radek Burget OK2JBG
+</p>
+</center>
 
-<center>Version 0.16
-<p>(c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2016<br>
-(c) 1998 - 2001 by Radek Burget OK2JBG</center>
+<h2><center>External Application Programming Guide</center></h2>
 
-<p><br>
-<center>
-<h2>
-Extrenal Application Programming Guide</h2></center>
 <b>Contents</b>
 <p>1 <a href="#POS1">Introduction</a>
-<p>2 <a href="#POS2">What is an extrenal program</a>
+<p>2 <a href="#POS2">What is an external program?</a>
 <p>3 <a href="#POS3">Basic concepts of the API</a>
-<p>4 <a href="#POS4">How do applications communicate with LinPac</a>
+<p>4 <a href="#POS4">How applications communicate with LinPac</a>
 <p>5 <a href="#POS5">Using the application library</a>
 <br>5.1 <a href="#POS5_1">The simplest application</a>
 <p>6 <a href="#POS6">Application programming</a>
@@ -34,7 +33,7 @@ Extrenal Application Programming Guide</h2></center>
 <br>6.4 <a href="#POS6_4">Shared variables and configuration</a>
 <br>6.5 <a href="#POS6_5">Connection status</a>
 <br>6.6 <a href="#POS6_6">Event usage examples</a>
-<br>6.6.1 <a href="#POS6_6_1">Connecting a remote station</a>
+<br>6.6.1 <a href="#POS6_6_1">Connecting to a remote station</a>
 <br>6.6.2 <a href="#POS6_6_2">Using LinPac commands in programs</a>
 <p>7 <a href="#POS7">The application library interface</a>
 <br>7.1 <a href="#POS7_1">Constants</a>
@@ -47,105 +46,101 @@ Extrenal Application Programming Guide</h2></center>
 <br>7.3.5 <a href="#POS7_3_5">User functions</a>
 <br>7.3.6 <a href="#POS7_3_6">Tool functions</a>
 <br>7.3.7 <a href="#POS7_3_7">Application information functions</a>
-<br>&nbsp;
+
 <p><a NAME="POS1"></a>
-<h2>
-1 Introduction</h2>
-This guide is written for the programmers who want to add some new functions
-to LinPac. In following text the basic knowledge about Linux programming
-is assumed. It's also recommended to read the user manual first.
-<br>&nbsp;
+<h2>1 Introduction</h2>
+This guide is written for programmers who want to add some new functions
+to LinPac. In the following text, basic knowledge of Linux programming
+is assumed. Reading the LinPac User Manual before proceeding is also
+recommended.
+
 <p><a NAME="POS2"></a>
-<h2>
-2 What is an external program</h2>
+<h2>2 What is an external program?</h2>
 An external program is a standard Linux application which uses LinPac to
-communicate with remote station. There are basicaly two types of LinPac
+communicate with remote stations. There are basically two types of LinPac
 external programs:
 <ul>
 <li>
 Standard Linux applications that use standard input and output streams.
-This programs can be used without LinPac too. LinPac allows redirect ion
+These programs can be used without LinPac too. LinPac allows redirection
 of the input stream (stdin) of the application and any of the output streams
-(stdout, stderr) or both of them. LinPac can also provide the CR/LF conversions
-in this streams. This parametres are set when adding the external program
-to LinPac - see the <a href="manual.html#POS7">section 7</a> "Creating
-new commands" in the user manual.</li>
+(stdout, stderr) or both of them. LinPac can also provide CR/LF conversions
+in these streams. These parameters are set when adding the external program
+to LinPac - see <a href="manual.html#POS7">Section 7</a>, "Creating
+new commands", in the User Manual.</li>
 
 <li>
-Application written using the application interface of LinPac. This applications
-can share some information with LinPac and they can control almost all
+Applications written using LinPac's application interface. These applications
+can share some information with LinPac, and they can control almost all
 functions of LinPac.</li>
 </ul>
-No special knowledge about LinPac is needed for creating the first type
-of programs because no LinPac functions are used. Following sections of
-this guide are dedicated to the second type of applications.
-<br>&nbsp;
+No special knowledge of LinPac is needed for creating the first type
+of programs, because no LinPac functions are used. The remainder of
+this guide is dedicated to the second type of applications.
+
 <p><a NAME="POS3"></a>
-<h2>
-3 Basic concepts of the API</h2>
-The application interface of LinPac is based on <i>events</i>. Every action
-in LinPac such as pressing a key, receiving a data, executing a command,
-etc. is represented by a data structure called <i>event</i> which describes
-what exactly happened. LinPac's internal structure consists of separate
-<i>objects
-</i>which
-communicate with each other using the events. Each object provides its
-own functionality, it often generates events - e.g. the object <b>Keyscan</b>
-produces an event each time any key is pressed.
-<p>All the events generated by any object are put to the common <i>event
-queue</i>. LinPac kernel simply takes the events from the queue one by
+<h2>3 Basic concepts of the API</h2>
+The LinPac application interface is based on <em>events</em>. Every action
+in LinPac, such as pressing a key, receiving data, executing a command,
+etc., is represented by a data structure called an <em>event</em>, which describes
+exactly what happened. LinPac's internal structure consists of separate
+<em>objects</em> which
+communicate with each other using these events. Each object provides its
+own functionality, and often generates events. For example, the object
+<code>Keyscan</code> produces an event each time any key is pressed.
+<p>All the events generated by any object are put into the common <em>event
+queue</em>. The LinPac kernel simply takes the events from the queue one by
 one and sends them to all the objects (including the one that generated
-the event). Thus <b>each event generated by any part of LinPac is forwarded
-to all the objects</b>. The reaction of each object fully depends on its
-functionality but of course it can include generation of another events.
+the event). Thus <strong>each event generated by any part of LinPac is forwarded
+to all of the objects</strong>. The reaction of each object fully depends on its
+functionality, but of course it can include generation of other events.
 <p>The list of LinPac internal objects and their names can be found in
 the file <a href="objects.txt">objects.txt</a>.
-<p>An additional feature of the API is shared variable environment. This
-is a set of variables that are shared with linpac - their values are automaticaly
-synchronized in all the external programs. These variables are accessed
-using special functions of interface library as described below.
-<br>&nbsp;
+<p>An additional feature of the API is a shared variable environment. This
+is a set of variables that is shared with LinPac; the values are automatically
+synchronized with all the external programs. These variables are accessed
+using special functions of the API as described below.
+
 <p><a NAME="POS4"></a>
-<h2>
-4 How do applications communicate with LinPac</h2>
-LinPac uses the TCP/IP sockets for the communication with the external
+<h2>4 How applications communicate with LinPac</h2>
+LinPac uses TCP/IP sockets for communication with external
 programs (applications). The connection is always initiated by the application
-after it starts. There are basicaly two ways how the application is started:
-<ol>
+after it starts. There are basically two ways that an application may be started:
+<ul>
 <li>
-The application is started by LinPac (it is associated to some LinPac command).
-In this case LinPac registers the channel where the application was started
+The application is started by LinPac, through being associated with a LinPac command.
+In this case LinPac registers the channel on which the application was started
 and expects the connection attempt from the application. After the application
-initializes and contacts LinPac, it is told the working channel and whether
-it was started by remote or local user. LinPac may also redirect the input
-and output streams of the application (depends on LinPac settings).</li>
+initializes and contacts LinPac, it is provided with the working channel and whether
+it was started by a remote or local user. LinPac may also redirect the input
+and output streams of the application (depending upon LinPac settings).</li>
 
 <li>
 The application is started without using LinPac. In this case LinPac assumes
-that the application runs on channel 0 and was started by local user. The
+that the application runs on channel 0 and was started by the local user. The
 input and output streams of the application are not redirected.</li>
-</ol>
-In both cases the start of an application causes the creation of a new
-object in LinPac called <i>event gate</i>. This object represents the application
-within LinPac. Considering previous chapter it means that the application
-is forwarded all the events generated by any LinPac object and all the
-events generated by an application are forwarded to all the objects.
-<p><b>NOTE: </b>All the communication via TCP/IP sockets is provided by
-the LinPac application library. The user application shouldn't access the
+</ul>
+In both cases, the start of an application causes the creation of a new
+object in LinPac called an <em>event gate</em>. This object represents the application
+within LinPac. Bearing in mind the previous chapter, this means that the application
+is forwarded all of the events generated by any LinPac object, and all of the
+events generated by the application are forwarded to all LinPac objects.
+<p><strong>NOTE:</strong> All of the communication via TCP/IP sockets is provided by
+the LinPac application library. The user application should not attempt to access the
 sockets directly.
-<br>&nbsp;
+
 <p><a NAME="POS5"></a>
 <h2>
 5 Using the application library</h2>
-During LinPac installation the application library <code>liblinpac</code> is
+During LinPac installation, the application library <code>liblinpac</code> is
 created and installed by default to <code>/usr/local/lib</code>. The interface
-to this library is contained in the files <code>lpapp.h</code> and it's installed
-by default to <code>/usr/local/include/linpac</code>. Next chapter shows how
-to use the library with the user program.
+to this library is contained in the file <code>lpapp.h</code>, which is installed
+by default to <code>/usr/local/include/linpac</code>. The next chapter
+illustrates how to use the library within a user application.
+
 <p><a NAME="POS5_1"></a>
-<h3>
-5.1 The simplest application</h3>
-Following application example just tries to contact LinPac and prints the
+<h3>5.1 The simplest application</h3>
+The following application example just tries to contact LinPac, and prints the
 result.
 
 <pre><code>
@@ -174,47 +169,46 @@ int main()
 </code></pre>
 
 <p>The function <code>lp_start_appl()</code> tries to contact LinPac and returns
-<b>1</b>
-in case of succes or <b>0</b> when LinPac cannot be connected (probably
-it's not running). This function should precede the usage of any other
-application library function.
+<strong>1</strong>
+in case of success or <strong>0</strong> when a connection to LinPac cannot be made (probably
+because it's not running). This function should precede the usage of any other
+application library functions.
 <p>The function <code>lp_end_appl()</code> closes the connection to LinPac.
-<p>How to compile this example:
-<p><code>gcc -o test1 test1.c -llinpac</code>
-<p>This example just detects if LinPac is running and it can be executed
+<p>To compile this example, use:
+<p><code>$ gcc -o test1 test1.c -llinpac</code>
+<p>This example just detects if LinPac is running, and it can be executed
 directly from the shell. When running from the shell, no streams are redirected
-to LinPac and the application seems to run on channel 0 of LinPac. It's
-useful for some applications that are used to control linpac from outside.
-However it's not a typical case.
-<p>For most of the applications it's better to copy the executable to the
+to LinPac, and the application appears to run on channel 0 of LinPac. This is
+useful for some applications that are used to control LinPac from outside.
+However this is not a typical use case.
+<p>For most applications, it is better to copy the executable to the
 <code>$LINPACDIR/bin</code>
-directory and add it to the file
-<br><code>$LINPACDIR/bin/commands</code> as described in the <a href="manual.html">user
-manual</a>. After this the application can be executed as the LinPac command.
-In this case the streams are properly redirected and the application output
-is visible in LinPac window. It's also possible to select the channel for
-running the application.
-<p><b>NOTE:</b> the LinPac application library (<b>liblinpac</b>) can be
+directory and then add it to the file
+<code>$LINPACDIR/bin/commands</code> as described in the <a href="manual.html">User
+Manual</a>. After this, the application can be executed as a LinPac command.
+In this scenario, the streams are properly redirected and the application output
+is visible in the LinPac QSO window. It is also possible to select the channel
+on which to run the application.
+<p><strong>NOTE:</strong> The LinPac application library (<code>liblinpac</code>) can be
 linked without problems with both C and C++ code.
-<br>&nbsp;
+
 <p><a NAME="POS6"></a>
-<h2>
-6 Application programming</h2>
+<h2>6 Application programming</h2>
+
 <a NAME="POS6_1"></a>
-<h3>
-6.1 Events</h3>
-LinPac is completely driven by events. Each part of LinPac including the
-application can generate the event to inform other parts (internal modules
-or applications) that something has happend. Each event is sent to all
-LinPac components and application. For example when some station connects
-to some LinPac channel, the internal AX.25 interface generates the event
+<h3>6.1 Events</h3>
+LinPac is completely driven by events. Each part of LinPac, including
+applications, can generate events to inform other parts (internal modules
+or applications) that something has happened. Each event is sent to all
+LinPac components and applications. For example when some station connects
+to some LinPac channel, the internal AX.25 interface generates an event
 reporting that the station has connected and includes its callsign. All
-components and applications now know who has connected and they can do
-some actions (the output window prints the information about the connect,
-the macro processor executes the cinit.mac macro ...). Each application
-can handle all the events too and it can generate events which are handled
+components and applications now know who has connected, and they can take
+some actions. For example, the output window prints information about the connection,
+the macro processor executes the cinit.mac macro, and so on. Each application
+can handle all of the events too, and can generate events which are handled
 by other components.
-<p>The event is represented by the following structure:
+<p>An event is represented by the following structure:
 <pre><code>
 struct Event
 {
@@ -225,58 +219,64 @@ struct Event
     void *data;
 };
 </code></pre>
-<p>The meaning of each field is following:
-<p><b><code>type</code></b> - Determines the type of the event. Actually it
-says what happend. There is a symbolic constant defined for each known
-event.
-<br><b><code>chn</code></b> - It says the channel for which the event applies
-(for example if the type of the event reports some data received, the chn
-field contains the number of the channel which has received data). There
-are many events that apply for all the channels. For this events this field
-is not significant.
-<br><b><code>x</code></b>, <b><code>y</code></b> - The meaning of field depends
-on the event type. The y field is usually not used (it's used by some internale
-events only).
-<br><b><code>ch</code></b> - This field is used by some internal events only.
-<br><b><code>data</code></b> - Depends on the type of the event too. It usually
-points to some string data or a char buffer.
-<p>All the event types are described in the <a href="events.txt">event
+<p>The meaning of each field is as follows:
+<dl>
+  <dt><code>type</code></dt>
+  <dd>Specifies the type of the event. Actually it determines what happened.
+  There is a symbolic constant defined for each known event type.</dd>
+  <dt><code>chn</code></dt>
+  <dd>Specifies the channel to which the event applies.
+  For example, if the type of the event specifies that some data was received,
+  the <code>chn</code> field contains the number of the channel which has
+  received that data. There are many events that apply for all the channels. For
+  those events, this field is not significant.</dd>
+  <dt><code>x, y</code></dt>
+  <dd>The meaning of these fields depends on the event type. The <code>y</code>
+  field is usually not used, other than by some internal events.</dd>
+  <dt><code>ch</code></dt>
+  <dd>This field is used only by some internal events.</dd>
+  <dt><code>data</code></dt>
+  <dd>Depends on the type of the event. It usually points to some string data
+  or a char buffer.</dd>
+</dl>
+<p>All of the event types are described in the <a href="events.txt">event
 list</a>.
+
 <p><a NAME="POS6_2"></a>
-<h3>
-6.2 Sending and receiving events</h3>
-For sending events the function
+<h3>6.2 Sending and receiving events</h3>
+For sending events the following function is used:
 <p><code>int lp_emit_event(int chn, int type, int x, void *data);</code>
-<p>is used. This generates new event using specified values. Each argument
-corresponds with one of the fields in the Event structure.
-<p>There are two modes of handling the incomming events:
-<p><b><i>a) Reading each event on demand</i></b>
-<br>This mode is started by the <code>lp_event_handling_off()</code> call.
-In this mode events are read using the function
+<p>This generates a new event using the specified values. Each argument
+corresponds to one of the fields in the <code>Event</code> structure.
+<p>There are two modes for handling incoming events:
+<p><strong><em>a) Reading each event on demand</em></strong>
+<p>This mode is started by the <code>lp_event_handling_off()</code> call.
+In this mode, events are read explicitly using the function:
 <p><code>int get_event(Event *ev);</code>
-<p>This function returns 0 when no event is available. When there is some
-event available, it returns 1 and fills the Event structure with the received
-event data.
-<p><b>WARNING1</b>: The <code>data</code> field in your Event structure must
-point to some dynamicaly allocated buffer. The size of the buffer is reallocated
-automaticaly after receiving an event. When the <code>data</code> field is
-set to NULL, new buffer is allocated. This field <u>must not be uninitialized</u>.
-<p><b>WARNING2</b>: The application <u>must</u> read all events in this
-mode. It's not a good idea to stop reading the events because the event
-queue can overflow. LinPac automatically kills the application when the
+<p>This function returns <strong>0</strong> when no event is available. When an
+event is available, it returns <strong>1</strong> and fills the <code>Event</code>
+structure with the received event data.
+<p><strong>WARNING #1:</strong> The <code>data</code> field in your <code>Event</code> structure must
+point to a dynamically allocated buffer. The size of the buffer is reallocated
+automatically after receiving an event. When the <code>data</code> field is
+set to NULL, a new buffer is allocated. This field <em>must be initialized</em>.
+<p><strong>WARNING #2:</strong> In this mode, the application <em>must</em> read all events.
+It is not a good idea to stop reading events, because the event
+queue may overflow. LinPac will automatically kill the application when the
 event queue exceeds some reasonable number of events.
-<p><b><i>b) Automatical event processing</i></b>
-<br>This mode is started by the <code>lp_event_handling_on()</code> call. All
-the events are read automaticaly. The user can define his own function
-that is called automaticaly when an event occurs. When there's no such
-function defined, all events are discarted.
+<p><strong><em>b) Automatic event processing</em></strong>
+<p>This mode is started by the <code>lp_event_handling_on()</code> call. All
+events are read automatically. Programmers can define their own function
+that will be called automatically when an event occurs. When no such
+function is defined, all events are discarded.
 <p>The event handling function must have following prototype:
-<p><code>void some_function(Event *ev);</code>
-<p>(the function name can be different). After initializing the application
-the event handling function must be registered using the function <code>lp_set_event_handler(</code>)
-from the apllication library.
-<p>Following example is an application that prints the types of all events
-received and stops when an event <code>EV_ABORT</code> is received. This event
+<p><code>void my_event_handler(Event *ev);</code>
+<p>(The function name may be different.) After initializing the application,
+the event handling function must be registered using the function:
+<p><code>lp_set_event_handler()</code>
+<p>from the application library.
+<p>The following example is an application that prints the types of all events
+received and stops when an <code>EV_ABORT</code> event is received. This event
 can be generated using the <code>:ABort</code> command in LinPac.
 
 <pre><code>
@@ -321,8 +321,8 @@ int main()
 </code></pre>
 
 <p>This example contains "active waiting" (the <code>do ; while(...)</code>
-construction). This is very ugly. For this reasons LinPac API offers an
-alternative for waiting for the events: the <code>lp_wait_event()</code> function.
+construction). This is very ugly and inefficient. For this reason, the LinPac API offers an
+alternative for waiting for events, namely the <code>lp_wait_event()</code> function.
 Let's change the example to use this function:
 
 <pre><code>
@@ -355,133 +355,189 @@ int main()
 ----------------------------------------------------------------------------
 </code></pre>
 
-<p><b>WARNING</b>: Note that some system calls can be interrupted when
-the event is received. Interrupted system call returns the error result
-and sets <code>errno</code> to EAGAIN (for example the <code>read()</code> call
-returns -1) and it must be called again. To avoid this use the interrupt-safe
-versions of the system calls contained in the application library (see
-<a href="#POS7_3_1">chapter
-7.3.1</a>)
+<p><strong>WARNING:</strong> Note that some system calls may be interrupted when
+an event is received. An interrupted system call returns an error result (for
+example the <code>read()</code> call returns -1), sets <code>errno</code> to
+<code>EAGAIN</code>, and must be called again. To avoid this, use the interrupt-safe
+versions of the system calls contained in this application library. (See
+<a href="#POS7_3_1">Chapter 7.3.1</a>.)
+
 <p><a NAME="POS6_3"></a>
-<h3>
-6.3 Synchronization</h3>
-The event generated by an applicatoin is sent to all the modules and applications
-including the application that has generated the event. When there's the
+<h3>6.3 Synchronization</h3>
+An event generated by an application is sent to all modules and applications,
+including the application that generated the event. When there is a
 need to wait until the event is accepted by LinPac, the simplest way is
 to wait until the event we have sent is received back.
-<p>For testing that all the events were processed there is an event <code>EV_VOID</code>.
-It's not handled by any module. After sending all events just generate
-the <code>EV_VOID</code> event and wait until it returns. After that it's sure
-that all previous events have been processed.
+<p>For testing that all events were processed, there is an <code>EV_VOID</code> event.
+It is not handled by any module. After sending all events, just generate
+an <code>EV_VOID</code> event and wait until it returns. After that, you can be
+assured that all previous events have been processed.
+
 <p><a NAME="POS6_4"></a>
-<h3>
-6.4 Shared variables and configuration</h3>
-Each shared variable denoted by its name (string) and channel number. Each
-variable has its value represented by a string (char[]). The access to
-the variables is provided by following functions:
-<p><b><code>void lp_set_var(int chn, const char *name, const char *value)</code></b>
-<br>Changes the value of the variable. If the variable doesn't exist, it
-is created.
-<p><b><code>char *lp_get_var(int chn, const char *name)</code></b>
-<br>Reads the value of the variable. Returns NULL if the variable doesn't
-exist.
-<p><b><code>void lp_del_var(int chn, const char *name)</code></b>
-<br>Deletes the variable.
-<p><b><code>void lp_clear_var_names(int chn, const char *prefix)</code></b>
-<br>Deletes all variables with the name
-<p>The value of each variable is automaticaly synchronized with LinPac
+<h3>6.4 Shared variables and configuration</h3>
+Each shared variable is denoted by its name (string) and channel number. Each
+variable has a value represented by a string (char[]). Access to
+these variables is provided by following functions:
+<dl>
+  <dt><code>void lp_set_var(int chn, const char *name, const char *value)</code></dt>
+  <dd>Changes the value of the variable. If the variable doesn't exist, it
+  is created.</dd>
+  <dt><code>char *lp_get_var(int chn, const char *name)</code></dt>
+  <dd>Reads the value of the variable. Returns NULL if the variable doesn't
+  exist.</dd>
+  <dt><code>void lp_del_var(int chn, const char *name)</code></dt>
+  <dd>Deletes the variable.</dd>
+  <dt>void lp_clear_var_names(int chn, const char *prefix)</code></dt>
+  <dd>Deletes all variables with the specified name.</dd>
+</dl>
+<p>The value of each variable is automatically synchronized with LinPac
 and all running applications. The variables whose names start with "_"
 are reserved for system use. These variables can be used for obtaining
 system configuration and status but it may be potentialy dangerous to change
-some of these variables. Currently following system variables are defined
-(in channel 0):
-<p><b>_remote</b> - contains 1 when remote commands are enabled
-<p><b>_cbell</b> - 1 when connect sound is enabled
-<br><b>_knax</b>&nbsp; - 1 when sound signal for each frame is enabled
-<p><b>_def_port</b> - default port name
-<br><b>_unportname</b> - port name for unproto frames
-<br><b>_unport</b> - port number for unproto frames
-<p><b>_info_level</b> - status-line level (0 to 2)
-<br><b>_no_name</b> - default station name
-<br><b>_timezone</b> - local timezone name
-<br><b>_swap_edit</b> - 1 when swapedit is on
-<br><b>_fixpath</b> - 1 when fixpath is on
-<br><b>_daemon</b> - 1 when linpac works as a daemon
-<br><b>_monitor</b> - 1 when monitor is enabled
-<br><b>_no_monitor</b> - 1 when monitor is disabled from command line
-<br><b>_listen</b> - 1 when accepting connections is enabled
-<br><b>_disable_spyd</b> - 1 when ax25spyd support is disabled from command
-line
-<br><b>_mon_bin</b> - 1 when monitor filters binary characters
-<br><b>_monparms</b> - command line of 'listen' program
-<br><b>_maxchn</b> - maximal number of channels
-<br><b>_last_act</b> - time of last user activity (same format as the time()
-call).
-<p>These variables can be read using the <b>get_var</b> function defined
+some of these variables.
+<p><strong>NOTE:</strong> Many of the variables contain boolean values. Their
+value is <strong>1</strong> when true, <strong>0</strong> otherwise.
+<p>Currently the following system variables are defined (in channel 0):
+
+<dl>
+  <dt><code>_remote</code></dt>
+  <dd>1 when remote commands are enabled</dd>
+</dl>
+<dl>
+  <dt><code>_cbell</code></dt>
+  <dd>1 when connect sound is enabled</dd>
+  <dt><code>_knax</code></dt>
+  <dd>1 when sound signal for each frame is enabled</dd>
+</dl>
+<dl>
+  <dt><code>_def_port</code></dt>
+  <dd>default port name</dd>
+  <dt><code>_unportname</code></dt>
+  <dd>port name for unproto frames</dd>
+  <dt><code>_unport</code></dt>
+  <dd>port number for unproto frames</dd>
+</dl>
+<dl>
+  <dt><code>_info_level</code></dt>
+  <dd>status-line level (0 to 2)</dd>
+  <dt><code>_no_name</code></dt>
+  <dd>default station name</dd>
+  <dt><code>_timezone</code></dt>
+  <dd>local timezone name</dd>
+  <dt><code>_swap_edit</code></dt>
+  <dd>1 when swapedit is on</dd>
+  <dt><code>_fixpath</code></dt>
+  <dd>1 when fixpath is on</dd>
+  <dt><code>_daemon</code></dt>
+  <dd>1 when linpac works as a daemon</dd>
+  <dt><code>_monitor</code></dt>
+  <dd>1 when monitor is enabled</dd>
+  <dt><code>_no_monitor</code></dt>
+  <dd>1 when monitor is disabled from command line</dd>
+  <dt><code>_listen</code></dt>
+  <dd>1 when accepting connections is enabled</dd>
+  <dt><code>_disable_spyd</code></dt>
+  <dd>1 when ax25spyd support is disabled from command line</dd>
+  <dt><code>_mon_bin</code></dt>
+  <dd>1 when monitor filters binary characters</dd>
+  <dt><code>_monparms</code></dt>
+  <dd>command line arguments for 'listen' program</dd>
+  <dt><code>_maxchn</code></dt>
+  <dd>maximal number of channels</dd>
+  <dt><code>_last_act</code></dt>
+  <dd>time of last user activity (same format as the time() system call).</dd>
+</dl>
+
+<p>These variables may be read using the <code>lp_get_var()</code> function defined
 above. Furthermore there are two special functions defined for reading
-these variables. This functions expect the name of the system variable
-without the initial _.
-<p><b><code>char *lp_sconfig(const char *name)</code></b>
-<br>Returns the value of configuration variable as a string.
-<p><b><code>int lp_iconfig(const char *name)</code></b>
-<br>Returns the value of configuration variable as an integer.
-<p>Following system variables are defined for each channel:
-<br><b>_call</b> - callsign for each channel
-<br><b>_cwit</b> - connected with callsign
-<br><b>_cphy</b> - physical connection to
-<br><b>_port</b> - connected on which port
-<br><b>_state</b> - connection status
+these variables. These functions expect the name of the system variable
+<em>without</em> the leading underscore.
+
+<dl>
+  <dt><code>char *lp_sconfig(const char *name)</code></dt>
+  <dd>Returns the value of the configuration variable as a string.</dd>
+  <dt><code>int lp_iconfig(const char *name)</code></dt>
+  <dd>Returns the value of the configuration variable as an integer.</dd>
+</dl>
+
+<p>The following system variables are defined for each channel:
+
+<dl>
+  <dt><code>_call</code></dt>
+  <dd>callsign for each channel</dd>
+  <dt><code>_cwit</code></dt>
+  <dd>connected with callsign</dd>
+  <dt><code>_cphy</code></dt>
+  <dd>physical connection to</dd>
+  <dt><code>_port</code></dt>
+  <dd>connected on which port</dd>
+  <dt><code>_state</code></dt>
+  <dd>connection status</dd>
+</dl>
+
 <p>There are also special functions for reading values of these variables:
-<p><b><code>int lp_chn_status(int chn)</code></b>
-<br>Returns the status of a channel. There are following status constants
-defined:
-<br><code>ST_DISC</code> - channel disconnected
-<br><code>ST_DISP</code> - disconnect in progress
-<br><code>ST_TIME</code> - disconnecting for timeout
-<br><code>ST_CONN</code> - channel connected
-<br><code>ST_CONP</code> - connecting in progress
-<p><b><code>char *lp_chn_call(int chn)</code></b>
-<br>Returns channel callsign.
-<p><b><code>char *lp_chn_cwit(int chn)</code></b>
-<br>Returns the callsign of connected station.
-<p><b><code>char *lp_chn_cphy(int chn)</code></b>
-<br>Returns the callsign of physicaly connected station (the first connected
-station).
-<p><b><code>int lp_chn_port(int chn)</code></b>
-<br>Returns the number of the port used for connection.
-<p>Last two functions enable changing the time of last users's response:
-<p><b><code>time_t lp_last_activity()</code></b>
-<br>Returns the time of last activity of the user.
-<p><b><code>void lp_set_last_activity(time_t timeval)</code></b>
-<br>Sets the last activity time.
+
+<dl>
+  <dt><code>int lp_chn_status(int chn)</code></dt>
+  <dd>Returns the status of a channel. The following status constants are defined:
+    <dl>
+      <dt><code>ST_DISC</code></dt>
+      <dd>channel disconnected</dd>
+      <dt><code>ST_DISP</code></dt>
+      <dd>disconnect in progress</dd>
+      <dt><code>ST_TIME</code></dt>
+      <dd>disconnecting for timeout</dd>
+      <dt><code>ST_CONN</code></dt>
+      <dd>channel connected</dd>
+      <dt><code>ST_CONP</code></dt>
+      <dd>connecting in progress</dd>
+    </dl>
+  </dd>
+  <dt><code>char *lp_chn_call(int chn)</code></dt>
+  <dd>Returns channel callsign.</dd>
+  <dt><code>char *lp_chn_cwit(int chn)</code></dt>
+  <dd>Returns the callsign of connected station.</dd>
+  <dt><code>char *lp_chn_cphy(int chn)</code></dt>
+  <dd>Returns the callsign of physicaly connected station (the first connected station).</dd>
+  <dt><code>int lp_chn_port(int chn)</code></dt>
+  <dd>Returns the number of the port used for connection.</dd>
+</dl>
+
+<p>The last two functions enable changing the time of last users's response:
+
+<dl>
+  <dt><code>time_t lp_last_activity()</code></dt>
+  <dd>Returns the time of last activity of the user.</dd>
+  <dt><code>void lp_set_last_activity(time_t timeval)</code></dt>
+  <dd>Sets the last activity time.</dd>
+</dl>
+
 <p><a NAME="POS6_5"></a>
-<h3>
-6.5 Connection status</h3>
+<h3>6.5 Connection status</h3>
 There are two special events reserved for obtaining the AX.25 connection
-status. When the application wants to get the status of the connection
-on certain LinPac channel, it generates the EV_STAT_REQ event on this channel.
-As the answer LinPac generates the EV_STATUS event. The <b>data</b> field
-of this event points to the ax25_status structure (see <a href="#POS7_2">chapter
-7.2</a>). When there is no active connection on the channel, no EV_STATUS
+status. When an application wants to get the status of the connection
+on a certain LinPac channel, it generates the <code>EV_STAT_REQ</code> event on this channel.
+In response, LinPac generates the <code>EV_STATUS</code> event. The <code>data</code> field
+of this event points to the <code>ax25_status</code> structure (see <a href="#POS7_2">Chapter
+7.2</a>). When there is no active connection on the channel, no <code>EV_STATUS</code>
 event is generated.
+
 <p><a NAME="POS6_6"></a>
-<h3>
-6.6 Event usage examples</h3>
-Following examples show how to use the events for controlling LinPac. The
-complete list of events can be found in the file events.txt.
+<h3>6.6 Event usage examples</h3>
+The following examples show how to use events for controlling LinPac. The
+complete list of events can be found in the file <a href="events.txt">events.txt</a>.
+
 <p><a NAME="POS6_6_1"></a>
-<h4>
-6.6.1 Connecting a remote station</h4>
-When initiating the connection, the first step is to check, if the channel
-is free (it is not used for other connection). The status of a channel
+<h4>6.6.1 Connecting to a remote station</h4>
+When initiating the connection, the first step is to check that the channel
+is free (i.e. it is not in use for another connection). The status of a channel
 can be checked using the <code>lp_chn_status()</code> function (see
-<a href="#POS6_4">chapter
-6.4</a>).
-<p>The second step is emiting the <code>EV_CONN_LOC</code> event on apropriate
-channel. The <code>data</code> field of the event contains a c-string with
-the destination address like <b>port:callsign [digi [digi ...]]</b>.
-<p>The last step is to wait until the connection establishes. For this
-the function <code>lp_wait_connect()</code> can ve used. An example piece of
+<a href="#POS6_4">Chapter 6.4</a>).
+<p>The second step is emiting the <code>EV_CONN_LOC</code> event on the appropriate
+channel. The <code>data</code> field of the event contains a C string with
+the destination address in the form <code>port:callsign [digi [digi ...]]</code>.
+<p>The last step is to wait until the connection is established. For this
+the function <code>lp_wait_connect()</code> can be used. An example piece of
 code follows:
 
 <pre><code>
@@ -499,10 +555,9 @@ if (lp_chn_status(chn) == ST_DISC)
 </code></pre>
 
 <p><a NAME="POS6_6_2"></a>
-<h4>
-6.6.2 Using LinPac commands in programs</h4>
-Any of the applications can run LinPac commands by emiting the <code>EV_DO_COMMAND</code>
-event. E.g. for downloading a message from a BBS using the <code>getmsg</code>
+<h4>6.6.2 Using LinPac commands in programs</h4>
+Any application may run LinPac commands by emitting the <code>EV_DO_COMMAND</code>
+event. For example, to download a message from a BBS using the <code>getmsg</code>
 command following code can be used:
 
 <pre><code>
@@ -513,13 +568,13 @@ lp_emit_event(lp_channel(), EV_DO_COMMAND, 0, cmd);
 ---------------------------------------------------------------------
 </code></pre>
 
-<p>Other posibility is using the <code>EV_WAND_RESULT</code> event. The usage
-is similar to previous exaple, but the <b>x</b> field of the event has
-special meaning: as an reaction to this event LinPac will generate an event
-<code>EV_CMD_RESULT</code>
-with the same <b>x</b> field and with the <b>data</b> field containing
-a result of the command.
-<br>An example follows:
+<p>Another option is to use the <code>EV_WANT_RESULT</code> event. The usage
+is similar to the previous example, but the <code>x</code> field of the event has
+special meaning: as a response to this event, LinPac will generate an
+<code>EV_CMD_RESULT</code> event
+with the same <code>x</code> field and with the <code>data</code> field containing
+the result of the command.
+<p>An example follows:
 
 <pre><code>
 ---------------------------------------------------------------------
@@ -539,21 +594,25 @@ printf("The result is: %s\n", (char *)ev.data);
 ---------------------------------------------------------------------
 </code></pre>
 
-<br>&nbsp;
 <p><a NAME="POS7"></a>
-<h2>
-7 The application library interface</h2>
+<h2>7 The application library interface</h2>
 <a NAME="POS7_1"></a>
-<h3>
-7.1 Constants</h3>
-<b><code>LPAPP_VERSION</code></b> - version of LinPac that the linrary came
-with
-<br><b><code>ST_xxxx</code></b> - connection status constants (see <a href="#POS6_4">chapter
-6.4</a>)
+<h3>7.1 Constants</h3>
+
+<dl>
+  <dt><code>LPAPP_VERSION</code></dt>
+  <dd>the version of LinPac that the library came with</dd>
+  <dt><code>ST_xxxx</code></dt>
+  <dd>connection status constants (see <a href="#POS6_4">Chapter 6.4</a>)</dd>
+</dl>
+
 <p><a NAME="POS7_2"></a>
-<h3>
-7.2 Data structures</h3>
-<i>struct ax25_status</i> - contains the AX.25 connection status:
+<h3>7.2 Data structures</h3>
+
+<dl>
+  <dt><code>struct ax25_status</code></dt>
+  <dd>contains the AX.25 connection status:</dd>
+</dl>
 
 <pre><code>
 typedef struct
@@ -573,130 +632,150 @@ typedef struct
 </code></pre>
 
 <p><a NAME="POS7_3"></a>
-<h3>
-7.3 Functions</h3>
+<h3>7.3 Functions</h3>
 <a NAME="POS7_3_1"></a>
-<h4>
-7.3.1 Uninterruptable versions of some system calls</h4>
-Following functions work the same way as the original system calls, but
-they are interrupt-safe (they don't fail with <code>errno == EAGAIN</code>).
-<p><b><code>size_t safe_read(int fd, void *buf, size_t count);</code></b>
-<br><b><code>size_t safe_write(int fd, const void *buf, size_t count);</code></b>
-<br><b><code>char *safe_fgets(char *s, int size, FILE *stream);</code></b>
-<br><b><code>int safe_fgetc(FILE *stream);</code></b>
+<h4>7.3.1 Uninterruptable versions of some system calls</h4>
+<p>The following functions work the same way as the original system calls, but
+they are interrupt-safe. That is, they don't fail with <code>errno == EAGAIN</code>.
+
+<dl>
+  <dt><code>size_t safe_read(int fd, void *buf, size_t count);</code></dt>
+  <dt><code>size_t safe_write(int fd, const void *buf, size_t count);</code></dt>
+  <dt><code>char *safe_fgets(char *s, int size, FILE *stream);</code></dt>
+  <dt><code>int safe_fgetc(FILE *stream);</code></dt>
+</dl>
+
 <p><a NAME="POS7_3_2"></a>
-<h4>
-7.3.2 Basic communication functions</h4>
-<b><code>int lp_start_appl()</code></b>
-<br>Starts the communication with LinPac. The <code>pipename</code> parameter
-contains the name of the named pipe used for communication (use LP_PIPE_PATH
-here). Non-zero return value means success, zero value means that LinPac
-cannot be contacted (probably it's not running).
-<p><b><code>int lp_get_event(Event *ev)</code></b>
-<br>Read the event from the queue. Non-zero return value means succesful
-read, zero value means that the event queue is empty. The <code>data</code>
-field of the event structure <u>must</u> be initialized before using this
-function (to NULL or to some buffer). This function shouldn't be used when
-automatic event processing is used.
-<p><b><code>int lp_emit_event(int chn, int type, int x, void *data)</code></b>
-<br>Generate new event. The arguments correspond with the fields in the
-event structure. Return value is always 0.
-<p><b><code>void lp_wait_event(int chn, int type)</code></b>
-<br>Wait until the event with the same <code>chn</code> and <code>type</code> values
-are received.
-<p><b><code>void lp_wait_init(int chn, int type)</code></b>
-<br>The same as <code>wait_event()</code> but returns immediately, waiting
-is provided by following function <code>wait_realize()</code>.
-<p><b><code>void lp_wait_realize()</code></b>
-<br>Realizes waiting initialized by <code>lp_wait_init()</code>. All the events
-that arrived since last <code>wait_init()</code> call are registered. <code>wait_realize()</code>
-can exit immediately if the event has already arrived.
-<p><b><code>Event *lp_awaited_event()</code></b>
-<br>After return from <code>lp_wait_event()</code> or <code>lp_wait_realize()</code>
-this function returns the event that stopped the waiting.
-<p><b><code>Event *lp_copy_event(Event *dest, const Event *src)</code></b>
-<br>Copy the event structure (deep copy).
-<p><b><code>void lp_discard_event(Event *ev)</code></b>
-<br>Free the memory used by the data field of Event structure received
-using <code>get_event()</code>.
-<p><b><code>void lp_clear_event_queue()</code></b>
-<br>Removes all events from the event queue. This has no use when automatic
-event processing is on.
-<p><b><code>void lp_end_appl()</code></b>
-<br>Closes the connection to LinPac.
+<h4>7.3.2 Basic communication functions</h4>
+
+<dl>
+  <dt><code>int lp_start_appl()</code></dt>
+  <dd>Starts communication with LinPac. A non-zero return value means success; a
+  zero value means that LinPac cannot be contacted (probably because it's not
+  running).</dd>
+  <dt><code>int lp_get_event(Event *ev)</code></dt>
+  <dd>Read an event from the queue. A non-zero return value means a successful
+  read; a zero value means that the event queue is empty. The <code>data</code>
+  field of the event structure <em>must</em> be initialized before using this
+  function (to NULL or to some buffer). This function should not be used when
+  automatic event processing is used.</dd>
+  <dt><code>int lp_emit_event(int chn, int type, int x, void *data)</code></dt>
+  <dd>Generate a new event. The arguments correspond to the fields in the
+  event structure. The return value is always 0.</dd>
+  <dt><code>void lp_wait_event(int chn, int type)</code></dt>
+  <dd>Wait until an event with the same <code>chn</code> and <code>type</code>
+  values are received.</dd>
+  <dt><code>void lp_wait_init(int chn, int type)</code></dt>
+  <dd>The same as <code>lp_wait_event()</code> but returns immediately. Waiting
+  is provided by following function <code>lp_wait_realize()</code>.</dd>
+  <dt><code>void lp_wait_realize()</code></dt>
+  <dd>Realizes waiting initialized by <code>lp_wait_init()</code>. All the events
+  that arrived since the last <code>lp_wait_init()</code> call are ignored.
+  <code>lp_wait_realize()</code> may exit immediately if the event has already
+  arrived.</dd>
+  <dt><code>Event *lp_awaited_event()</code></dt>
+  <dd>After return from a call to <code>lp_wait_event()</code> or
+  <code>lp_wait_realize()</code>, this function returns the event that stopped
+  the waiting.</dd>
+  <dt><code>Event *lp_copy_event(Event *dest, const Event *src)</code></dt>
+  <dd>Copy the event structure (using a deep copy).</dd>
+  <dt><code>void lp_discard_event(Event *ev)</code></dt>
+  <dd>Free the memory used by the data field of Event structure received
+  using <code>lp_get_event()</code>.</dd>
+  <dt><code>void lp_clear_event_queue()</code></dt>
+  <dd>Remove all events from the event queue. This has no purpose when automatic
+  event processing is enabled.</dd>
+  <dt><code>void lp_end_appl()</code></dt>
+  <dd>Closes the connection to LinPac.</dd>
+</dl>
+
 <p><a NAME="POS7_3_3"></a>
-<h4>
-7.3.3 Automatic event handling functions</h4>
-<b><code>void lp_event_handling_on()</code></b>
-<br>Switches the automatic event handling on. From this point each event
-is automaticaly read from the queue, treated with an event handler function
-(if defined) and discarted.
-<p><b><code>void lp_event_handling_off()</code></b>
-<br>Switches the automatic event handling off. Events must be read from
-the queue using the lp_get_event() function.
-<p><b><code>void lp_set_event_handler(handler_type handler)</code></b>
-<br>Defines the event handler function - a function like
-<br><code>void my_handler(Event *ev)</code>
-<p>The event handler is called automaticaly each time some event is received
-and the automatic event handling is on.
+<h4>7.3.3 Automatic event handling functions</h4>
+
+<dl>
+  <dt><code>void lp_event_handling_on()</code></dt>
+  <dd>Enables automatic event handling. From this point onwards, each event
+  is automatically read from the queue, treated with an event handler function
+  (if defined) and then discarded.</dd>
+  <dt><code>void lp_event_handling_off()</code></dt>
+  <dd>Disables automatic event handling. Events must be read from the queue
+  using the <code>lp_get_event()</code> function.</dd>
+  <dt><code>void lp_set_event_handler(handler_type handler)</code></dt>
+  <dd>Defines the event handler function, a function with signature
+  <code>void my_event_handler(Event *ev)</code></dd>. The event handler is
+  called automatically each time an event is received, when automatic event
+  handling is enabled.
+</dl>
+
 <p><a NAME="POS7_3_4"></a>
-<h4>
-7.3.4 Environment functions</h4>
-LinPac owns its own environment for storing the variables. Each application
-can share and modify this environment using following functions. The environment
-is separated for each channel. See <a href="#POS6_4">chapter 6.4</a> for
-more detailed description and list of functions.
+<h4>7.3.4 Environment functions</h4>
+LinPac has its own environment for storing variables. Each application
+can share and modify this environment using environment-related functions. Each
+channel has its own environment. See <a href="#POS6_4">Chapter 6.4</a> for a
+detailed description and list of functions.
+
 <p><a NAME="POS7_3_5"></a>
-<h4>
-7.3.5 User functions</h4>
-<b><code>void lp_appl_result(const char *fmt, ...)</code></b>
-<br>Set the result of the application. This function generates the EV_APP_RESULT
-event with the message string. The argument format is the same as for <code>printf()</code>
-<p><b><code>void lp_statline(const char *fmt, ...)</code></b>
-<br>Displays or changes the additional status line. Using this function
-can be displayed one status line only. This function generates the EV_CHANGE_STLINE
-event with the x field (line ID) containing the PID of the application.
-For displaying more than one status line for the application other EV_CHANGE_STLINE
-events must be generated manualy.
-<p><b><code>void lp_remove_statline()</code></b>
-<br>Removes the status line.
-<p><b><code>void lp_disable_screen()</code></b>
-<br>Disables displaying the data in the QSO window on application's channel.
-The EV_DISABLE_SCREEN event is used.
-<p><b><code>void lp_enable_screen()</code></b>
-<br>Enables displaying the data in the QSO window. The EV_ENABLE_SCREEN
-event is generated.
-<p><b><code>void lp_wait_connect(int chn, const char *call)</code></b>
-<br>Waits for a connection with specified callsign on specified channel.
+<h4>7.3.5 User functions</h4>
+
+<dl>
+  <dt><code>void lp_appl_result(const char *fmt, ...)</code></dt>
+  <dd>Set the final result of the application. This function generates an
+  <code>EV_APP_RESULT</code> event with the specified message string. The
+  argument format is the same as for <code>printf()</code>.</dd>
+  <dt><code>void lp_statline(const char *fmt, ...)</code></dt>
+  <dd>Displays or changes the additional status line in the LinPac user
+  interface. Only one additional status line is displayed. This function
+  generates a <code>EV_CHANGE_STLINE</code> event with the <code>x</code> field
+  (line ID) containing the PID of the application. To display more than one
+  status line for the application, additional <code>EV_CHANGE_STLINE</code>
+  events must be generated manually.</dd>
+  <dt><code>void lp_remove_statline()</code></dt>
+  <dd>Removes the additional status line.</dd>
+  <dt><code>void lp_disable_screen()</code></dt>
+  <dd>Disables displaying data in the QSO window on application's channel.
+  The <code>EV_DISABLE_SCREEN</code> event is used to accomplish this.</dd>
+  <dt><code>void lp_enable_screen()</code></dt>
+  <dd>Enables displaying data in the QSO window. The <code>EV_ENABLE_SCREEN</code>
+  event is used to accomplish this.</dd>
+  <dt><code>void lp_wait_connect(int chn, const char *call)</code></dt>
+  <dd>Waits for a connection with the specified callsign on the specified
+  channel.</dd>
+</dl>
+
 <p><a NAME="POS7_3_6"></a>
-<h4>
-7.3.6 Tool functions</h4>
-<b><code>char *time_stamp(int utc)</code></b>
-<br>Returns the pointer to a c-string that contains actual time. If
-<code>utc</code>=0
-then local time is used else the UTC time is used.
-<p><b><code>char *date_stamp(int utc)</code></b>
-<br>Returns the date-string.
-<p><b><code>void replace_macros(int chn, char *s)</code></b>
-<br>Replaces the variables in the string (<code>%xxx</code>) with their values.
-The <code>%(command)</code> macro is not replaced.
-<p><b><code>void get_port_name(int n)</code></b>
-<br>Returns the name of the n-th port in axports (starting with 0).
+<h4>7.3.6 Tool functions</h4>
+
+<dl>
+  <dt><code>char *time_stamp(int utc)</code></dt>
+  <dd>Returns a pointer to a C string that contains the actual time. If
+  <code>utc</code> is 0, then local time is used; otherwise UTC time is used.</dd>
+  <dt><code>char *date_stamp(int utc)</code></dt>
+  <dd>Returns the date-string.</dd>
+  <dt><code>void replace_macros(int chn, char *s)</code></dt>
+  <dd>Replaces macro variables in the string (i.e. <code>%xxx</code>) with their
+  values. The <code>%(command)</code> macro is not replaced.</dd>
+  <dt><code>void get_port_name(int n)</code></dt>
+  <dd>Returns the name of the nth port in axports (starting from 0).</dd>
+</dl>
+
 <p><a NAME="POS7_3_7"></a>
-<h4>
-7.3.7 Application information functions</h4>
-<b><code>char *lp_version()</code></b>
-<br>Returns current LinPac version.
-<p><b><code>int lp_channel()</code></b>
-<br>Returns the channel number where the application was started. Returns
-0 when tha application was not started using linpac.
-<p><b><code>int lp_app_remote()</code></b>
-<br>Returns non-zero value if the application was started using a remote
-command in LinPac (application communicates with remote user).
-<p>
+<h4>7.3.7 Application information functions</h4>
+
+<dl>
+  <dt><code>char *lp_version()</code></dt>
+  <dd>Returns the current LinPac version.</dd>
+  <dt><code>int lp_channel()</code></dt>
+  <dd>Returns the channel number on which the application was started. Returns
+  0 when the application was not started using LinPac.</dd>
+  <dt><code>int lp_app_remote()</code></dt>
+  <dd>Returns a non-zero value if the application was started using a remote
+  command in LinPac (i.e. the application is communicating with a remote user).</dd>
+</dl>
+
 <hr>
 <center>
-<p><i><font size=-1>Last update: 15.9.2001</font></i></center>
+<p><i><font size=-1>Last update: 16 Feb 2020</font></i>
+</center>
 
 </body>
 </html>
