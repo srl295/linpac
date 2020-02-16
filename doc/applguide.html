@@ -46,6 +46,13 @@
 <br>7.3.5 <a href="#POS7_3_5">User functions</a>
 <br>7.3.6 <a href="#POS7_3_6">Tool functions</a>
 <br>7.3.7 <a href="#POS7_3_7">Application information functions</a>
+<p>8 <a href="#POS8">The shell interface</a>
+<br>8.1 <a href="#POS8_1">Writing the script</a>
+<br>8.1.1 <a href="#POS8_1_1">Ensuring that LinPac is running</a>
+<br>8.1.2 <a href="#POS8_1_2">Accessing configuration and state</a>
+<br>8.1.3 <a href="#POS8_1_3">Executing commands</a>
+<br>8.1.4 <a href="#POS8_1_4">Simple shell example</a>
+<br>8.2 <a href="#POS8_2">Creating the command</a>
 
 <p><a NAME="POS1"></a>
 <h2>1 Introduction</h2>
@@ -771,6 +778,95 @@ detailed description and list of functions.
   <dd>Returns a non-zero value if the application was started using a remote
   command in LinPac (i.e. the application is communicating with a remote user).</dd>
 </dl>
+
+<p><a NAME="POS8"></a>
+<h2>8 The shell interface</h2>
+In addition to the C API described in the above chapters, LinPac also provides
+a set of functions that allow programmers to create new LinPac commands using
+bash shell scripts. While this set of functions is limited, it is sufficient
+to enable quite sophisticated and complex commands to be added to LinPac
+without requiring programming in C or C++.
+
+<p><a NAME="POS8_1"></a>
+<h3>8.1 Writing the script</h3>
+
+<p>The shell functions are all accessed through the <code>lpapi</code> command,
+which has the following form:
+<p><code>lpapi &lt;channel&gt; [command] [arguments]</code>
+<p>The specifics of the available commands are described in the following sections.
+<p>The channel on which the script application is running is made available to
+the script as the <code>$LPCHN</code> shell environment variable. The use of
+this variable is demonstrated below.
+
+<p><a NAME="POS8_1_1"></a>
+<h4>8.1.1 Ensuring that LinPac is running</h4>
+The first step in any LinPac shell command should be to ensure that LinPac is
+running, such that subsequent use of the shell interface can proceed. This is
+accomplished by calling the API as follows:
+<p><code></code>lpapi 0</code>
+<p>This command will exit with a 0 result code if LinPac is running. Any other
+result code indicates that LinPac is not running, in which case the script
+should most likely echo an error message to the user and exit. As usual, the
+result code can be determined by examining the special <code>$?</code> value.
+
+<p><a NAME="POS8_1_2"></a>
+<h4>8.1.2 Accessing configuration and state</h4>
+It is important that a shell script be able to determine the current status of
+LinPac and retrieve configuration values. The API provides several functions
+to enable this.
+<p>All of these functions return values that can be assigned to
+a shell variable, and are used in the following manner (using "call" as an
+example here):
+<p><code>MYVAR=`lpapi $LPCHN call`</code>
+<p>The available functions are as follows:
+<dl>
+  <dt><code>call</code></dt>
+  <dd>Return the callsign for the specified channel.</dd>
+  <dt><code>cwit</code></dt>
+  <dd>Return the callsign of the station connected on the specified channel.</dd>
+  <dt><code>port</code></dt>
+  <dd>Return the port of the station connected on the specified channel.</dd>
+  <dt><code>state</code></dt>
+  <dd>Return current status of the specified channel (as a number).</dd>
+  <dt><code>pname &lt;number&gt;</code></dt>
+  <dd>Return the name of port with the specified number.</dd>
+  <dt><code>get &lt;variable&gt;</code></dt>
+  <dd>Return the value of specified variable on the specified channel.</dd>
+</dl>
+
+<p><a NAME="POS8_1_3"></a>
+<h4>8.1.3 Executing commands</h4>
+Accomplishing real work with the shell interface will usually require calling
+into LinPac to execute other LinPac commands. This is achieved using the
+<code>do</code> command, which is functionally equivalent to generating the
+<code>EV_DO_COMMAND</code> event from the C API.
+<p>The <code>do</code> command has the following form:
+<p><code>lpapi &lt;channel&gt; do &lt;command&gt; [arguments]</code>
+<p>However, since <code>do</code> is a reserved word in Bash shell scripts,
+it is necessary to use Bash's <code>eval</code> command to invoke it as a
+LinPac function, as follows:
+<p><code>eval lpapi &lt;channel&gt; do "&lt;command&gt; [arguments]"</code>
+<p><strong>IMPORTANT:</strong> The <code>do</code> command is asynchronous.
+That is, the shell command may return before the command issued to LinPac has
+completed. A script will need to account for this in considering subsequent
+actions.
+
+<p><a NAME="POS8_1_4"></a>
+<h4>8.1.4 Simple shell example</h4>
+
+TBD
+
+<p><a NAME="POS8_2"></a>
+<h3>8.2 Creating the command</h3>
+The steps to add the script to LinPac as a new command are essentially the same
+as for an application written in C, described in <a href="#POS5_1">Chapter 5.1</a>
+above. That is:
+<ol>
+  <li>Copy the script to the <code>$LINPACDIR/bin</code> directory, making
+  sure that the permissions allow execution.</li>
+  <li>Add the new command to the file <code>$LINPACDIR/bin/commands</code> as
+  described in the <a href="manual.html">User Manual</a>.</li>
+</ol>
 
 <hr>
 <center>
