@@ -266,7 +266,7 @@ structure with the received event data.
 <p><strong>WARNING #1:</strong> The <code>data</code> field in your <code>Event</code> structure must
 point to a dynamically allocated buffer. The size of the buffer is reallocated
 automatically after receiving an event. When the <code>data</code> field is
-set to NULL, a new buffer is allocated. This field <em>must be initialized</em>.
+set to <code>NULL</code>, a new buffer is allocated. This field <em>must be initialized</em>.
 <p><strong>WARNING #2:</strong> In this mode, the application <em>must</em> read all events.
 It is not a good idea to stop reading events, because the event
 queue may overflow. LinPac will automatically kill the application when the
@@ -394,7 +394,7 @@ these variables is provided by following functions:
   exist.</dd>
   <dt><code>void lp_del_var(int chn, const char *name)</code></dt>
   <dd>Deletes the variable.</dd>
-  <dt>void lp_clear_var_names(int chn, const char *prefix)</code></dt>
+  <dt><code>void lp_clear_var_names(int chn, const char *prefix)</code></dt>
   <dd>Deletes all variables with the specified name.</dd>
 </dl>
 <p>The value of each variable is automatically synchronized with LinPac
@@ -709,9 +709,9 @@ they are interrupt-safe. That is, they don't fail with <code>errno == EAGAIN</co
   using the <code>lp_get_event()</code> function.</dd>
   <dt><code>void lp_set_event_handler(handler_type handler)</code></dt>
   <dd>Defines the event handler function, a function with signature
-  <code>void my_event_handler(Event *ev)</code></dd>. The event handler is
+  <code>void my_event_handler(Event *ev)</code>. The event handler is
   called automatically each time an event is received, when automatic event
-  handling is enabled.
+  handling is enabled.</dd>
 </dl>
 
 <p><a NAME="POS7_3_4"></a>
@@ -803,7 +803,7 @@ this variable is demonstrated below.
 The first step in any LinPac shell command should be to ensure that LinPac is
 running, such that subsequent use of the shell interface can proceed. This is
 accomplished by calling the API as follows:
-<p><code></code>lpapi 0</code>
+<p><code>lpapi 0</code>
 <p>This command will exit with a 0 result code if LinPac is running. Any other
 result code indicates that LinPac is not running, in which case the script
 should most likely echo an error message to the user and exit. As usual, the
