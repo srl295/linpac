@@ -145,7 +145,8 @@
    The following application example just tries to contact LinPac, and prints
    the result.
 
- ---------------------------- File test1.c ---------------------------
+     ----------------------------------------------------------------------
+
  #include <stdio.h>
  #include <unistd.h>
  #include <linpac/lpapp.h>
@@ -166,7 +167,8 @@
      }
      return 0;
  }
- ---------------------------------------------------------------------
+
+     ----------------------------------------------------------------------
 
    The function lp_start_appl() tries to contact LinPac and returns 1 in case
    of success or 0 when a connection to LinPac cannot be made (probably
@@ -304,7 +306,8 @@
    events received and stops when an EV_ABORT event is received. This event
    can be generated using the :ABort command in LinPac.
 
- ---------------------------------------------------------------------------
+     ----------------------------------------------------------------------
+
  #include <stdio.h>
  #include <linpac/lpapp.h>
 
@@ -341,14 +344,16 @@
 
      return 0;
  }
- ---------------------------------------------------------------------------
+
+     ----------------------------------------------------------------------
 
    This example contains "active waiting" (the do ; while(...) construction).
    This is very ugly and inefficient. For this reason, the LinPac API offers
    an alternative for waiting for events, namely the lp_wait_event()
    function. Let's change the example to use this function:
 
- ---------------------------------------------------------------------------
+     ----------------------------------------------------------------------
+
  #include <stdio.h>
  #include <linpac/lpapp.h>
 
@@ -374,7 +379,8 @@
 
      return 0;
  }
- ----------------------------------------------------------------------------
+
+     ----------------------------------------------------------------------
 
    WARNING: Note that some system calls may be interrupted when an event is
    received. An interrupted system call returns an error result (for example
@@ -585,7 +591,8 @@
    The last step is to wait until the connection is established. For this the
    function lp_wait_connect() can be used. An example piece of code follows:
 
- ---------------------------------------------------------------------
+     ----------------------------------------------------------------------
+
  int chn = lp_channel();
  if (lp_chn_status(chn) == ST_DISC)
  {
@@ -595,7 +602,8 @@
      lp_wait_connect(chn, "OK0PAB");
      /* ... connection established ... */
  }
- ---------------------------------------------------------------------
+
+     ----------------------------------------------------------------------
 
     6.6.2 Using LinPac commands in programs
 
@@ -603,11 +611,13 @@
    event. For example, to download a message from a BBS using the getmsg
    command following code can be used:
 
- ---------------------------------------------------------------------
+     ----------------------------------------------------------------------
+
  char cmd[30];
  sprintf(cmd, "getmsg %i", message_number);
  lp_emit_event(lp_channel(), EV_DO_COMMAND, 0, cmd);
- ---------------------------------------------------------------------
+
+     ----------------------------------------------------------------------
 
    Another option is to use the EV_WANT_RESULT event. The usage is similar to
    the previous example, but the x field of the event has special meaning: as
@@ -617,7 +627,8 @@
 
    An example follows:
 
- ---------------------------------------------------------------------
+     ----------------------------------------------------------------------
+
  char cmd[30];
  int id = 0;
  Event *ev;
@@ -631,7 +642,8 @@
      id = ev->x;
  }
  printf("The result is: %s\n", (char *)ev.data);
- ---------------------------------------------------------------------
+
+     ----------------------------------------------------------------------
 
 7 The application library interface
 

@@ -3,6 +3,28 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <title>LinPac External Application Programming Guide</title>
+   <style>
+     body {
+       width: 650px;
+       margin: 50px;
+       line-height: 120%;
+     }
+     code {
+       background-color: #eee;
+       border-radius: 3px;
+     }
+     code > hr {
+       display: none;
+     }
+     pre > code {
+       border: 1px solid #999;
+       display: block;
+       padding: 0px 20px 20px 20px;
+     }
+     :not(pre) > code {
+       padding: 0px 2px 2px;
+     }
+   </style>
 </head>
 <body>
 
@@ -150,8 +172,7 @@ illustrates how to use the library within a user application.
 The following application example just tries to contact LinPac, and prints the
 result.
 
-<pre><code>
----------------------------- File test1.c ---------------------------
+<pre><code><hr>
 #include &lt;stdio.h&gt;
 #include &lt;unistd.h&gt;
 #include &lt;linpac/lpapp.h&gt;
@@ -172,8 +193,7 @@ int main()
     }
     return 0;
 }
----------------------------------------------------------------------
-</code></pre>
+<hr></code></pre>
 
 <p>The function <code>lp_start_appl()</code> tries to contact LinPac and returns
 <strong>1</strong>
@@ -286,8 +306,7 @@ the event handling function must be registered using the function:
 received and stops when an <code>EV_ABORT</code> event is received. This event
 can be generated using the <code>:ABort</code> command in LinPac.
 
-<pre><code>
----------------------------------------------------------------------------
+<pre><code><hr>
 #include &lt;stdio.h&gt;
 #include &lt;linpac/lpapp.h&gt;
 
@@ -324,16 +343,14 @@ int main()
 
     return 0;
 }
----------------------------------------------------------------------------
-</code></pre>
+<hr></code></pre>
 
 <p>This example contains "active waiting" (the <code>do ; while(...)</code>
 construction). This is very ugly and inefficient. For this reason, the LinPac API offers an
 alternative for waiting for events, namely the <code>lp_wait_event()</code> function.
 Let's change the example to use this function:
 
-<pre><code>
----------------------------------------------------------------------------
+<pre><code><hr>
 #include &lt;stdio.h&gt;
 #include &lt;linpac/lpapp.h&gt;
 
@@ -359,8 +376,7 @@ int main()
 
     return 0;
 }
-----------------------------------------------------------------------------
-</code></pre>
+<hr></code></pre>
 
 <p><strong>WARNING:</strong> Note that some system calls may be interrupted when
 an event is received. An interrupted system call returns an error result (for
@@ -547,8 +563,7 @@ the destination address in the form <code>port:callsign [digi [digi ...]]</code>
 the function <code>lp_wait_connect()</code> can be used. An example piece of
 code follows:
 
-<pre><code>
----------------------------------------------------------------------
+<pre><code><hr>
 int chn = lp_channel();
 if (lp_chn_status(chn) == ST_DISC)
 {
@@ -558,8 +573,7 @@ if (lp_chn_status(chn) == ST_DISC)
     lp_wait_connect(chn, "OK0PAB");
     /* ... connection established ... */
 }
----------------------------------------------------------------------
-</code></pre>
+<hr></code></pre>
 
 <p><a NAME="POS6_6_2"></a>
 <h4>6.6.2 Using LinPac commands in programs</h4>
@@ -567,13 +581,11 @@ Any application may run LinPac commands by emitting the <code>EV_DO_COMMAND</cod
 event. For example, to download a message from a BBS using the <code>getmsg</code>
 command following code can be used:
 
-<pre><code>
----------------------------------------------------------------------
+<pre><code><hr>
 char cmd[30];
 sprintf(cmd, "getmsg %i", message_number);
 lp_emit_event(lp_channel(), EV_DO_COMMAND, 0, cmd);
----------------------------------------------------------------------
-</code></pre>
+<hr></code></pre>
 
 <p>Another option is to use the <code>EV_WANT_RESULT</code> event. The usage
 is similar to the previous example, but the <code>x</code> field of the event has
@@ -583,8 +595,7 @@ with the same <code>x</code> field and with the <code>data</code> field containi
 the result of the command.
 <p>An example follows:
 
-<pre><code>
----------------------------------------------------------------------
+<pre><code><hr>
 char cmd[30];
 int id = 0;
 Event *ev;
@@ -598,8 +609,7 @@ while (id != 1234)  /* wait for the command result */
     id = ev->x;
 }
 printf("The result is: %s\n", (char *)ev.data);
----------------------------------------------------------------------
-</code></pre>
+<hr></code></pre>
 
 <p><a NAME="POS7"></a>
 <h2>7 The application library interface</h2>
