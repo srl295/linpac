@@ -1,7 +1,7 @@
 #Spec file for LinPac
 
 %define	name	linpac
-%define	version	0.27
+%define	version	0.28
 %define	release	1
 
 %define  debug_package %{nil}
@@ -75,6 +75,12 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun
 
 %changelog
+* Fri Mar 27 2020 David Ranch <dranch@trinnet.net>
+- Many fixes from Martin KD6YAM
+- Support for relaying messages to Kantronics PBBS
+- Fixes in the mail UI
+- Improved documentation formatting, inclusion of API calls, 
+- Many coding fixes
 * Sat Dec 28 2019 David Ranch <dranch@trinnet.net>
 - New version 0.27
 - Address unicode characters in messages when Linpac doesn't specifically support unicode
