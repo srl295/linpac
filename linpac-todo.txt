@@ -1,6 +1,6 @@
 
 Linpac: Prioritized Goals
-12/29/19
+03/27/20
 
 David Ranch - KI6ZHD
 linpac@trinnet.net
@@ -73,25 +73,24 @@ P1 - Compiling and Install
 
 P1 - Performance issues
 -----------------------
-    01/31/13 - ENHANCEMENT: MOSTLY FIXED: Linpac hovers at 25% CPU utilization when idle - some sort of 
-               polling issue?
+    01/31/13 - ENHANCEMENT: Already improved but not 100% fixed: Linpac hovers at 25% CPU utilization 
+               when idle - some sort of polling issue?
+
                4788 root      20   0  114m 3420 1656 R 23.6  0.1   1240:44 linpac
                                                        ^^^^
-       - 08/01/14 - Initial concept code is available from K6SPI
        - 12/10/17 - First pass fix commited from KD6YAM using a combination of usleep 
                     statements with bypasses for cut/paste performance increases.
                     Additional tuning might be possible here.  Long term solution here is 
                     difficult due to the original design of Linpac and might NOT be
                     worth completely refactoring the code.
                     * Keeping this issue open for now
+       - 08/01/14 - Initial concept code is available from K6SPI
+
 
 P1 - UI   
 ---------------
-    - RESOLVED - 11/10/18 - when running some linpac modules such as :mail or yput file transfers,
-      many users would see the local error "LinPac is not running" 
-
-    - 12/30/17 - If the axport that Linpac is configured to use isn't up when starting Linpac, Linpac
-      will crash
+    - 12/30/17 - If the Linux AX.25 axport that Linpac is configured to use isn't up when starting Linpac, 
+      Linpac will crash
 
     - 12/10/17 - BUG: When creating an initial outgoing connection, Linpac shows CONNECTED.  Linpac
       currently doesn't have a "CONNECTING" state
@@ -119,7 +118,7 @@ P1 - UI
       file ABOVE the one in use, linpac's unproto feature no longer TXs but
       connected sessions still work
 
-    - 10/16/12 - BUG: CONV (converse) feature crashes Linpac when used.  Might
+    - 10/16/12 - BUG: CONV (converse) feature might crash Linpac when used.  Might
       require two people to be connected
         - 09/18/12 - when exiting :conv mode, linpac segfaults
 
@@ -143,6 +142,10 @@ P1 - UI
 
     - 08/05/12 - BUG: while in F10 mode, issuing a :help transmits all text over the air.
       Should be shown only locally
+
+    - 03/27/20 - BUG: If the sysop adds helpful information about using "//q to disconnect"
+      in the macro/ctext.mac file, when a user connects to Linpac, they will see the welcome
+      text and then be immeadiately disconnected.  Linpac should ignore this outgoing command
 
 
 P1 - Mail
@@ -201,10 +204,10 @@ P1 - Mail
                 End with /EX or (Ctrl-Z) in first column
                 --
 
-    - BUG: (duplicate?) When using //sp (private, 100% CPU load, remote user sent
-      a blank space (not sure), message was cancedlled but then
-      100% CPU on ./bin/compose p KI6ZHD.  Also happens if
-      someone is disconnected while composing a message
+    - BUG: (duplicate?) When using //sp (private, 100% CPU load, remote user sent a blank 
+      space (not sure), message was cancedlled but then 100% CPU on the process
+      "./bin/compose p KI6ZHD".  This also happens if someone is disconnected while composing 
+      a message (see previous bug)
 
 
     - 05/30/15 - BUG: probably related to the above 06/02/13 messaging bug where a
@@ -219,10 +222,6 @@ P1 - Mail
                  the previous message?  Did it just append stuff to it?  Unclear 
                  but important to understand what's happening
 
-    - 08/24/12 - ENHANCEMENT: When you run :mail, it only shows the last message by
-        default on the top-most line.  If the local user pushes up arrow cursor key many
-        times, Linpac will scroll back and show all the other messages.  Change behavior to 
-        show newest msg at top and older below (maybe make order a preference)
 
     - BUG: In the mail view, H for header doesn't work
       - when viewing msg, 
@@ -275,8 +274,8 @@ P1 - Documentation
       ports to be PACKET APRS This solved the problem!  
 
     - 9/17/18: captured startup issues as found in hampacketizing-centos.html#11b.linpacconfig
-      For example, "socket: Operation not permitted" for listen not being SUID root or 
-      running ax25spyd.
+      For example, "socket: Operation not permitted" for the "listen" binary not being SUID 
+      root or alternatively, have the user run ax25spyd instead.
 
 ==========================================================================
 Priority 2 - Wanted Items (needed but not critical)
@@ -285,7 +284,7 @@ Priority 2 - Wanted Items (needed but not critical)
 
 P2 - Packaging
 --------------
-     - BUG: The permissions of the /var/ax25/mheard/mheard.dat file need to be ok 
+     - BUG: The permissions of the /var/ax25/mheard/mheard.dat file need to be 
        (chmod 666), if they aren't, have Linpac check and warn
 
      - 12/10/17 - ENHANCEMENT: Integrate lptelnet-0.03 into Linpac release
@@ -406,8 +405,7 @@ P3 - UI
    - 09/25/12 - ENHANCEMENT: Make all // commands case insensitive - can work around this with doubling up
        all commands in bin/commands but this seems to be sloppy
 
-   02/12/14
-   - BUG: :help on the F1 console doesn't work - seems to be intermittant and
+   02/12/14 - BUG: :help on the F1 console doesn't work - seems to be intermittant and
      when I came back later, the help was on the screen.  Maybe it's unique
      to F1 as that's the primary F-key per the user config?
      12/10/17 - Is this still happening?
@@ -464,18 +462,18 @@ P3 - Documentation
 ------------------
 
 ==========================================================================
-==========================================================================
-
 P4 - Long term requests
+==========================================================================
 
 P4 - UI 
 -------
-
-   - get the Java UI version working
+   - get a GUI UI version working
 
 
 ==========================================================================
+==========================================================================
 Resolved Issues and Enhacements:
+==========================================================================
 ==========================================================================
 
 P1 - Packaging:
@@ -560,8 +558,19 @@ P1 - Compiling:
      Neither of these fixes worked for dranch.
 
 
+P1 - MAIL:
+----------
+
+    - RESOLVED on 03/27/20 by KD6YAM : Filed 08/24/12 - ENHANCEMENT: When you run :mail, it 
+        only shows the last message by default on the top-most line.  If the local user pushes 
+        up arrow cursor key many times, Linpac will scroll back and show all the other messages.  
+        Change behavior to show newest msg at top and older below (maybe make order a preference)
+
+
 P1 - UI:
 --------
+   - RESOLVED - 11/10/18 - when running some linpac modules such as :mail or yput file transfers,
+     many users would see the local error "LinPac is not running" 
 
    - RESOLVED: Alt-X doesn't exit Linpac as the documentation says it should - KJ6LNH
 
@@ -599,9 +608,16 @@ P2 - Website:
    - RESOLVED: Create a source repo on SF and post code to accept contributions
 
 
+P3 - Mail:
+-------------
+   - RESOLVED 03/27/20: Enhancement:   Support for Kantronics PBBS messages in addition to 
+     FBB messages
+
+
 ==========================================================================
 Errata:
 ==========================================================================
+03/27/20 - Updated to reflect changes from Martin's newest merge, added some new bugs
 12/29/19 - Resolved P2-Mail : Show "l" as back for previous screen  (not sure what this issue is)
 12/13/17 - Noted that the install section of make cannot handle spaces in the
            path
