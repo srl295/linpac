@@ -277,10 +277,10 @@ P1 - Documentation
       For example, "socket: Operation not permitted" for the "listen" binary not being SUID 
       root or alternatively, have the user run ax25spyd instead.
 
+
 ==========================================================================
 Priority 2 - Wanted Items (needed but not critical)
 ==========================================================================
-
 
 P2 - Packaging
 --------------
@@ -313,6 +313,13 @@ P2 - UI
        all kinds of ugly ANSI characters on their side.  Exporting a new 
        PS1 prompt doesn't help.  Need another way of fixing this
 
+     - ENHANCEMENT - 03/27/20 - Add support in init.mac to either use pc-beep interface or more modern 
+       approach of playing soundfiles for connection, disconnection, received packet, sysop page, etc.  
+       Examples available via KJ6NKR
+
+     - ENHANCEMENT - 03/27/20 - Add support for alternative mheard output based on various post-processed
+       files. 
+       Examples available via KJ6NKR
 
 P2 - Mail
 ---------
