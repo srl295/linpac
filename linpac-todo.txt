@@ -359,6 +359,8 @@ P2 - Mail
    - ENHANCEMENT: add callsign/date/time to :mail viewer (maybe based upon the
      file timestamp?)
 
+   - 03/28/20 - BUG - :mail doesn't handle Q well while transfer is in progress. 
+
 
 
 P2 - Help 
