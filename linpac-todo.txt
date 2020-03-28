@@ -321,6 +321,21 @@ P2 - UI
        files. 
        Examples available via KJ6NKR
 
+
+P2 - Connectivity
+-----------------
+
+   06/17/14 - Bug - Cannot make functional outgoing connections from a Linpac station when already 
+              connected to it.  The confirmed syntax for a remote callsign to make a new outgoing 
+              connection from Linpac is "//c@2 N0CALL-2" but the challenge here, a remote user won't 
+              know what channel to use (should auto-select).  Next, this command still doesn't work 
+              right as the user in the original channel doesn't see the secondary connection being 
+              made though it shows on the Linpac console.  After that (though the sysop does see that 
+              output on channel 2), no I/O is making it from the original channel (say channel 0) to 
+              the requested channel (say channel 2).  Even if I type in a command in channel 2 and 
+              see the resulting output, that output does NOT show up in Channel 0. There is clearly 
+              some missing plumbing here.
+
 P2 - Mail
 ---------
     - 12/11/17 - ENHANCEMENT: there's a significant amount of code that was copied from linpac 
@@ -353,6 +368,10 @@ P2 - Help
 
 P2 - Documentation
 ------------------
+    - ENHANCEMENT - 03/27/20 - Document the new PBBS and FBB message relay system
+
+    - ENHANCEMENT - 03/27/20 - Clearly describe the outgoing CONNECT syntax
+
     - ENHACEMENT: Linpac manual doesn't talk about DEF_RCMD in init.mac
 
     - ENHANCEMENT in docs for using the F10 Unproto interface
@@ -397,11 +416,6 @@ P3 - Compiling / Installing
 P3 - Connectivity
 -----------------
 
-   06/17/14 - ENHANCEMENT: Cannot make outgoing connections from a Linpac station
-              when already connected to it:
-              //c k6ks-1
-              LinPac: Channel already connected
-
    01/21/13 - ENHANCEMENT: add support for connections via netrom interfaces and not just 
               ax25 interfaces as defined in axports
 
@@ -423,8 +437,8 @@ P3 - UI
 
    - 08/05/12: ENHANCEMENT: Add a configurable scrollback buffer (larger) via init.mac
 
-   - 08/05/12: ENHANCEMENT: change default ax.25 listen startup to include timestamps
-     Maybe this is a change in "listen" or axspyd?
+   - 08/05/12: ENHANCEMENT: change default ax.25 listen startup to include or not include 
+     timestamps.   Maybe this is a change in "listen" or axspyd?
 
    - 08/05/12: ENHANCEMENT: add a prompt when a linpac command completes (configurable?)
      - what is this about.. can't remember
