@@ -2,11 +2,11 @@
 
    --------------------------------------------------------------------------
 
-                                  Version 0.26
+                                  Version 0.28
 
-                     (c) 1998 - 2019 by David Ranch KI6ZHD
+                     (c) 2020 - 1998 by David Ranch KI6ZHD
 
-User manual
+                                  User manual
 
    Contents
 
@@ -55,24 +55,24 @@ User manual
 
 1 What is LinPac
 
-   LinPac is an attempt to create a packet radio terminal for Linux that
-   allows wide configurability and easy addition of new functions and special
-   functions needed by the user. The aim is to minimize the amount of 'hard
-   coded' functions and create a complete set of applications that can be
-   easy expanded and/or completely reconfigured.
+   LinPac is a packet radio terminal for Linux that allows wide
+   configurability and easy addition of new functions and special functions
+   needed by the user. The aim is to minimize the amount of 'hard coded'
+   functions and create a complete set of applications that can be easy
+   expanded and/or completely reconfigured.
 
    All functions described in this manual match the standard configuration
    that comes with the distribution package.
 
 2 First configuration
 
-   When linpac is started for the first time, it automaticaly creates the
-   directory called LinPac in the running user's home directory. This
-   directory will contain the user's personal LinPac configuration settings.
-   After creating this directory, LinPac asks for basic callsign, port and
-   other information and prepares a useable configuration for you. An example
-   setup dialog is as shown, where we are using the bogus call "n0call"
-   logging into the local BBS "n0ary-1":
+   When linpac is started for the first time on your computer, it
+   automaticaly creates the directory called LinPac in the running user's
+   home directory. This directory will contain the user's personal LinPac
+   configuration settings. After creating this directory, LinPac asks for
+   basic callsign, port and other information and prepares a useable
+   configuration for you. An example setup dialog is as shown, where we are
+   using the bogus call "n0call" logging into the local home BBS "n0ary-1":
 
  $ linpac
 
@@ -118,10 +118,10 @@ User manual
 
    You may also want to review or change following macro files:
 
-     * info.mac - contains information about your system
-     * ctext.mac - executed when the peer connects and should contain the
+     * info.mac - contains information about your system
+     * ctext.mac - executed when the peer connects and should contain the
        greeting text
-     * quit.mac - called when user enters the Quit command (end of
+     * quit.mac - called when user enters the Quit command (end of
        connection) and should print some farewell text and disconnect
 
    After this you should be able to make your first connection.
@@ -135,15 +135,15 @@ User manual
    screen is divided into five parts (described from the top of the screen to
    the bottom):
 
-     * QSO window: this window contains the text that came from the peer and
+     * QSO window: this window contains the text that came from the peer and
        also the sent text and some special messages (different text colours).
-     * Status line: displays your callsign, current time and some information
+     * Status line: displays your callsign, current time and some information
        about the current connection.
-     * Editor: allows you to enter the text you want to send to the peer or
+     * Editor: allows you to enter the text you want to send to the peer or
        the commands you want to execute
-     * Channel list: displays the list of channels with the callsign of
+     * Channel list: displays the list of channels with the callsign of
        connected users. The currently selected channel is highlighted.
-     * Monitor : displays the traffic on your radio ports
+     * Monitor : displays the traffic on your radio ports
 
    LinPac is mostly driven by commands. The commands are entered using the
    editor and must start with a colon (':') in the first column. Lines that
@@ -546,7 +546,7 @@ User manual
    IF ~ ELSE ~ ENDIF
    Conditional commands. There are two ways to specify a condition:
 
-     * normal notation (for more than one command)  
+     * normal notation (for more than one command)  
 
        IF <condition>
        .
@@ -563,9 +563,9 @@ User manual
        ENDIF
 
        The ELSE part is not necessary - the IF ~ ENDIF notation is possible.
-        
+        
 
-     * abbreviated notation (for one conditional command)
+     * abbreviated notation (for one conditional command)
 
        IF (<condition>) command
 
@@ -580,20 +580,20 @@ User manual
    in the text macros, they are here for explanation only)
 
    :if %(exist STN_NICKNAME) == 1 ;; when NICKNAME is defined
-   Hello %STN_NICKNAME            ;; greet with the nickname
-   :else                          ;; else (not defined)
-   Hello %N !                     ;; greet with the name
-   :endif                         ;;(following commands are always executed)
+   Hello %STN_NICKNAME            ;; greet with the nickname
+   :else                          ;; else (not defined)
+   Hello %N !                     ;; greet with the name
+   :endif                         ;;(following commands are always executed)
    You have connected to %Y at %T. ;; Say your callsign and current time
 
    b) The solution using a command macro
 
    :macro GREETING ;; start the command macro
    if %(exist STN_NICKNAME) == 1 ;; when NICKNAME is defined
-   echo Hello %STN_NICKNAME     ;; greet with the nickname
-   else                         ;; else (not defined)
-   echo Hello %N !              ;; greet with the name
-   endif                        ;; (following commands are always executed)
+   echo Hello %STN_NICKNAME     ;; greet with the nickname
+   else                         ;; else (not defined)
+   echo Hello %N !              ;; greet with the name
+   endif                        ;; (following commands are always executed)
    echo You have connected to %Y at %T. ;; Say your callsign and current time
 
   6.3 Special system macros
@@ -658,8 +658,8 @@ User manual
 
    At present LinPac supports two protocols for transferring files:
 
-     * Autobin - a simple protocol suitable for short files
-     * YAPP - a very sophisticated transfer protocol that provides better
+     * Autobin - a simple protocol suitable for short files
+     * YAPP - a very sophisticated transfer protocol that provides better
        error detection and is able to resume a previously interrupted
        transfer
 
@@ -699,11 +699,11 @@ User manual
 
    Known station types are:
 
-     * FBB - An F6FBB BBS. The PWD field must contain your password.
-     * THENET - A TheNet node. Again the PWD must contain the password.
-     * BAYBOX - The same system as TheNet.
-     * FPAC - A FPAC node. Password must be stored in the PWD field.
-     * FLEXNET - FlexNet node. If the magic number algorithm is used (older
+     * FBB - An F6FBB BBS. The PWD field must contain your password.
+     * THENET - A TheNet node. Again the PWD must contain the password.
+     * BAYBOX - The same system as TheNet.
+     * FPAC - A FPAC node. Password must be stored in the PWD field.
+     * FLEXNET - FlexNet node. If the magic number algorithm is used (older
        versions of flexdigi) the SYSNUM field must contain your magic number
        and the PWD field must not be set. When the TheNet algorithm is used
        (newer versions of flexdigi), the PWD field must contain the password
@@ -729,11 +729,11 @@ User manual
 
    where
 
-     * <command> is the command to be sent to the remote station to start the
+     * <command> is the command to be sent to the remote station to start the
        authorization sequence (sys by default)
-     * <system> is one of the above-mentioned supported systems; this system
+     * <system> is one of the above-mentioned supported systems; this system
        is used instead of the one specified in station database
-     * <password> is the password that will be used instead of the one
+     * <password> is the password that will be used instead of the one
        specified in the station database
 
    It's recommended that you create simple macros for frequently used
@@ -741,503 +741,626 @@ User manual
 
   8.3 Utilities for mail exchange
 
-   LinPac contains some utilities for exchanging mail with the F6FBB BBS. For
-   the proper function of these utilities, the following variables must be
-   created in channel 0:
+   LinPac contains some utilities for exchanging mail with remote Kantronics
+   PBBSs though some initial but incomplete support is also present for F6FBB
+   BBS systems. For complete function, you need to install the ax25mail-utils
+   package and then the following variables must be created in channel 0
+   (usually set in the init.mac file):
 
-     * HOME_BBS - The AX.25 path to the home BBS including the port name. For
-       example kiss:OK0PAB OK0NMA is the BBS OK0PAB which can be connected on
-       port kiss via the node OK0NMA.
-     * HOME_ADDR - The full hierarchical address of the BBS. For example
-       OK0PAB.#MOR.CZE.EU.
+   Example #1:
 
-   To set the variable, the :SET command can be used. For example:
+     * HOME_TYPE - This sets the type of remote system you're connecting to.
+       Supported options are either "PBBS" for Kantronics KPC3 type TNCs or
+       "FBB" for F6FBB BBSes. Only "PBBS" is supported today but we'd love to
+       get the FBB support complete soon.
+     * HOME_BBS - The AX.25 path to the home PBBS including the port name.
+       For example d710:AA6WK-1 is the PBBS AA6WK-1 which can be connected on
+       AX.25 port d710. It's important to note that the callsigns are
+       case-sensitive in Linpac so make sure these two variables use the SAME
+       case.
+     * HOME_ADDR - The full hierarchical address of the BBS (which
+       technically isn't required for PBBSes). For example
+       AA6WK.#NCA.CA.USA.NOAM.
 
-   :set HOME_BBS@0 "kiss:OK0PAB OK0NMA"
+   To set the variable while in Linpac, the :SET command can be used. You can
+   also put this same line (but without the colon) in Linpac's init.mac file:
+
+   :set HOME_TYPE "PBBS"
+
+   :set HOME_BBS@0 "d710:AA6WK-1"
+
+   :set HOME_ADDR "AA6WK.#NCA.CA.USA.NOAM"
 
    The recommended place to set this variables is in the startup macro
    init.mac. The default version of this macro contains an example of setting
    these variables. After setting these variables, the following commands are
    available:
 
-   :GETMSG <message_number> [<message_number> ...]
-   Reads specified messages from the BBS and stores them into
-   /var/ax25/mail/<BBS_callsign>/<message_number>. The directory for the BBS
-   must be created before using this command (use upper case for the BBS
-   callsign). When the message number starts with the letter 'p', the message
-   is considered a personal one and it's killed automatically after download.
-   You can specify the kill command by setting the KILLPERS variable in
-   channel 0 using the # character for the number of the message (e.g. :set
-   KILLPERS@0 "kill #"). When this variable is not set, the default command K
-   # is used.
+   Example #2:
 
-   :SP <address> or :SB <address>
-   These commands can be used for creating new private messages or bulletins.
-   The usage is the same as for the FBB BBS.
+     * HOME_TYPE - This sets the type of remote system you're connecting to.
+       Supported options are either "PBBS" for Kantronics KPC3 type TNCs or
+       "FBB" for F6FBB BBSes. Only "PBBS" is supported today but we'd love to
+       get the FBB support complete soon.
+     * HOME_BBS - The AX.25 path to the home BBS including the port name. For
+       example kiss:OK0PAB OK0NMA is the BBS OK0PAB which can be connected on
+       AX.25 port kiss via the digipeater OK0NMA. It's important to note that
+       the callsigns are case-sensitive in Linpac so make sure these two
+       variables use the SAME case.
+     * HOME_ADDR - The full hierarchical address of the BBS. For example
+       OK0PAB.#MOR.CZE.EU.
 
-   :FORWARD
-   Transfers all new messages to the BBS.
+   To set the variable while in Linpac, the :SET command can be used. You can
+   also put this same line (but without the colon) in Linpac's init.mac file:
 
-   :DELMSG <message_number>
-   Marks the message for delete.
+   :set HOME_BBS@0 "kiss:OK0PAB OK0NMA"
 
-   :PACK
-   Deletes all marked messages.
+   Now you need to configure the ax25mail-utils program by editing the
+   /etc/ax25/axgetlist.conf file. Following the example #1 above, I would
+   enter:
+
+     [AA6WK-1] MYCALL N0CALL BBSCALL AA6WK-1 BBSPORT d710 CMD_LIST LO +;L
+     CMD_LIST_FROM LO +;L $ CMD_DISC B HEADER_LINES 1 FORMAT DATEFMT
+     mm/dd/yyyy BPFPOS 1--
+
+   NOTE: the related /etc/ax25/axgetmail.conf configuration file is only used
+   by "FBB" setups and that functionality has some known issues at the moment
+
+   Now that the basics are setup, you need to fetch the pending messages for
+   you on your configured remote system. To do so, you would enter in the
+   following command on the Linux prompt:
+
+     axgetlist -b AA6WK-1
+
+        NOTE: This command must be run as the same Unix username that is
+        running the Linpac program. The axgetlist utility will download a
+        list of messages and store this list in /var/ax25/ulistd/. While this
+        Linux commandline-based download occurs, the interation will NOT show
+        up in the Linpac UI though you might see the AX.25 traffic if you
+        have the monitor interface running. This downloaded index will then
+        be used to either manually download these messages them or interact
+        with them via :mail interface
+
+        :GETMSG <message_number> [<message_number> ...]
+        From the main Linpac interface, this command reads specified messages
+        from the remote BBS and stores them into
+        /var/ax25/mail/<BBS_callsign>/<message_number>. The file system
+        directory for the remote BBS must be created before using this
+        command (use upper case for the BBS callsign). When the message
+        number starts with the letter 'p', the message is considered a
+        PERSONAL one and it's killed automatically after download. You can
+        specify the kill command by setting the KILLPERS variable in channel
+        0 using the # character for the number of the message (e.g. :set
+        KILLPERS@0 "kill #"). When this variable is not set, the default
+        command K # is used. This can also be set in the init.mac file.
+
+        :SP <address> or :SB <address>
+        These commands can be used for creating new private messages or
+        bulletins. The usage is the same as for the FBB BBS.
+
+        :FORWARD
+        Transfers all new messages to the BBS.
+
+        :DELMSG <message_number>
+        Marks the message for delete.
+
+        :PACK
+        Deletes all marked messages.
 
   8.4 Mail client
 
-   This application allows full screen message editing and browsing. It
-   provides the frontend to mail exchange utilities. The mail client is
-   started by the :MAIL command. After the program is started, the H key
-   shows the operating instructions.
+        This application allows full screen message editing and browsing. It
+        provides the frontend to mail exchange utilities. The mail client is
+        started by the :MAIL command. After the program is started, the H key
+        shows the operating instructions.
+
+        In the INCOMING mail folder, you should see a list of messages
+        available to download. Toggle the ones you want to fetch with the
+        space bar and then use the "d" key to download those messages.
 
   8.5 Logbook
 
-   Logbook is a simple application that is started from the cinit.mac and
-   cexit.mac scripts (at the begining and at the end of each connection). It
-   creates the file in the 'log' directory for each callsign and writes there
-   the time when the connections were started and finished and the QRG. The
-   QRG is taken from the QRG field of the station entry in station database.
-   If the station has no QRG defined, the value from the QRG@0 variable is
-   taken.
+        Logbook is a simple application that is started from the cinit.mac
+        and cexit.mac scripts (at the begining and at the end of each
+        connection). It creates the file in the 'log' directory for each
+        callsign and writes there the time when the connections were started
+        and finished and the QRG. The QRG is taken from the QRG field of the
+        station entry in station database. If the station has no QRG defined,
+        the value from the QRG@0 variable is taken.
 
 9 Command line options
 
-   LinPac accepts following command line options:
+        LinPac accepts following command line options:
 
-     -m : disable monitor. When this option is used, LinPac doesn't create
-     it's internal monitor objects and saves memory.
+           -m : disable monitor. When this option is used, LinPac doesn't
+           create it's internal monitor objects and saves memory.
 
-     -s : disable ax25spyd. Linpac normally tries to connect ax25spyd to get
-     monitor data and when the connection fails, the listen utility is used
-     instead. When -s swicth is used, LinPac doesn't try to connect ax25spyd
-     at all.
+           -s : disable ax25spyd. Linpac normally tries to connect ax25spyd
+           to get monitor data and when the connection fails, the listen
+           utility is used instead. When -s swicth is used, LinPac doesn't
+           try to connect ax25spyd at all.
 
-     -d : daemon mode. LinPac doesn't initialize the screen and runs in the
-     background.
+           -d : daemon mode. LinPac doesn't initialize the screen and runs in
+           the background.
 
-     -p <string> : specify the arguments for the listen program. Default
-     value is ar8.
+           -p <string> : specify the arguments for the listen program.
+           Default value is ar8.
 
 10 Copying
 
-   LinPac is Copyright (c) 2002-2016 by David Ranch KI6ZHD and Copyright (c)
-   1998-2002 by Radek Burget, OK2JBG
+        LinPac is Copyright (c) 2002-2016 by David Ranch KI6ZHD and Copyright
+        (c) 1998-2002 by Radek Burget, OK2JBG
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the Free
-   Software Foundation;
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation;
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-   or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-   for more details (contained in file 'license').
+        This program is distributed in the hope that it will be useful, but
+        WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+        General Public License for more details (contained in file
+        'license').
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, see <https://www.gnu.org/licenses/>.
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
 Appendix A - LinPac commands
 
   Built-in commands
 
-   a) action commands
+        a) action commands
 
-   ABort [address]
-   Cancels an action. Some commands are cancelled without specifying any
-   address (e.g. autobin). Addresses for some commands:
+        ABort [address]
+        Cancels an action. Some commands are cancelled without specifying any
+        address (e.g. autobin). Addresses for some commands:
 
-   +------------------------------------------------------------------------+
-   | Action         | Address for abort                                     |
-   |----------------+-------------------------------------------------------|
-   | autobin RX/TX  | autobin (or none)                                     |
-   |----------------+-------------------------------------------------------|
-   | yapp RX/TX     | yapp (or none)                                        |
-   |----------------+-------------------------------------------------------|
-   | 7plus autosave | 7plus (or none)                                       |
-   |----------------+-------------------------------------------------------|
-   | read / RBin    | read (or none)                                        |
-   |----------------+-------------------------------------------------------|
-   | write / WBin   | write (or none)                                       |
-   |----------------+-------------------------------------------------------|
-   | forward        | forward (mandatory)                                   |
-   +------------------------------------------------------------------------+
+        +--------------------------------------+
+        | Action         | Address for abort   |
+        |----------------+---------------------|
+        | autobin RX/TX  | autobin (or none)   |
+        |----------------+---------------------|
+        | yapp RX/TX     | yapp (or none)      |
+        |----------------+---------------------|
+        | 7plus autosave | 7plus (or none)     |
+        |----------------+---------------------|
+        | read / RBin    | read (or none)      |
+        |----------------+---------------------|
+        | write / WBin   | write (or none)     |
+        |----------------+---------------------|
+        | forward        | forward (mandatory) |
+        +--------------------------------------+
 
-   Most of the other commands don't need any address.
+        Most of the other commands don't need any address.
 
-   COMPress [on | off | 1 | 0]
-   Switch the link compression on or off. The arguments 1 and 0 have the same
-   meaning as on or off but the remote station is not synchronized.
+        COMPress [on | off | 1 | 0]
+        Switch the link compression on or off. The arguments 1 and 0 have the
+        same meaning as on or off but the remote station is not synchronized.
 
-   Connect [port:]call [digi [digi...]]
-   Initiate a connection to the specified station.
+        Connect [port:]call [digi [digi...]]
+        Initiate a connection to the specified station.
 
-   Disconnect
-   Disconnect the channel.
+        Disconnect
+        Disconnect the channel.
 
-   Echo <text>
-   Print (send) the specified text.
+        Echo <text>
+        Print (send) the specified text.
 
-   FLUSH
-   Flush an output buffer (for example in scripts before disconnect or before
-   requesting input).
+        FLUSH
+        Flush an output buffer (for example in scripts before disconnect or
+        before requesting input).
 
-   SYstem
-   End of LinPac, cancel all connections.
+        SYstem
+        End of LinPac, cancel all connections.
 
-   UNproto <text>
-   Send specified text in a UI frame.
+        UNproto <text>
+        Send specified text in a UI frame.
 
-   VERsion
-   Print version information.
+        VERsion
+        Print version information.
 
-   b) Commands for variable handling
+        b) Commands for variable handling
 
-   SET <variable> <value>
-   Assign a value to the variable. If the variable doesn't exist, it is
-   created.
+        SET <variable> <value>
+        Assign a value to the variable. If the variable doesn't exist, it is
+        created.
 
-   UNSET <variable>
-   Remove the variable.
+        UNSET <variable>
+        Remove the variable.
 
-   GET <variable>
-   Return the value of the variable. Usually is better to use macro %variable
-   (see file macros.txt)
+        GET <variable>
+        Return the value of the variable. Usually is better to use macro
+        %variable (see file macros.txt)
 
-   EXISTs <variable>
-   Return 1 when variable exists, 0 when it doesn't exist.
+        EXISTs <variable>
+        Return 1 when variable exists, 0 when it doesn't exist.
 
-   c) information commands
+        c) information commands
 
-   ENVINFO
-   Display information about the variable environment.
+        ENVINFO
+        Display information about the variable environment.
 
-   ISCONnected
-   Return "1" when the channel is connected, "0" otherwise.
+        ISCONnected
+        Return "1" when the channel is connected, "0" otherwise.
 
-   MAXCHannels
-   Return the number of LinPac channels (typically 8).
+        MAXCHannels
+        Return the number of LinPac channels (typically 8).
 
-   PCALL
-   Return the physical callsign of the connected station (first station
-   connected)
+        PCALL
+        Return the physical callsign of the connected station (first station
+        connected)
 
-   UTCTime
-   Return current UTC time (operating system value).
+        UTCTime
+        Return current UTC time (operating system value).
 
-   d) setup commands
+        d) setup commands
 
-   CBell [on|off]
-   When on, LinPac gives an audio signal when any station connects or
-   disconnects.
+        CBell [on|off]
+        When on, LinPac gives an audio signal when any station connects or
+        disconnects.
 
-   FIXPath [on|off]
-   When FIXPath=ON then the paths to files mentioned in the parameters are
-   ignored for external commands marked with a P flag. That means only the
-   default paths are usable.
+        FIXPath [on|off]
+        When FIXPath=ON then the paths to files mentioned in the parameters
+        are ignored for external commands marked with a P flag. That means
+        only the default paths are usable.
 
-   INFOLEvel [0 | 1 | 2]
-   Set the mode of information line:
-   0 - off (no connection info)
-   1 - show importatnt informations
-   2 - show all available informations
+        INFOLEvel [0 | 1 | 2]
+        Set the mode of information line:
+        0 - off (no connection info)
+        1 - show importatnt informations
+        2 - show all available informations
 
-   KNax [on|off]
-   Enable/disable sound signal when data is received.
+        KNax [on|off]
+        Enable/disable sound signal when data is received.
 
-   Language [language]
-   Sets the language used. Currently supported in scripts only.
+        Language [language]
+        Sets the language used. Currently supported in scripts only.
 
-   LIsten [on|off]
-   When listen is off, all connect requests are ignored by LinPac. Default
-   value is on.
+        LIsten [on|off]
+        When listen is off, all connect requests are ignored by LinPac.
+        Default value is on.
 
-   MBIN [on|off]
-   When switched on, the monitor shows binary data. When switched off, the
-   binary data is hidden and replaced with the <Binary data> information.
+        MBIN [on|off]
+        When switched on, the monitor shows binary data. When switched off,
+        the binary data is hidden and replaced with the <Binary data>
+        information.
 
-   MONitor [on|off]
-   Enable/disable monitor function. This command is usually followed by
-   STATLINE and CHNLINE commands to adjust the screen layout.
+        MONitor [on|off]
+        Enable/disable monitor function. This command is usually followed by
+        STATLINE and CHNLINE commands to adjust the screen layout.
 
-   MONPort <port_specification>
-   Monitor the specified port(s) only. Port specification is either a port
-   name (as defined in /etc/ax25/axports) or * for monitoring all the ports.
+        MONPort <port_specification>
+        Monitor the specified port(s) only. Port specification is either a
+        port name (as defined in /etc/ax25/axports) or * for monitoring all
+        the ports.
 
-   MYcall <call>
-   Change the channel callsign.
+        MYcall <call>
+        Change the channel callsign.
 
-   Port <port_name>
-   Set the default port for the Connect command. This is usually the first
-   port defined in the /etc/ax25/axports file but can be overriden here. This
-   can be overriden for particular channels by setting the CHN_PORT variable
-   for the channel (see chapter 3.3).
+        Port <port_name>
+        Set the default port for the Connect command. This is usually the
+        first port defined in the /etc/ax25/axports file but can be overriden
+        here. This can be overriden for particular channels by setting the
+        CHN_PORT variable for the channel (see chapter 3.3).
 
-   PRIVate [on|off]
-   Mark the channel as private. No stations are allowed to connect on this
-   channel.
+        PRIVate [on|off]
+        Mark the channel as private. No stations are allowed to connect on
+        this channel.
 
-   RCMD [<command list>]
-   Specify the list of available external commands. Only commands from this
-   list are available to a remote user. It's possible to include abbreviated
-   commands. The remote commands can be executed only on a channel which
-   provides a connection. Adding the @ character just after the command name
-   in the list (e.g. GET@) means that the remote user is allowed to specify
-   the channel on which the command should be executed (e.g. //GET@5 NAME).
+        RCMD [<command list>]
+        Specify the list of available external commands. Only commands from
+        this list are available to a remote user. It's possible to include
+        abbreviated commands. The remote commands can be executed only on a
+        channel which provides a connection. Adding the @ character just
+        after the command name in the list (e.g. GET@) means that the remote
+        user is allowed to specify the channel on which the command should be
+        executed (e.g. //GET@5 NAME).
 
-   REMote [on|off]
-   Enable or disable remote commands.
+        REMote [on|off]
+        Enable or disable remote commands.
 
-   RXFlow [on|off]
-   Enable or disable data RX. The data is received only when RXFlow is
-   enabled on all channels.
+        RXFlow [on|off]
+        Enable or disable data RX. The data is received only when RXFlow is
+        enabled on all channels.
 
-   TIMEZone [zone]
-   Set the time zone. Used for information only, doesn't affect time.
+        TIMEZone [zone]
+        Set the time zone. Used for information only, doesn't affect time.
 
-   UNDest [call]
-   The destination address for UI frames.
+        UNDest [call]
+        The destination address for UI frames.
 
-   UNPort <port_name>
-   Set the default port for the UI frames / unproto traffic command or F10
-   unproto traffic area. This is usually the first port defined in the
-   /etc/ax25/axports file but can be overriden here. This can be overriden
-   for particular channels by setting the unport variable for the channel.
+        UNPort <port_name>
+        Set the default port for the UI frames / unproto traffic command or
+        F10 unproto traffic area. This is usually the first port defined in
+        the /etc/ax25/axports file but can be overriden here. This can be
+        overriden for particular channels by setting the unport variable for
+        the channel.
 
-   UNSrc [call]
-   The source callsign for UI frames.
+        UNSrc [call]
+        The source callsign for UI frames.
 
-   WAtch <port | 0> <pattern> <command/text>
-   Start to watch the specified port (0 for all ports). When the specified
-   pattern is received then the specified command is executed or text is
-   sent. (Commands must start with a colon.)
+        WAtch <port | 0> <pattern> <command/text>
+        Start to watch the specified port (0 for all ports). When the
+        specified pattern is received then the specified command is executed
+        or text is sent. (Commands must start with a colon.)
 
-   e) Screen control commands
+        e) Screen control commands
 
-   STATLINE <n>
-   Place the status line at the n-th line of the screen.
+        STATLINE <n>
+        Place the status line at the n-th line of the screen.
 
-   CHNLINE <n>
-   Place the channel line at the n-th line of the screen.
+        CHNLINE <n>
+        Place the channel line at the n-th line of the screen.
 
-   SWAPEDit
-   Replace the editor window with the QSO window and vice versa.
+        SWAPEDit
+        Replace the editor window with the QSO window and vice versa.
 
-   INFOLine <nm> <text>
-   Change the specified info line text. If the info line doesn't exist, it's
-   created.
+        INFOLine <nm> <text>
+        Change the specified info line text. If the info line doesn't exist,
+        it's created.
 
-   REMOVEINFO <nm>
-   Remove the specified info line.
+        REMOVEINFO <nm>
+        Remove the specified info line.
 
-   TRanslate <alias>
-   Switch I/O character translation (see chapter 3.6). Running this command
-   on channel 0 (unproto channel) switches the translation table in all
-   channels including the unproto channel and the monitor window.
+        TRanslate <alias>
+        Switch I/O character translation (see chapter 3.6). Running this
+        command on channel 0 (unproto channel) switches the translation table
+        in all channels including the unproto channel and the monitor window.
 
-   TErm <type>
-   Set the terminal type. If 'ansi' is entered then ANSI-color control
-   sequences are interpreted.
+        TErm <type>
+        Set the terminal type. If 'ansi' is entered then ANSI-color control
+        sequences are interpreted.
 
-   SCRLimit <low-limit> <high-limit>
-   When the size of the window buffer exceeds the high limit, then the size
-   of the buffer is truncated to low-limit. The values are in bytes; default
-   is 356352 and 524288 (384 and 512 kB).
+        SCRLimit <low-limit> <high-limit>
+        When the size of the window buffer exceeds the high limit, then the
+        size of the buffer is truncated to low-limit. The values are in
+        bytes; default is 356352 and 524288 (384 and 512 kB).
 
-   DEFColor <color_name> <foreground_color> <background_color>
-   Change the color of some part of screen. The color_name parameter
-   specifies which part of screen to change. The following values can be
-   used:
-   QSO_RX - received text in QSO window
-   QSO_TX - sent text in QSO window
-   QSO_INFO - local information in QSO window
-   QSO_CTRL - control characters in QSO window
-   ED_TEXT - normal text in editor
-   ED_INFO - command results in editor
-   ED_CTRL - control characters in editor
-   CI_NORM - channel info line - channel numbers
-   CI_SLCT - selected channel
-   CI_NCHN - normal channel
-   CI_PRVT - private channel
-   IL_TEXT - status lines
+        DEFColor <color_name> <foreground_color> <background_color>
+        Change the color of some part of screen. The color_name parameter
+        specifies which part of screen to change. The following values can be
+        used:
+        QSO_RX - received text in QSO window
+        QSO_TX - sent text in QSO window
+        QSO_INFO - local information in QSO window
+        QSO_CTRL - control characters in QSO window
+        ED_TEXT - normal text in editor
+        ED_INFO - command results in editor
+        ED_CTRL - control characters in editor
+        CI_NORM - channel info line - channel numbers
+        CI_SLCT - selected channel
+        CI_NCHN - normal channel
+        CI_PRVT - private channel
+        IL_TEXT - status lines
 
-   For specifying foreground and background colors, these values can be used:
-   BLACK, RED, GREEN, BROWN, BLUE, MAGENTA, CYAN, LIGHTGRAY
-   These additional colors can be used for foreground only:
-   DARKGRAY, LIGHTRED, LIGHTGREEN, YELLOW, LIGHTBLUE, LIGHTMAGENTA,
-   LIGHTCYAN, WHITE
+        For specifying foreground and background colors, these values can be
+        used:
+        BLACK, RED, GREEN, BROWN, BLUE, MAGENTA, CYAN, LIGHTGRAY
+        These additional colors can be used for foreground only:
+        DARKGRAY, LIGHTRED, LIGHTGREEN, YELLOW, LIGHTBLUE, LIGHTMAGENTA,
+        LIGHTCYAN, WHITE
 
-   f) system commands
+        f) system commands
 
-   RESULT <text>
-   Return the text as the result of a script.
+        RESULT <text>
+        Return the text as the result of a script.
 
-   g) string commands
+        g) string commands
 
-   STRMid <start> <length> <string>
-   Return the substring starting at <start> position and <length> characters
-   long.
+        STRMid <start> <length> <string>
+        Return the substring starting at <start> position and <length>
+        characters long.
 
-   STRLeft <length> <string>
-   Return the left substring of specified length.
+        STRLeft <length> <string>
+        Return the left substring of specified length.
 
-   STRRight <length> <string>
-   Return the right substring of specified length.
+        STRRight <length> <string>
+        Return the right substring of specified length.
 
-   STRLen <string>
-   Return the length of the string.
+        STRLen <string>
+        Return the length of the string.
 
-   STRPos <substring> <string>
-   Return the position of the substring in the string or -1 when the string
-   doesn't contain the substring.
+        STRPos <substring> <string>
+        Return the position of the substring in the string or -1 when the
+        string doesn't contain the substring.
 
-   UPCASE <string>
-   Return the string converted into upper case.
+        UPCASE <string>
+        Return the string converted into upper case.
 
   External commands
 
-   Bell
-   Call the operator using an acoustic signal.
+        Bell
+        Call the operator using an acoustic signal.
 
-   Compose [p|b] <address> [<subject>] [<filename>]
-   Create a private message or a bulletin for the specified address. When no
-   subject is specified, the user is prompted for the subject. When filename
-   is specified, the message is created from the file, otherwise the text is
-   read from the LinPac console.
+        Compose [p|b] <address> [<subject>] [<filename>]
+        Create a private message or a bulletin for the specified address.
+        When no subject is specified, the user is prompted for the subject.
+        When filename is specified, the message is created from the file,
+        otherwise the text is read from the LinPac console.
 
-   CATCH -iol <pattern> <command/text>
-   Catch is the extended version of WAtch command. It scans one or more data
-   streams (-i = input stream, -o = output stream, -l = local info stream)
-   for the pattern. The pattern can contain * and ? wildcards. The command
-   can contain string $1 .. $n which are replaced with the string
-   corresponding to the n-th wildcard in the pattern. The $0 string is
-   replaced with the whole string that matches the pattern. See catch -h for
-   extended parameters.
+        CATCH -iol <pattern> <command/text>
+        Catch is the extended version of WAtch command. It scans one or more
+        data streams (-i = input stream, -o = output stream, -l = local info
+        stream) for the pattern. The pattern can contain * and ? wildcards.
+        The command can contain string $1 .. $n which are replaced with the
+        string corresponding to the n-th wildcard in the pattern. The $0
+        string is replaced with the whole string that matches the pattern.
+        See catch -h for extended parameters.
 
-   DELMSG <message_number>
-   Mark the message for delete.
+        DELMSG <message_number>
+        Mark the message for delete.
 
-   FORWARD
-   Transmit all new messages to a BBS.
+        FORWARD
+        Transmit all new messages to a BBS.
 
-   GETMsg <numers>
-   Read the messages from a BBS.
+        GETMsg <numers>
+        Read the messages from a BBS.
 
-   JOIN <channel_number>
-   Join the specified channel to current channel. All data received on any of
-   these channels is automatically redirected to the other channel. Stop with
-   :ABort join.
+        JOIN <channel_number>
+        Join the specified channel to current channel. All data received on
+        any of these channels is automatically redirected to the other
+        channel. Stop with :ABort join.
 
-   MAIL
-   Simple full-screen mail client.
+        MAIL
+        Simple full-screen mail client.
 
-   MHeard
-   List of heard stations.
+        MHeard
+        List of heard stations.
 
-   Name
-   Store station name or change a station database entry. (see Name -h)
+        Name
+        Store station name or change a station database entry. (see Name -h)
 
-   PACK
-   Delete all messages marked for delete.
+        PACK
+        Delete all messages marked for delete.
 
-   Read <filename>
-   Send the specified text file.
+        Read <filename>
+        Send the specified text file.
 
-   RPRg <filename>
-   Transmit the file using Autobin protocol.
+        RPRg <filename>
+        Transmit the file using Autobin protocol.
 
-   RTt
-   Measure the round trip time.
+        RTt
+        Measure the round trip time.
 
-   SENDFile [p|b] <file> <address> [<num_messages>]
-   This command takes a binary file, splits the file into num_messages parts
-   using 7plus and creates a separate message for each part. When
-   num_messages is not specified, the command tries to use
-   the variable BLOCK7P@0 which should contain the maximum size of one block.
-   If this variable is not set, blocks of 5 KB are created.
+        SENDFile [p|b] <file> <address> [<num_messages>]
+        This command takes a binary file, splits the file into num_messages
+        parts using 7plus and creates a separate message for each part. When
+        num_messages is not specified, the command tries to use
+        the variable BLOCK7P@0 which should contain the maximum size of one
+        block. If this variable is not set, blocks of 5 KB are created.
 
-   WBin / RBin
-   The same as Read / Write, but for binary files.
+        WBin / RBin
+        The same as Read / Write, but for binary files.
 
-   Write <filename>
-   Start to write received text to the file.
+        Write <filename>
+        Start to write received text to the file.
 
-   YPUT <filename>
-   Transmit the file using the YAPP protocol.
+        YPUT <filename>
+        Transmit the file using the YAPP protocol.
 
   Macros
 
-   Activity
-   Show the time since the last operator activity.
+        Activity
+        Show the time since the last operator activity.
 
-   Conv
-   Enter the conference.
+        Conv
+        Enter the conference.
 
-   Info
-   Print local station information.
+        Info
+        Print local station information.
 
-   Help
-   Print brief help information.
+        Help
+        Print brief help information.
 
-   PW [<command> [<system> [<password>] ] ]
-   Start the authorization to the BBS or the node. See chapter 8.2.2 .
+        PW [<command> [<system> [<password>] ] ]
+        Start the authorization to the BBS or the node. See chapter 8.2.2 .
 
-   Quit
-   Send the quit text and disconnect.
+        Quit
+        Send the quit text and disconnect.
 
-   Users / CStatus
-   Print list of connected users.
+        Users / CStatus
+        Print list of connected users.
 
   Commands for creating scripts
 
-   MACRO [name]
-   Start of the command script definition (see below).
+        MACRO [name]
+        Start of the command script definition (see below).
 
-   LABEL <label_name>
-   Create a label with specified name. In the command scripts the notation
-   :<label_name> can be used.
+        LABEL <label_name>
+        Create a label with specified name. In the command scripts the
+        notation :<label_name> can be used.
 
-   GOTO <label_name>
-   Jump to specified label.
+        GOTO <label_name>
+        Jump to specified label.
 
-   IF ~ ELSE ~ ENDIF
-   Conditional commands. There are two ways to specify a condition:
+        IF ~ ELSE ~ ENDIF
+        Conditional commands. There are two ways to specify a condition:
 
-     * normal notation (for more than one command)
+           * normal notation (for more than one command)
 
-       IF <condition>
-       .
-       .
-       (commands to be done when the condition is true)
-       .
-       .
-       ELSE
-       .
-       .
-       (commands to be done when the condition is false)
-       .
-       .
-       ENDIF
+             IF <condition>
+             .
+             .
+             (commands to be done when the condition is true)
+             .
+             .
+             ELSE
+             .
+             .
+             (commands to be done when the condition is false)
+             .
+             .
+             ENDIF
 
-       The ELSE part is not necessary - the IF ~ ENDIF notation is possible.
+             The ELSE part is not necessary - the IF ~ ENDIF notation is
+             possible.
 
-       abbreviated notation (for one conditional command)
+             abbreviated notation (for one conditional command)
 
-       IF (<condition>) command
+             IF (<condition>) command
 
-       The parentheses are necessary in this case.
+             The parentheses are necessary in this case.
 
-   RETURN [<data>]
-   Abort the macro execution and return the data as a result.
+        RETURN [<data>]
+        Abort the macro execution and return the data as a result.
 
-   SLEEP <seconds>
-   Pause the macro for specified time in seconds.
+        SLEEP <seconds>
+        Pause the macro for specified time in seconds.
 
-   WAITFOR <condition>
-   Pause the macro until the condition is true.
+        WAITFOR <condition>
+        Pause the macro until the condition is true.
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
-   Last update: 1 April 2019
-   Please report any errors to linpac@trinnet.net
+        Last update: 1 April 2019
+        Please report any errors to linpac@trinnet.net
+
+References
+
+   Visible links
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_6
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_7
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS4_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS5_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS5_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS5_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS6
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS6_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS6_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS6_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS7
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_2_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_2_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS9
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS10
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POSAppendixA
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS6
+   . https://sourceforge.net/p/linpac/bugs/24/
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS7
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_4
+   . https://www.gnu.org/licenses/
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_6
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_2_2
+   . mailto:linpac@trinnet.net

@@ -16,8 +16,8 @@
 <hr width="100%"></h1>
   </center>
       
-<center>Version 0.26
-<p>(c) 1998 - 2019 by David Ranch KI6ZHD</p>
+<center>Version 0.28
+<p>(c) 2020 - 1998 by David Ranch KI6ZHD</p>
   </center>
       
 <p><br>
@@ -73,24 +73,23 @@
 <p><a name="POS1"></a> </p>
    
 <h2> 1 What is LinPac</h2>
-   LinPac is an attempt to create a packet radio terminal for Linux that 
-allows wide configurability and easy addition of new functions and special 
-functions needed by the user. The aim is to minimize the amount of 'hard 
-coded' functions and create a complete set of applications that can be easy
-expanded and/or completely reconfigured.   
+   LinPac is a packet radio terminal for Linux that allows wide configurability 
+and easy addition of new functions and special functions needed by the user. The 
+aim is to minimize the amount of 'hard coded' functions and create a complete 
+set of applications that can be easy expanded and/or completely reconfigured.   
 <p>All functions described in this manual match the standard configuration 
  that comes with the distribution package. </p>
    
 <p><a name="POS2"></a> </p>
    
 <h2> 2 First configuration</h2>
-   When linpac is started for the first time, it automaticaly creates the 
-directory called <code>LinPac</code> in the running user's home directory. This 
-directory will contain the user's personal LinPac configuration settings. After 
-creating this directory, LinPac asks for basic callsign, port and other 
-information and prepares a useable configuration for you.  An example setup
+   When linpac is started for the first time on your computer, it automaticaly 
+creates the directory called <code>LinPac</code> in the running user's home 
+directory. This directory will contain the user's personal LinPac configuration 
+settings. After creating this directory, LinPac asks for basic callsign, port 
+and other information and prepares a useable configuration for you.  An example setup
 dialog is as shown, where we are using the bogus call "n0call" logging into
-the local BBS "n0ary-1":
+the local home BBS "n0ary-1":
 <pre>
 $ linpac
 
@@ -122,6 +121,7 @@ Please wait a moment for creating your personal configuration
 Installation done.
 Press ENTER to run LinPac
 </pre>
+
 <p>The above information is then stored in the <code>$HOME/LinPac/macro/init.mac</code> file as
 various 'functions'.  These functions are based on the very simple interpreted 
 language (actually it's not a language but something like the batch files in 
@@ -796,35 +796,99 @@ systems; this system is used instead of the one specified in station database</l
 <p><a name="POS8_3"></a> </p>
    
 <h3> 8.3 Utilities for mail exchange</h3>
-<p>LinPac contains some utilities for exchanging mail with the F6FBB BBS. 
-For the proper function of these utilities, the following variables must be created 
- in channel 0:</p>
+<p>LinPac contains some utilities for exchanging mail with remote Kantronics PBBSs though 
+some initial but incomplete support is also present for F6FBB BBS systems.  For complete
+function, you need to install the ax25mail-utils package and then the following variables 
+must be created in channel 0 (usually set in the init.mac file):</p>
+<p>
+Example #1:
+</p>
 <ul>
-  <li><b>HOME_BBS</b> - The AX.25 path to the home BBS including the port name.
- For example <code>kiss:OK0PAB OK0NMA</code> is the BBS <code>OK0PAB</code> which
-can be connected on port <code>kiss</code> via the node <code>OK0NMA</code>.</li>
-  <li><b>HOME_ADDR</b> - The full hierarchical address of the BBS. For example 
-<code>OK0PAB.#MOR.CZE.EU</code>.</li>
+  <li><b>HOME_TYPE</b> - This sets the type of remote system you're connecting to.
+Supported options are either "PBBS" for Kantronics KPC3 type TNCs or "FBB" for F6FBB 
+BBSes.  Only "PBBS" is supported today but we'd love to get the FBB support complete
+soon.</li>
+  <li><b>HOME_BBS</b> - The AX.25 path to the home PBBS including the port name.
+ For example <code>d710:AA6WK-1</code> is the PBBS <code>AA6WK-1</code> which
+can be connected on AX.25 port <code>d710</code>.  It's important to note that
+the callsigns are case-sensitive in Linpac so make sure these two variables use the
+SAME case.</li>
+  <li><b>HOME_ADDR</b> - The full hierarchical address of the BBS (which technically isn't
+required for PBBSes). For example 
+<code>AA6WK.#NCA.CA.USA.NOAM</code>.</li>
 </ul>
-<p>To set the variable, the <code>:SET</code> command can be used. For example: 
- </p>
-   
-<p><code>:set HOME_BBS@0 "kiss:OK0PAB OK0NMA"</code> </p>
-   
+<p>To set the variable while in Linpac, the <code>:SET</code> command can be used. You can also
+put this same line (but without the colon) in Linpac's init.mac file:
+</p>
+<p><code>:set HOME_TYPE "PBBS"</code> </p>
+<p><code>:set HOME_BBS@0 "d710:AA6WK-1"</code> </p>
+<p><code>:set HOME_ADDR "AA6WK.#NCA.CA.USA.NOAM"</code> </p>
+
 <p>The recommended place to set this variables is in the startup macro <code>init.mac</code>. 
  The default version of this macro contains an example of setting these variables. 
  After setting these variables, the following commands are available: </p>
+
+<p>
+Example #2:
+</p>
+<ul>
+  <li><b>HOME_TYPE</b> - This sets the type of remote system you're connecting to.
+Supported options are either "PBBS" for Kantronics KPC3 type TNCs or "FBB" for F6FBB 
+BBSes.  Only "PBBS" is supported today but we'd love to get the FBB support complete
+soon.</li>
+  <li><b>HOME_BBS</b> - The AX.25 path to the home BBS including the port name.
+ For example <code>kiss:OK0PAB OK0NMA</code> is the BBS <code>OK0PAB</code> which
+can be connected on AX.25 port <code>kiss</code> via the digipeater <code>OK0NMA</code>.  
+It's important to note that the callsigns are case-sensitive in Linpac so make sure these 
+two variables use the SAME case.</li>
+  <li><b>HOME_ADDR</b> - The full hierarchical address of the BBS. For example 
+<code>OK0PAB.#MOR.CZE.EU</code>.</li>
+</ul>
+<p>To set the variable while in Linpac, the <code>:SET</code> command can be used. You can also
+put this same line (but without the colon) in Linpac's init.mac file:
+ </p>
+<p><code>:set HOME_BBS@0 "kiss:OK0PAB OK0NMA"</code> </p>
+
+<p>Now you need to configure the ax25mail-utils program by editing the /etc/ax25/axgetlist.conf
+file.  Following the example #1 above, I would enter:</p>
+<ul>
+   [AA6WK-1]
+   MYCALL N0CALL
+   BBSCALL AA6WK-1
+   BBSPORT d710
+   CMD_LIST LO +;L
+   CMD_LIST_FROM LO +;L $
+   CMD_DISC B
+   HEADER_LINES 1
+   FORMAT <NUM> <FLAGS> <SIZE> <TO> <FROM> <DATE> <TIME> <SUBJ>
+   DATEFMT mm/dd/yyyy
+   BPFPOS 1--
+</ul>
+<p>  NOTE: the related /etc/ax25/axgetmail.conf configuration file is only used by "FBB" setups
+and that functionality has some known issues at the moment</p>
+
+<p>Now that the basics are setup, you need to fetch the pending messages for you on your
+configured remote system.  To do so, you would enter in the following command on the
+Linux prompt:</p>   
+<p><ul>
+<code>axgetlist -b AA6WK-1</code> <ul></p>
+<p>NOTE: This command must be run as the same Unix username that is running the Linpac program.
+The axgetlist utility will download a list of messages and store this list in /var/ax25/ulistd/.
+While this Linux commandline-based download occurs, the interation will NOT show up in the Linpac
+UI though you might see the AX.25 traffic if you have the monitor interface running.  This downloaded 
+index will then be used to either manually download these messages them or interact with 
+them via :mail interface</p>
    
 <p><code>:GETMSG &lt;<i>message_number</i>&gt; [&lt;<i>message_number</i>&gt;
  ...]</code> <br>
-  Reads specified messages from the BBS and stores them into <code>/var/ax25/mail/&lt;<i>BBS_callsign</i>&gt;/&lt;<i>message_number</i>&gt;</code>. 
- The directory for the BBS must be created before using this command (use 
-upper case for the BBS callsign). When the message number starts with 
-the letter <b>'p'</b>, the message is considered a personal one and it's 
-killed automatically after download. You can specify the kill command by setting 
-the <code>KILLPERS</code> variable in channel 0 using the <b>#</b> character for
-the number of the message (e.g. <code>:set KILLPERS@0 "kill #"</code>). When this
-variable is not set, the default command <code>K #</code> is used. </p>
+  From the main Linpac interface, this command reads specified messages from the remote BBS and 
+stores them into <code>/var/ax25/mail/&lt;<i>BBS_callsign</i>&gt;/&lt;<i>message_number</i>&gt;</code>. 
+ The file system directory for the remote BBS must be created before using this command (use upper 
+case for the BBS callsign). When the message number starts with the letter <b>'p'</b>, the message 
+is considered a PERSONAL one and it's killed automatically after download. You can specify the kill 
+command by setting the <code>KILLPERS</code> variable in channel 0 using the <b>#</b> character for
+the number of the message (e.g. <code>:set KILLPERS@0 "kill #"</code>). When this variable is not 
+set, the default command <code>K #</code> is used. This can also be set in the init.mac file.</p>
    
 <p><code>:SP &lt;<i>address</i>&gt;</code> or <code>:SB &lt;<i>address</i>&gt;</code> 
  <br>
@@ -847,6 +911,10 @@ variable is not set, the default command <code>K #</code> is used. </p>
  the frontend to mail exchange utilities. The mail client is started by the <code>:MAIL</code> 
  command. After the program is started, the <b>H</b> key shows the operating 
  instructions.   
+<p>In the INCOMING mail folder, you should see a list of messages available to download.
+Toggle the ones you want to fetch with the space bar and then use the "d" key to download
+those messages.</p>
+
 <p><a name="POS8_5"></a> </p>
    
 <h3> 8.5 Logbook</h3>
