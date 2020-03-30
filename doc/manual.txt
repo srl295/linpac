@@ -53,7 +53,9 @@
 
    Appendix A: List of LinPac commands
 
-   Appendix B: Errata
+   Appendix B: Linpac FAQ / Questions and Answers / Getting more help
+
+   Appendix C: Errata
 
    --------------------------------------------------------------------------
 
@@ -1372,12 +1374,45 @@ Appendix A - LinPac commands
 
    --------------------------------------------------------------------------
 
-Appendix B - Errata
+Appendix B - Linpac FAQ / Questions and Answers / Getting more help
+
+    1. Q: When I start Linpac, I get "Segmentation fault". What is the fix?
+       A: You are probably running an old version of Linpac. Please try the
+       newest release version available at
+       https://sourceforge.net/projects/linpac/ or possibly the newest
+       DEVELOP branch. This will most likely require you to compile Linpac to
+       get it going.
+
+    2. Q: When I start Linpac, all of the text in the AX.25 monitor is
+       indented to the right. How do I fix this?
+       A: Exit Linpac, go into the directory where Linpac is installed, and
+       delete the the files:
+
+          window*.screen
+          monitor.screen
+
+       Restart Linpac
+
+    3. Q: My question isn't addressed in this document, where else can I get
+       help?
+       A: Consider reviewing these other URLS:
+
+          * Review Linpac's known bugs and enhancement requests
+          * KI6ZHD's HamPacket documentation
+          * KI6ZHD's Raspberry Pi documentation
+          * Linpac's SourceForge Discussion area
+          * Submit a bug / enhancement request via Linpac's SourceForge
+            ticketing system
+
+   --------------------------------------------------------------------------
+
+Appendix c - Errata
 
    03/30/2020 - dranch
 
      * Expanded packet mail section on how to configure message system for
        PBBS and FBB remote systems
+     * Added a FAQ section and added this errata section
      * Improved formatting and added this errata section
 
    04/01/2019 - dranch
@@ -1424,6 +1459,7 @@ References
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS9
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS10
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POSAppendixA
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POSFAQ
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POSErrata
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS6
    . https://sourceforge.net/p/linpac/bugs/24/
@@ -1437,4 +1473,10 @@ References
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_3
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS3_6
    . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS8_2_2
+   . https://sourceforge.net/projects/linpac/
+   . https://sourceforge.net/p/linpac/linpac/ci/develop/tree/linpac-todo.txt
+   . http://www.trinityos.com/HAM/CentosDigitalModes/hampacketizing-centos.html#11.linpac
+   . http://www.trinityos.com/HAM/CentosDigitalModes/RPi/rpi4-setup.html#28.install-linpac
+   . https://sourceforge.net/projects/linpac/support
+   . https://sourceforge.net/p/linpac/_list/tickets
    . mailto:linpac@trinnet.net
