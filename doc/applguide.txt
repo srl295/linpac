@@ -1,11 +1,11 @@
                     LinPac - Packet Radio Terminal for Linux
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
-                                  Version 0.27
+                                  Version 0.28
 
                          (c) Martin Cooper KD6YAM 2020
-            (c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2016
+            (c) David Ranch KI6ZHD (linpac@trinnet.net) 2002 - 2020
                      (c) 1998 - 2001 by Radek Burget OK2JBG
 
                      External Application Programming Guide
@@ -65,16 +65,18 @@
    An external program is a standard Linux application which uses LinPac to
    communicate with remote stations. There are basically two types of LinPac
    external programs:
-     * Standard Linux applications that use standard input and output
+
+     * Standard Linux applications that use standard input and output
        streams. These programs can be used without LinPac too. LinPac allows
        redirection of the input stream (stdin) of the application and any of
        the output streams (stdout, stderr) or both of them. LinPac can also
        provide CR/LF conversions in these streams. These parameters are set
        when adding the external program to LinPac - see Section 7, "Creating
        new commands", in the User Manual.
-     * Applications written using LinPac's application interface. These
+     * Applications written using LinPac's application interface. These
        applications can share some information with LinPac, and they can
        control almost all functions of LinPac.
+
    No special knowledge of LinPac is needed for creating the first type of
    programs, because no LinPac functions are used. The remainder of this
    guide is dedicated to the second type of applications.
@@ -110,17 +112,19 @@
    (applications). The connection is always initiated by the application
    after it starts. There are basically two ways that an application may be
    started:
-     * The application is started by LinPac, through being associated with a
+
+     * The application is started by LinPac, through being associated with a
        LinPac command. In this case LinPac registers the channel on which the
        application was started and expects the connection attempt from the
        application. After the application initializes and contacts LinPac, it
        is provided with the working channel and whether it was started by a
        remote or local user. LinPac may also redirect the input and output
        streams of the application (depending upon LinPac settings).
-     * The application is started without using LinPac. In this case LinPac
+     * The application is started without using LinPac. In this case LinPac
        assumes that the application runs on channel 0 and was started by the
        local user. The input and output streams of the application are not
        redirected.
+
    In both cases, the start of an application causes the creation of a new
    object in LinPac called an event gate. This object represents the
    application within LinPac. Bearing in mind the previous chapter, this
@@ -145,7 +149,7 @@
    The following application example just tries to contact LinPac, and prints
    the result.
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  #include <stdio.h>
  #include <unistd.h>
@@ -168,7 +172,7 @@
      return 0;
  }
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
    The function lp_start_appl() tries to contact LinPac and returns 1 in case
    of success or 0 when a connection to LinPac cannot be made (probably
@@ -306,7 +310,7 @@
    events received and stops when an EV_ABORT event is received. This event
    can be generated using the :ABort command in LinPac.
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  #include <stdio.h>
  #include <linpac/lpapp.h>
@@ -345,14 +349,14 @@
      return 0;
  }
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
    This example contains "active waiting" (the do ; while(...) construction).
    This is very ugly and inefficient. For this reason, the LinPac API offers
    an alternative for waiting for events, namely the lp_wait_event()
    function. Let's change the example to use this function:
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  #include <stdio.h>
  #include <linpac/lpapp.h>
@@ -380,7 +384,7 @@
      return 0;
  }
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
    WARNING: Note that some system calls may be interrupted when an event is
    received. An interrupted system call returns an error result (for example
@@ -591,7 +595,7 @@
    The last step is to wait until the connection is established. For this the
    function lp_wait_connect() can be used. An example piece of code follows:
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  int chn = lp_channel();
  if (lp_chn_status(chn) == ST_DISC)
@@ -603,7 +607,7 @@
      /* ... connection established ... */
  }
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
     6.6.2 Using LinPac commands in programs
 
@@ -611,13 +615,13 @@
    event. For example, to download a message from a BBS using the getmsg
    command following code can be used:
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  char cmd[30];
  sprintf(cmd, "getmsg %i", message_number);
  lp_emit_event(lp_channel(), EV_DO_COMMAND, 0, cmd);
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
    Another option is to use the EV_WANT_RESULT event. The usage is similar to
    the previous example, but the x field of the event has special meaning: as
@@ -627,7 +631,7 @@
 
    An example follows:
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  char cmd[30];
  int id = 0;
@@ -643,7 +647,7 @@
  }
  printf("The result is: %s\n", (char *)ev.data);
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
 7 The application library interface
 
@@ -924,11 +928,61 @@
    The steps to add the script to LinPac as a new command are essentially the
    same as for an application written in C, described in Chapter 5.1 above.
    That is:
-    1. Copy the script to the $LINPACDIR/bin directory, making sure that the
+
+    1. Copy the script to the $LINPACDIR/bin directory, making sure that the
        permissions allow execution.
-    2. Add the new command to the file $LINPACDIR/bin/commands as described
+    2. Add the new command to the file $LINPACDIR/bin/commands as described
        in the User Manual.
 
-     ----------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
                             Last update: 16 Feb 2020
+
+References
+
+   Visible links
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS5_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_6
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_6_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_6_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_5
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_6
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_7
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS8
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS8_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS8_1_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS8_1_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS8_1_3
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS8_1_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS8_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html#POS7
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/objects.txt
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/events.txt
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_3_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS7_2
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/events.txt
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS6_4
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/applguide.html#POS5_1
+   . file:///home/archive/Linpac/BitBucket-Git/linpac/doc/manual.html
