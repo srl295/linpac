@@ -905,8 +905,12 @@
 
    This application allows full screen message editing and browsing. It
    provides a graphical (Ncurses) frontend to mail exchange utilities. The
-   mail client is started by the :MAIL command. After the program is started,
-   the H key shows the operating instructions.
+   mail client is started by the :MAIL command from Linpac's Channel 0 (aka..
+   the F1-key view). If you run this command from any other Linpac channel,
+   it won't display any messages!
+
+   After the mail interface opens, the H key shows the operating
+   instructions.
 
    In the INCOMING mail folder, you should see a list of messages available
    to download. Toggle the messages you want to fetch with the SPACEBAR and
@@ -1376,14 +1380,18 @@ Appendix A - LinPac commands
 
 Appendix B - Linpac FAQ / Questions and Answers / Getting more help
 
-    1. Q: When I start Linpac, I get "Segmentation fault". What is the fix?
+    1. Q: X doesn't work right in Linpact. Why?
+       A: Have you looked in the errors.txt file found in the main LinPac
+       directory? It can provide a lot of clues.
+
+    2. Q: When I start Linpac, I get "Segmentation fault". What is the fix?
        A: You are probably running an old version of Linpac. Please try the
        newest release version available at
        https://sourceforge.net/projects/linpac/ or possibly the newest
        DEVELOP branch. This will most likely require you to compile Linpac to
-       get it going.
+       get it running
 
-    2. Q: When I start Linpac, all of the text in the AX.25 monitor is
+    3. Q: When I start Linpac, all of the text in the AX.25 monitor is
        indented to the right. How do I fix this?
        A: Exit Linpac, go into the directory where Linpac is installed, and
        delete the the files:
@@ -1391,9 +1399,11 @@ Appendix B - Linpac FAQ / Questions and Answers / Getting more help
           window*.screen
           monitor.screen
 
-       Restart Linpac
+       Now restart Linpac
+    4. 
 
-    3. Q: My question isn't addressed in this document, where else can I get
+
+    5. Q: My question isn't addressed in this document, where else can I get
        help?
        A: Consider reviewing these other URLS:
 

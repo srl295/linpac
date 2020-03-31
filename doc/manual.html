@@ -1051,8 +1051,11 @@ set, the default command <code>K #</code> is used. This can also be set in the i
 <h3> 8.4 Mail client</h3>
 <p>This application allows full screen message editing and browsing. It provides 
  a graphical (Ncurses) frontend to mail exchange utilities. The mail client is started 
-by the <code>:MAIL</code> command. After the program is started, the <b>H</b> key shows 
-the operating instructions.</p>
+by the <code>:MAIL</code> command from Linpac's Channel 0 (aka.. the F1-key view).  If
+you run this command from any other Linpac channel, it won't display any messages!<p>
+
+<p>After the mail interface opens, the <b>H</b> key shows the operating instructions.</p>
+
 <p>In the INCOMING mail folder, you should see a list of messages available to download.
 Toggle the messages you want to fetch with the SPACEBAR and then use the "d" key to download
 those messages.</p>
@@ -1586,11 +1589,14 @@ users first log into the Linpac system</p>
 <h2>Appendix B - Linpac FAQ / Questions and Answers / Getting more help</h2>
 <p>
 <ol>
+   <li><b>Q: X doesn't work right in Linpact.  Why?</b><br>
+<b>A:</b> Have you looked in the errors.txt file found in the main LinPac directory?  It can provide a lot of clues.</li>
+   <p></p>
    <li><b>Q: When I start Linpac, I get "Segmentation fault".  What is the fix?</b><br>
 <b>A:</b> You are probably running an old version of Linpac.  Please try the newest release
 version available at <a href="https://sourceforge.net/projects/linpac/">https://sourceforge.net/projects/linpac/</a> 
 or possibly the newest DEVELOP branch.  This will most likely require you to 
-compile Linpac to get it going.
+compile Linpac to get it running</li>
    <p></p>
    <li><b>Q: When I start Linpac, all of the text in the AX.25 monitor is indented 
 to the right.  How do I fix this?</b><br>
@@ -1599,7 +1605,7 @@ to the right.  How do I fix this?</b><br>
       window*.screen<br>
       monitor.screen
    </ul>
-Restart Linpac
+Now restart Linpac<li>
    <p></p>
    <li><b>Q: My question isn't addressed in this document, where else can I get help?</b><br>
 <b>A:</b> Consider reviewing these other URLS:
@@ -1609,7 +1615,7 @@ Restart Linpac
       <li><a href="http://www.trinityos.com/HAM/CentosDigitalModes/RPi/rpi4-setup.html#28.install-linpac">KI6ZHD's Raspberry Pi documentation</a><br>
       <li><a href="https://sourceforge.net/projects/linpac/support">Linpac's SourceForge Discussion area</a><br>
       <li><a href="https://sourceforge.net/p/linpac/_list/tickets">Submit a bug / enhancement request via Linpac's SourceForge ticketing system</a><br>
-   </ul>
+   </ul></li>
 </ol>
 
 </p>
