@@ -1592,21 +1592,25 @@ users first log into the Linpac system</p>
    <li><b>Q: X doesn't work right in Linpact.  Why?</b><br>
 <b>A:</b> Have you looked in the errors.txt file found in the main LinPac directory?  It can provide a lot of clues.</li>
    <p></p>
+
    <li><b>Q: When I start Linpac, I get "Segmentation fault".  What is the fix?</b><br>
 <b>A:</b> You are probably running an old version of Linpac.  Please try the newest release
 version available at <a href="https://sourceforge.net/projects/linpac/">https://sourceforge.net/projects/linpac/</a> 
 or possibly the newest DEVELOP branch.  This will most likely require you to 
 compile Linpac to get it running</li>
    <p></p>
+
    <li><b>Q: When I start Linpac, all of the text in the AX.25 monitor is indented 
 to the right.  How do I fix this?</b><br>
-<b>A:</b> Exit Linpac, go into the directory where Linpac is installed, and delete the the files:
-   <ul>
-      window*.screen<br>
-      monitor.screen
-   </ul>
-Now restart Linpac<li>
+<b>A:</b> Exit Linpac, go into the directory where Linpac is installed, and delete the file:
    <p></p>
+   <ul>
+      <code>monitor.screen</code>
+   </ul>
+   <p></p>
+Now restart Linpac.  Did that solve your issue?  No?  Also try deleting the files <code>window*.screen</code> and restart Linpac</li>
+   <p></p>
+      
    <li><b>Q: My question isn't addressed in this document, where else can I get help?</b><br>
 <b>A:</b> Consider reviewing these other URLS:
    <ul>
